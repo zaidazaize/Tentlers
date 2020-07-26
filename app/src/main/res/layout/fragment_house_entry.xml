@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_house_enter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:menu="@menu/action_house_create_menu"
+            app:navigationIcon="@drawable/ic_baseline_clear_24"
+            app:title="Create New House " />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_marginBottom="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_outlined_house_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="20"
+                    app:errorEnabled="true"
+                    app:helperText="Enter Your House Name"
+                    app:helperTextTextColor="@color/recquired_fild"
+                    app:startIconDrawable="@drawable/ic_baseline_home_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_input_edit_text_outlined_housename"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/house_name"
+                        android:inputType="textCapWords" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switch_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    android:checked="false"
+                    android:drawableStart="@drawable/ic_place_24px"
+                    android:text="Add Address" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_address_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/layout_house_city"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_left_right"
+                            android:layout_marginEnd="@dimen/margin_left_right"
+                            android:layout_marginBottom="@dimen/margin_top_bottom"
+                            android:layout_weight="1"
+                            app:errorEnabled="true"
+                            app:helperText="!Recquered"
+                            app:helperTextTextColor="@color/recquired_fild">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/text_input_edit_text__house_city"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="City/Town"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+
+                            android:id="@+id/layout_house_country"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_left_right"
+                            android:layout_marginEnd="@dimen/margin_left_right"
+                            android:layout_marginBottom="@dimen/margin_top_bottom"
+                            android:layout_weight="1"
+                            app:errorEnabled="true"
+                            app:helperText="@string/recquired"
+                            app:helperTextTextColor="@color/recquired_fild">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/text_input_edit_text__house_country"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Country"
+                                android:inputType="textCapWords"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_left_right"
+                            android:layout_marginEnd="@dimen/margin_left_right"
+                            android:layout_marginBottom="@dimen/margin_top_bottom"
+                            android:layout_weight="1"
+                            app:errorEnabled="true">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/text_input_edit_text_outlined_housenumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="House No."
+                                android:inputType="number" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/layout_house_postalcode"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="@dimen/margin_left_right"
+                            android:layout_marginBottom="@dimen/margin_top_bottom"
+                            android:layout_weight="1"
+                            app:errorEnabled="true"
+                            app:helperText="@string/recquired"
+                            app:helperTextTextColor="@color/recquired_fild">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/text_input_edit_text_outlined_postal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Postal Code"
+                                android:inputType="textPostalAddress"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+
+                            android:id="@+id/text_input_layout_outlined_Address2"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginEnd="@dimen/margin_left_right"
+                            android:layout_marginBottom="@dimen/margin_top_bottom"
+                            android:layout_weight="1"
+                            app:helperText="!Optional">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/text_input_edit_text_outlined_house_area"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Area/Locality"
+                                android:inputType="textCapWords"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switch_no_of_rooms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_emty_rooms_24"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    android:checked="false"
+                    android:text="Add Number Of Rooms/Units" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_house_Noof_rooms"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginTop="@dimen/margin_left_right"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    android:layout_marginBottom="@dimen/margin_left_right"
+                    android:layout_weight="1"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_input_edit_text_house_no_of_rooms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Number of Rooms/Units"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switch_electric_meter_permission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    android:checked="false"
+                    android:drawableStart="@drawable/ic_meter_reading_24px"
+                    android:text="Add Electric/Energy Meter" />
+
+                <LinearLayout
+                    android:layout_marginStart="10dp"
+                    android:id="@+id/layout_meter_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_electric_meter_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_left_right"
+                        android:layout_marginEnd="@dimen/margin_left_right"
+                        android:checked="false"
+                        android:drawableStart="@drawable/ic_manually_enter_24px"
+                        android:text="Manually Enter Meter Number" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_input_layout__house_MeterNo"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="@dimen/margin_left_right"
+                        android:layout_marginBottom="@dimen/margin_left_right"
+
+                        android:layout_weight="1"
+                        app:helperText="Enter Only Numeral Part Of Meter id"
+                        android:visibility="gone"
+                        app:errorEnabled="true"
+                        app:startIconDrawable="@drawable/ic_meter_reading_24px">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/text_input_edit_text_house_electric_meter_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Meter Number"
+                            android:inputType="number" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_electric_meter_number_system_decide"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:layout_marginStart="@dimen/margin_left_right"
+                        android:layout_marginEnd="@dimen/margin_left_right"
+                        android:checked="true"
+                        android:drawableStart="@drawable/ic_system_decide_24px"
+                        android:text="Use System Generated Number" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</layout>

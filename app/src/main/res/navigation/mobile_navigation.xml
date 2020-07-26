@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.easelife.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_home_to_houseEntryDilog"
+            app:destination="@id/nav_houseEntryFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_specificHouseFragment"
+            app:destination="@id/nav_specificHouseFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_bills"
+        android:name="com.example.easelife.ui.bills.BillsFragment"
+        android:label="Bills List"
+        tools:layout="@layout/fragment_bills_list" />
+
+    <fragment
+        android:id="@+id/nav_tenants"
+        android:name="com.example.easelife.ui.tenants.TenantsFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_tenants_list" />
+    <fragment
+        android:id="@+id/nav_houseEntryFragment"
+        android:name="com.example.easelife.ui.home.HouseEntryFragment"
+        tools:layout="@layout/fragment_house_entry" />
+
+    <fragment
+        android:id="@+id/nav_rooms"
+        android:name="com.example.easelife.ui.rooms.HouseRooms"
+        android:label="fragment_house_rooms_list"
+        tools:layout="@layout/fragment_house_rooms_list" >
+        <action
+            android:id="@+id/action_nav_rooms_to_roomEnteyFragment"
+            app:destination="@id/nav_roomEnteyFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_houseRooms"
+        app:destination="@id/nav_rooms"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+        android:id="@+id/nav_specificHouseFragment"
+        android:name="com.example.easelife.ui.home.specifichouse.SpecificHouseFragment"
+        android:label="fragment_specific_house"
+        tools:layout="@layout/fragment_specific_house" >
+        <action
+            android:id="@+id/action_nav_specificHouseFragment_to_roomEnteyFragment"
+            app:destination="@id/nav_roomEnteyFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_roomEnteyFragment"
+        android:name="com.example.easelife.ui.rooms.RoomEnteyFragment"
+        android:label="RoomEnteyFragment" />
+
+</navigation>

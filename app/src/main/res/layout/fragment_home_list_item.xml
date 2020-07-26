@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="70sp"
+    android:layout_marginStart="10sp"
+    android:clickable="true"
+    android:layout_marginTop="4sp"
+    android:layout_marginEnd="10sp"
+    android:layout_marginBottom="4sp"
+    android:background="#EDF4F6"
+    android:elevation="2sp"
+    android:gravity="center"
+    android:focusable="true"
+    android:foreground="?android:selectableItemBackground"
+    android:baselineAligned="false">
+
+    <LinearLayout
+        android:layout_width="0sp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/home_listitem_house_no"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_house_number"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/color_house_name"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            tools:text="35" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0sp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="3sp"
+            android:layout_marginTop="5sp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/home_listitem_house_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:gravity="bottom"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#0C0C0C"
+                tools:text="House Name" />
+
+            <TextView
+                android:id="@+id/home_listitem_house_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:fontFamily="sans-serif-thin"
+                android:gravity="bottom"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:typeface="normal"
+                tools:text="12/34/9000" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/home_listitem_house_address"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_marginStart="3sp"
+            android:layout_marginBottom="5sp"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="Address" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0sp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/home_listitem_house_totalrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            tools:text="35" />
+
+        <TextView
+            android:id="@+id/home_listitem_house_emptyrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5sp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="10" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

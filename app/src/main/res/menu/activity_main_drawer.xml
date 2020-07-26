@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/meter_information"
+            android:icon="@drawable/ic_electric_meter_24px"
+            android:title="Meter Info" />
+    </group>
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:title="@string/help"
+            android:icon="@drawable/ic_help_outline_24px"/>
+
+        <item
+            android:id="@+id/itemabout"
+            android:icon="@drawable/ic_about_24px"
+            android:title="@string/about_us"/>
+
+
+    </group>
+</menu>

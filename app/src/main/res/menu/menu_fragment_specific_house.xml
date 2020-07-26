@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_specific_house_addtenant"
+        android:icon="@drawable/ic_add_tenant"
+        android:title="@string/add_tenant"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_item_specific_house_addroom"
+        android:title="Add Room"
+        app:showAsAction="ifRoom" />
+    <item android:title="Edit"
+        android:id="@+id/menu_item_specific_house_edit"
+        app:showAsAction="withText|ifRoom"/>
+</menu>
