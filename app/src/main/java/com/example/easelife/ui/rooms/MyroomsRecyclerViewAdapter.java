@@ -53,6 +53,7 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
 
     public void setmRoomList(List<TableRooms> roomList) {
         mRoomList = roomList;
+        notifyDataSetChanged();
     }
 
     @Override

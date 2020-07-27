@@ -11,6 +11,8 @@ import android.view.View;
 import com.example.easelife.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Set;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -34,23 +36,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        HouseViewModal houseViewModal = new ViewModelProvider(this).get(HouseViewModal.class);
-
-        // Write meter base id to shared priference
+        /*
+        * Generating a shared preference object for saving the base id of the meter
+        */
         SharedPreferences sharedPref = this.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
+        /*
+        * Generating the binding class for the main Activiy .
+        * this controls the nav_hostfragment, bottom Nav and the
+        * top navigation bar.
+        */
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mainBinding.getRoot());
 
-        // Adding Toolbar
+        /*
+        * Set the toolbar to the main activity
+        */
         setSupportActionBar(mainBinding.toolbar);
 
-
-     /*   For bottom navigation
-        Get the nav controler
-               Bottom Navigation
-         Add the bottom navigation with by usig databinding to navcontroller */
+        /*
+        * Get the navControler and add the bottom Navigation to the Main activity
+        */
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mainBinding.bottomNav, navController);
 
@@ -65,17 +72,26 @@ public class MainActivity extends AppCompatActivity {
 //        NavigationUI.setupWithNavController(mainBinding.navView,navController);
 
 //
-// Adding Navigation drawer
+        /*
+        * Adding The Navigation drawer to the app
+        * and Adding the toggle manager to the drawer layout
+        * toggle is the icon shown on the drawer and aswell as supports the
+        * left swipe to open the drawer.
+        */
         drawerToggle = new ActionBarDrawerToggle(this, mainBinding.drawerLayout, R.string.openDrawerContentDescRes, R.string.closeDrawerContentDescRes);
-        // Add listener to the drawer layout
         mainBinding.drawerLayout.addDrawerListener(drawerToggle);
 
 
 //        // Adding back buttom on top in place of drawer icon
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Set up the navigation
-        // Nav_view is the id of navigaton holder in drawer layout
+      /*
+       *Set up the navigation item listener so that it supports the navigation
+       * the selected item id is caught here.
+       * we can manage the navigation by listenenig to those ids.
+       *
+       * Nav_view is the id of navigaton holder in drawer layout
+       */
         mainBinding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -84,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        /*// Set the navigation change listener to update the full screen views*/
+        /*
+        *Set the navigation change listener to update the full screen views
+        */
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
@@ -103,6 +121,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*
+    * This meathosd hides all the navigation components from the screen
+    * Generally used in entry screens.
+    */
     private void hideAllNavigation(boolean ishide) {
         setBottomNavigationVisibility(ishide);
         setAppbarVisibility(ishide);
@@ -137,6 +159,15 @@ public class MainActivity extends AppCompatActivity {
         } else mainBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
+    /*
+     * this method sets the setting option visibility in main menu
+     */
+//    private void setMenuItemSettingVisibility(boolean isvisible) {
+//        if (isvisible) {
+//            findViewById(R.id.action_settings).setVisibility(View.VISIBLE);
+//        }else findViewById(R.id.action_settings).setVisibility(View.GONE);
+//    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -147,13 +178,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
+            /*
+            * If the item selected belongs to the drawer layout it is transffered to
+            * drawer item click listener assingned in oncreate meathod.
+            */
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    //for drawer layuout
+    /*
+    * this handles the closing of the drawer if it is open when the back button is pressed
+    */
     @Override
     public void onBackPressed() {
         if (mainBinding.drawerLayout.isDrawerVisible(Gravity.LEFT)) {

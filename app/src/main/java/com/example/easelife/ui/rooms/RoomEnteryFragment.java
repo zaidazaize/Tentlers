@@ -174,11 +174,11 @@ public class RoomEnteryFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     tableRooms.isSystemDeside = false;
-                    enteyBinding.textInputEditTextRoomElectricMeterNo.setVisibility(View.VISIBLE);
+                    enteyBinding.textInputLayoutRoomMeterNo.setVisibility(View.VISIBLE);
                     enteyBinding.switchRoomElectricMeterNumberSystemDecide.setChecked(false);
                 } else {
                     tableRooms.isSystemDeside = true;
-                    enteyBinding.textInputEditTextRoomElectricMeterNo.setVisibility(View.GONE);
+                    enteyBinding.textInputLayoutRoomMeterNo.setVisibility(View.GONE);
                     enteyBinding.switchRoomElectricMeterNumberSystemDecide.setChecked(true);
                 }
             }
@@ -193,7 +193,7 @@ public class RoomEnteryFragment extends Fragment {
      * for the specific house.
      */
     private boolean checkforDataValidity() {
-        return (checkForRoomNameValidity() & isMeterValid());
+        return (checkForRoomNameValidity() & isMeterValid() & checkForRoomnoVAlidiy());
     }
 
     /*
@@ -216,7 +216,6 @@ public class RoomEnteryFragment extends Fragment {
                  *Check for uniqueness
                  */
                 if (isMeterNoUnique(meterNumberLong)) {
-
                     /*
                      *set the error to null and add the meter no in the Tableroom object
                      */
@@ -276,66 +275,102 @@ public class RoomEnteryFragment extends Fragment {
      * And assigning the errors to the edit text field of room name entry.
      */
     private boolean checkForRoomNameValidity() {
-        boolean isroomprsent = true;
-        boolean isroomnopresent = true;
+
         String roomName = enteyBinding.textInputEditTextOutlinedRoomName.getText().toString();
-        String roomNo = enteyBinding.textInputEditTextOutlinedRoomNo.getText().toString();
-        if (roomName.length() == 0) {
-            enteyBinding.textInputLayoutOutlinedRoomName.setError("!Room Name Can't be Empty");
-            isroomprsent = false;
-        }
-        if (roomNo.length() == 0) {
-            enteyBinding.textInputLayoutRoomMeterNo.setError(getString(R.string.error_field_recquired));
-            isroomnopresent = false;
-        }
+//
         /*
-         * if both are empty then it should return false
+         * First check for the room name should not be empty.
          */
-        if (!isroomprsent & !isroomnopresent) {
+        if (roomName.length() != 0) {
+            /*
+             * Check for the uiquness of the room name
+             */
+            if (checkForUniqueRoomName(roomName)) {
+                /*
+                 * if name is unique asign error text to be null else assign to enter any other name
+                 * Add the room name in the table room object
+                 */
+                enteyBinding.textInputLayoutOutlinedRoomName.setError("");
+                tableRooms.roomName = roomName;
+                return true;
+            } else {
+                enteyBinding.textInputLayoutOutlinedRoomName.setError(getString(R.string.room_name_already_exists));
+                return false;
+            }
+
+        } else {
+            enteyBinding.textInputLayoutOutlinedRoomName.setError(getString(R.string.room_name_cannot_be_empty));
             return false;
         }
-        int roomnoInt = Integer.parseInt(roomNo);
-        /*
-        * It Checks for the room no and room Name uniquness
-        */
-        checkForUniqueRoomNameandNo(roomName, roomnoInt);
-        if (isTheENteredRoomNameUnique & isTheENteredRoomNoUnique) {
-            enteyBinding.textInputLayoutOutlinedRoomName.setError("");
-            tableRooms.roomName = roomName;
-            tableRooms.roomNo = roomnoInt;
-            return true;
-        } else return false;
+
     }
 
     /*
-     * meathod for checking the uniquness of the room name
-     * enterd for the given house only.If the room name is system generated
+     * method for checking the uniquness of the room name
+     * entered for the given house only.If the room name is system generated
      * it returns true , else loops through the whole room names.
      */
-    private void checkForUniqueRoomNameandNo(String roomnaeminputed, int roomNo) {
+    private boolean checkForUniqueRoomName(String roomnaeminputed) {
+        /*
+         * If the room is system generated it will be unique. Return true.
+         */
 
-        if (roomnaeminputed.equals(generatedroomNOName.roomName)) {    // Here it checks for system generated name and no
-            isTheENteredRoomNameUnique = true;
+        if (roomnaeminputed.equals(generatedroomNOName.roomName)) {
+            return true;
         }
+
+        if (gotAllRoomNoName != null & gotAllRoomNoName.size() != 0) {
+            for (RoomNoName n : gotAllRoomNoName) {   // Here it loops to check for uniqueness
+                if (n.roomName.equals(roomnaeminputed)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /*
+     * Meathod checks for room name validity
+     * and also handles the error shown
+     */
+    private boolean checkForRoomnoVAlidiy() {
+        String roomNo = enteyBinding.textInputEditTextOutlinedRoomNo.getText().toString();
+
+        if (roomNo.length() != 0) {
+            int roomNoInt = Integer.parseInt(roomNo);
+            if (isRoomNoUnique(roomNoInt)) {
+                /*
+                 * Set error to null and add the value to the tableroom object
+                 */
+                enteyBinding.textInputLayoutOutlinedRoomNo.setError("");
+                tableRooms.roomNo = roomNoInt;
+                return true;
+            } else {
+                enteyBinding.textInputLayoutOutlinedRoomNo.setError(getString(R.string.room_no_already_used));
+                return false;
+            }
+
+        } else {
+            enteyBinding.textInputLayoutRoomMeterNo.setError(getString(R.string.error_field_recquired));
+            return false;
+        }
+    }
+
+    /*
+     * This method checks for the uniqueness of room no entered by the user
+     */
+    private boolean isRoomNoUnique(int roomNo) {
         if (roomNo == generatedroomNOName.roomNo) {
             isTheENteredRoomNoUnique = true;
         }
-        if (!isTheENteredRoomNoUnique || !isTheENteredRoomNameUnique) {
-            if (gotAllRoomNoName != null & gotAllRoomNoName.size() != 0) {
-                for (RoomNoName n : gotAllRoomNoName) {   // Here it loops to check for uniqueness
-                    if (n.roomName.equals(roomnaeminputed)) {
-                        enteyBinding.textInputLayoutOutlinedRoomName.setError("!Room Name Already Exists");
-                        isTheENteredRoomNameUnique = false;
-                    }
-                    if (n.roomNo == roomNo) {
-                        enteyBinding.textInputLayoutOutlinedRoomNo.setError("!Room Number Already Exists");
-                        isTheENteredRoomNoUnique = false;
-                    }
+        if (gotAllRoomNoName != null & gotAllRoomNoName.size() != 0) {
+            for (RoomNoName n : gotAllRoomNoName) {   // Here it loops to check for uniqueness
+                if (n.roomNo == roomNo) {
+                    return false;
                 }
-
-
             }
         }
+        return true;
     }
 
     /*

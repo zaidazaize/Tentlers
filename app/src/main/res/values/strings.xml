@@ -43,4 +43,7 @@
     <string name="meter_number">Meter Number</string>
     <string name="meter_no_already_exits">!Meter number already exits.</string>
     <string name="no_tenant_added">No Tenant Added</string>
+    <string name="room_name_already_exists">!Room Name Already Exists.</string>
+    <string name="room_name_cannot_be_empty">!Room Name Can\'t be Empty</string>
+    <string name="room_no_already_used">!Room Number Already Used.</string>
 </resources>
