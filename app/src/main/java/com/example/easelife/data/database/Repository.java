@@ -91,7 +91,7 @@ public class Repository {
 
 
     /*
-     * getting all houses for diaplaying in rooms fragment in the spinner
+     * getting all houses name for diaplaying in "Rooms fragment" in the spinner
      */
     public LiveData<List<HouseNameId>> getHouseNameId() {
         return mdao.getHouseNameId();
@@ -100,7 +100,9 @@ public class Repository {
 
     /* Querries for room tables*/
 
-    // Querying the Rooms table
+    /*
+    * Getting the three rooms for displaying in the "Specific house Fragement
+    */
     public LiveData<List<TableRooms>> getThreeRooms(int mhouseId) {
         return mdao.getThreerooms(mhouseId);
     }

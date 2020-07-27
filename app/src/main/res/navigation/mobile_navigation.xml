@@ -67,17 +67,17 @@
         android:name="com.example.easelife.ui.home.specifichouse.SpecificHouseFragment"
         android:label="fragment_specific_house"
         tools:layout="@layout/fragment_specific_house" >
-        <action
-            android:id="@+id/action_nav_specificHouseFragment_to_roomEnteyFragment"
-            app:destination="@id/nav_roomEnteyFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/nav_roomEnteyFragment"
-        android:name="com.example.easelife.ui.rooms.RoomEnteyFragment"
+        android:name="com.example.easelife.ui.rooms.RoomEnteryFragment"
         android:label="RoomEnteyFragment" />
+    <action
+        android:id="@+id/action_global_nav_roomEnteyFragment"
+        app:destination="@id/nav_roomEnteyFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
 </navigation>

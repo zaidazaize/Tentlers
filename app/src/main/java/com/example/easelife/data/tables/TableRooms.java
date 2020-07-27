@@ -31,17 +31,22 @@ public class TableRooms {
 
     public int roomNo;
 
+    @ColumnInfo(defaultValue = "NULL")
     public String roomName;
 
+    @ColumnInfo
     public boolean isOcupied;
 
+    @ColumnInfo
     public long meterId;
 
+    @ColumnInfo
     public boolean isMeterEnabled;
 
     @Ignore
     public boolean isSystemDeside;
 
+    @ColumnInfo(defaultValue = "NULL")
     public String tenantsName;
 
     public Date date;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-class RoomEnteyFragment extends Fragment {
+public class RoomEnteryFragment extends Fragment {
     FragmentRoomEnteyBinding enteyBinding;
     HouseViewModal viewModal;
     /*
@@ -44,7 +45,7 @@ class RoomEnteyFragment extends Fragment {
     /*
      * This object holds  all the meter ids of houses in the database.
      */
-    private List<Long> gotAllHouseIds;
+    private List<Long> gotAllHouseMeterIds;
 
     /*
      * This object holds all the room names in the given house
@@ -59,7 +60,7 @@ class RoomEnteyFragment extends Fragment {
     /*
      * This variable stores the system generated room number and room name
      */
-    private RoomNoName generatedroomNOName;
+    private RoomNoName generatedroomNOName = new RoomNoName();
 
     @Override
     public void onDestroy() {
@@ -67,23 +68,25 @@ class RoomEnteyFragment extends Fragment {
         viewModal = null;
     }
 
+
     @Override
+
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
 
         /*
-        *  Assing the house id from the view modal tho tableroom object.
-        */
+         *  Assing the house id from the view modal tho tableroom object.
+         */
         tableRooms.houseId = viewModal.getHouseIdForRoomEntry();
 
         /*
-        * asign the observer to the all house meter ids  and all room meter ids.
-        */
+         * asign the observer to the all house meter ids  and all room meter ids.
+         */
         viewModal.getAllHousemeterids().observe(this, new Observer<List<Long>>() {
             @Override
             public void onChanged(List<Long> longs) {
-                gotAllHouseIds = longs;
+                gotAllHouseMeterIds = longs;
             }
         });
         viewModal.getAllroomhouseids().observe(this, new Observer<List<Long>>() {
@@ -138,6 +141,7 @@ class RoomEnteyFragment extends Fragment {
         enteyBinding.toolbarHouseEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                Log.d("the clicked item id", String.valueOf(item.getItemId()));
                 switch (item.getItemId()) {
                     case R.id.meuitem_house_save:
                         if (checkforDataValidity()) {
@@ -256,9 +260,9 @@ class RoomEnteyFragment extends Fragment {
         /*
          *  Check for uniquenes in house ids
          */
-        if (gotAllHouseIds != null) {
-            for (long i : gotAllHouseIds) {
-                if (getmeterno == i) {
+        if (gotAllHouseMeterIds != null) {
+            for (long i : gotAllHouseMeterIds) {
+                if (i == getmeterno) {
                     return false;
                 }
             }
@@ -284,18 +288,24 @@ class RoomEnteyFragment extends Fragment {
             enteyBinding.textInputLayoutRoomMeterNo.setError(getString(R.string.error_field_recquired));
             isroomnopresent = false;
         }
-        if (isroomprsent & isroomnopresent) {
+        /*
+         * if both are empty then it should return false
+         */
+        if (!isroomprsent & !isroomnopresent) {
             return false;
         }
         int roomnoInt = Integer.parseInt(roomNo);
+        /*
+        * It Checks for the room no and room Name uniquness
+        */
         checkForUniqueRoomNameandNo(roomName, roomnoInt);
         if (isTheENteredRoomNameUnique & isTheENteredRoomNoUnique) {
             enteyBinding.textInputLayoutOutlinedRoomName.setError("");
+            tableRooms.roomName = roomName;
             tableRooms.roomNo = roomnoInt;
             return true;
         } else return false;
     }
-
 
     /*
      * meathod for checking the uniquness of the room name
@@ -311,7 +321,7 @@ class RoomEnteyFragment extends Fragment {
             isTheENteredRoomNoUnique = true;
         }
         if (!isTheENteredRoomNoUnique || !isTheENteredRoomNameUnique) {
-            if (gotAllRoomNoName.size() != 0) {
+            if (gotAllRoomNoName != null & gotAllRoomNoName.size() != 0) {
                 for (RoomNoName n : gotAllRoomNoName) {   // Here it loops to check for uniqueness
                     if (n.roomName.equals(roomnaeminputed)) {
                         enteyBinding.textInputLayoutOutlinedRoomName.setError("!Room Name Already Exists");
@@ -328,7 +338,6 @@ class RoomEnteyFragment extends Fragment {
         }
     }
 
-
     /*
      * Insert the room in the data base . This meathod also generates the
      * meter id if user has enabled the system generated meter id.
@@ -336,8 +345,8 @@ class RoomEnteyFragment extends Fragment {
     private void saveHouseData() {
         if (tableRooms.isSystemDeside) {
             SharedPreferences sh = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-            tableRooms.meterId = sh.getLong(getString(R.string.system_generated_meterid_last_entry),0) +1;
-            sh.edit().putLong(getString(R.string.system_generated_meterid_last_entry),tableRooms.meterId).apply();
+            tableRooms.meterId = sh.getLong(getString(R.string.system_generated_meterid_last_entry), 0) + 1;
+            sh.edit().putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.meterId).apply();
         }
         viewModal.insertNewRoom(tableRooms);
     }

@@ -60,10 +60,16 @@ public class HouseViewModal extends AndroidViewModel {
 
     /* For displaying rooms details*/
 
+    /*
+    * this is used to display the three rooms in the specific house fragemnt
+    */
     public LiveData<List<TableRooms>> getThreeRooms(int houseId) {
         return mRepository.getThreeRooms(houseId);
     }
 
+    /*
+    * This is used to display all the rooms in the Room fragment
+    */
     public LiveData<List<TableRooms>> getAllRooms(int houseId) {
         return mRepository.getAllRooms(houseId);
     }

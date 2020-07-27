@@ -42,4 +42,5 @@
     <string name="use_system_generated_number">Use System Generated Number</string>
     <string name="meter_number">Meter Number</string>
     <string name="meter_no_already_exits">!Meter number already exits.</string>
+    <string name="no_tenant_added">No Tenant Added</string>
 </resources>
