@@ -135,11 +135,13 @@ public class Repository {
 
     /* Mnipulating room Table*/
 
-    // Inserting room
+    /*
+     * It inserts new room in the house aswell as updates the no of room in the house tables.
+     */
     public void insetNewRoom(TableRooms rooms) {
         new InsertNewRoom(mdao).execute(rooms);
     }
-
+    ;
     private static class InsertNewRoom extends AsyncTask<TableRooms, Void, Void> {
         private final HouseDao mAsyncRoomDao;
 
@@ -151,12 +153,15 @@ public class Repository {
         protected Void doInBackground(TableRooms... tableRooms) {
             tableRooms[0].setDate(new Date(System.currentTimeMillis()));
             mAsyncRoomDao.insetNewRoomRecord(tableRooms[0]);
+            mAsyncRoomDao.updateNoOfRoomsInTableHosue(+1,tableRooms[0].houseId);
             return null;
         }
     }
 
-
-    // Deleting Rooms
+    /*
+    * It deletes the room data from the room table as well as updates the no of rooms in the house table
+    * for the specific hosue.
+    */
     public void deleteRoom(TableRooms rooms) {
         new AsyncDleterRoom(mdao).execute(rooms);
     }
@@ -171,6 +176,7 @@ public class Repository {
         @Override
         protected Void doInBackground(TableRooms... tableRooms) {
             mAsyncDeleteRoomDao.deleteRoom(tableRooms[0]);
+            mAsyncDeleteRoomDao.updateNoOfRoomsInTableHosue(-1,tableRooms[0].houseId);
             return null;
         }
     }

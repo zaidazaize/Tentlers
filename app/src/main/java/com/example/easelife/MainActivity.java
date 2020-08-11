@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     ActivityMainBinding mainBinding;
     NavController navController;
-    AppBarConfiguration mAppBarConfiguration;
 
 
     @Override
@@ -38,9 +37,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         /*
         * Generating a shared preference object for saving the base id of the meter
+        * if the app is running for the first time then the base meterid will get saved
+        * or else will be ignored.
         */
         SharedPreferences sharedPref = this.getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                getString(R.string.first_launch_shared_prefferences), Context.MODE_PRIVATE);
+        if (sharedPref.getBoolean(getString(R.string.is_app_first_launch), true)) {
+            sharedPref.edit().putBoolean(getString(R.string.is_app_first_launch), false);
+            this.getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).edit()
+                    .putLong(getString(R.string.system_generated_meterid_last_entry), 100000)
+                    .apply();
+        }
 
         /*
         * Generating the binding class for the main Activiy .

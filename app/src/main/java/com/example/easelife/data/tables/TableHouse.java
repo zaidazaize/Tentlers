@@ -41,9 +41,6 @@ public class TableHouse {
     @Ignore
     public boolean ismetersystemgenerated;
 
-    @Ignore
-    public boolean firstEntry;
-
 
     public int getHouseId() {
         return houseId;

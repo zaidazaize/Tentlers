@@ -12,16 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.ProgressBar;
 
 import com.example.easelife.R;
 import com.example.easelife.data.HouseViewModal;
 import com.example.easelife.data.tables.Address;
-import com.example.easelife.data.tables.queryobjects.HouseNameMeterId;
 import com.example.easelife.data.tables.TableHouse;
+import com.example.easelife.data.tables.queryobjects.HouseNameMeterId;
 import com.example.easelife.databinding.FragmentHouseEntryBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.progressindicator.ProgressIndicator;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -34,47 +32,41 @@ import androidx.navigation.Navigation;
 public class HouseEntryFragment extends Fragment {
 
     /*
-    * A meter id constant used to generate the first meter id
-    * when application runs for the first time
-    */
-    public long meterBaseid = 10000;
-
-    /*
-    * This object holds all the data related to the house and
-    * is used create a new row in the TableHouse
-    */
+     * This object holds all the data related to the house and
+     * is used create a new row in the TableHouse
+     */
     private TableHouse tableHouse = new TableHouse();
 
     /*
      *The Object Holds the data of address enterd while creating the house
-    */
+     */
     private Address address = new Address();
 
     /*
-    * This object holds the vielmodal which in turn holds the communication b/w the
-    * UI and the data. It is also acts as the layer b/w the repository class and the UI classes
-    */
+     * This object holds the vielmodal which in turn holds the communication b/w the
+     * UI and the data. It is also acts as the layer b/w the repository class and the UI classes
+     */
     HouseViewModal houseViewModal;
 
     /*
-    * The object holds the refference to the system generated binding class for this
-    * the layout specific to this fragment. It helps binding data to the the Ui and also extracting data
-    * for the UI.
-    */
+     * The object holds the refference to the system generated binding class for this
+     * the layout specific to this fragment. It helps binding data to the the Ui and also extracting data
+     * for the UI.
+     */
     FragmentHouseEntryBinding houseEntryBinding;
 
     /*
-    * This object holds the list of houseNameMeterid which in turn holds the list for
-    * all the house name and the meterids entered by the user
-    * It is used for enshuring the uniqueness of the inserted house name and the
-    * meter ids.
-    **/
-    HouseNameMeterId[] houseNameList;
+     * This object holds the list of houseNameMeterid which in turn holds the list for
+     * all the house name and the meterids entered by the user
+     * It is used for enshuring the uniqueness of the inserted house name and the
+     * meter ids.
+     **/
+    HouseNameMeterId[] houseNameMeterIdList;
 
     /*
-    *  This callback is attached to the OnBackPressedDidpatcher which is responsibel for showing the
-    * exit dialogue when the user pressed the back button.
-    * */
+     *  This callback is attached to the OnBackPressedDidpatcher which is responsibel for showing the
+     * exit dialogue when the user pressed the back button.
+     * */
     OnBackPressedCallback callback;
 
 
@@ -88,9 +80,9 @@ public class HouseEntryFragment extends Fragment {
         houseViewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
 
         /*
-        * Getting the list of all the house Names and meterids from the database
-        * these are specific to the users and can be null.*/
-        houseNameList = houseViewModal.getHouseNameId();
+         * Getting the list of all the house Names and meterids from the database
+         * these are specific to the users and can be null.*/
+        houseNameMeterIdList = houseViewModal.getHouseNameMeterId();
 
         /*
          *Defining the callback and attaching it to the backpresseddispather
@@ -110,8 +102,8 @@ public class HouseEntryFragment extends Fragment {
         super.onDestroy();
 
         /*
-        * detaching the binding  for avoiding the memory leak.
-        **/
+         * detaching the binding  for avoiding the memory leak.
+         **/
         houseEntryBinding = null;
     }
 
@@ -119,8 +111,8 @@ public class HouseEntryFragment extends Fragment {
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
 
         /*
-        * The menu item inflated is the save button triggering the save dialogue.
-        */
+         * The menu item inflated is the save button triggering the save dialogue.
+         */
         ((MenuItem) menu.findItem(R.id.action_settings)).setVisible(false);
         super.onPrepareOptionsMenu(menu);
     }
@@ -130,15 +122,27 @@ public class HouseEntryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         /*
-        * Initialize the binding objecty and inflate the layout here.
-        * */
+         * Initialize the binding objecty and inflate the layout here.
+         */
         houseEntryBinding = FragmentHouseEntryBinding.inflate(inflater, container, false);
+
+        /*
+         * Set the house name bsed on the size of the list of house Names and ids got.
+         * Icrementing 1 in the layout of the list
+         */
+        if (houseNameMeterIdList != null) {
+            if (houseNameMeterIdList.length != 0) {
+                houseEntryBinding.textInputEditTextOutlinedHousename.setText(String.format("House%d", houseNameMeterIdList.length + 1));
+            } else {
+                houseEntryBinding.textInputEditTextOutlinedHousename.setText("House1");
+            }
+        }
 
 
         /*
-        * Assing the hangler to the cances sign .
-        * It is responsible for showing the exit dialogue.
-        * */
+         * Assing the hangler to the cances sign .
+         * It is responsible for showing the exit dialogue.
+         */
         houseEntryBinding.toolbarHouseEnter.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,11 +151,11 @@ public class HouseEntryFragment extends Fragment {
         });
 
         /*
-        * Assign the handler to the save sign .
-        * It is responsibel for showing the save option and
-        * also passing the value to the viewmodal so as the write in
-        * the database.
-        */
+         * Assign the handler to the save sign .
+         * It is responsibel for showing the save option and
+         * also passing the value to the viewmodal so as the write in
+         * the database.
+         */
         houseEntryBinding.toolbarHouseEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -168,8 +172,8 @@ public class HouseEntryFragment extends Fragment {
 //        mainActivity.
 
         /*
-        * Switch for handling the adress layout visibility.
-        */
+         * Switch for handling the address layout visibility.
+         */
         houseEntryBinding.switchAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -180,8 +184,8 @@ public class HouseEntryFragment extends Fragment {
         });
 
         /*
-        * Switch for handlign the edit text visibility for entering the no of rooms
-        */
+         * Switch for handlign the edit text visibility for entering the no of rooms
+         */
         houseEntryBinding.switchNoOfRooms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -192,8 +196,8 @@ public class HouseEntryFragment extends Fragment {
         });
 
         /*
-        * Switch for handlign the permission for assigning the meter.
-        */
+         * Switch for handlign the permission for assigning the meter.
+         */
         houseEntryBinding.switchElectricMeterPermission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -204,8 +208,8 @@ public class HouseEntryFragment extends Fragment {
         });
 
         /*
-        * Switch for either auto generate meter number or manually enter the meter number.
-        */
+         * Switch for either auto generate meter number or manually enter the meter number.
+         */
         houseEntryBinding.switchElectricMeterNumber.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -223,17 +227,17 @@ public class HouseEntryFragment extends Fragment {
     }
 
     /*
-    * This method checks for the validity for the data entered.
-    */
+     * This method checks for the validity for the data entered.
+     */
     private boolean checkForDataValidity() {
 
         return isHouseNamevalid() & isAdressValid() & isMeterNumberValid() & isHouseValid();
     }
 
     /*
-    * Checks the validity and nullability hosue name
-    * it is also responsible for showing the error messages.
-    */
+     * Checks the validity and nullability hosue name
+     * it is also responsible for showing the error messages.
+     */
     private boolean isHouseValid() {
         if (houseEntryBinding.switchNoOfRooms.isChecked()) {
             String houseRooms = houseEntryBinding.textInputEditTextHouseNoOfRooms.getText().toString();
@@ -285,10 +289,6 @@ public class HouseEntryFragment extends Fragment {
             }
             if (houseEntryBinding.switchElectricMeterNumberSystemDecide.isChecked()) {
                 tableHouse.ismetersystemgenerated = true;
-                if (houseNameList.length == 0) {
-                    tableHouse.firstEntry = true;
-                }
-
             }
         }
         return true;
@@ -368,34 +368,21 @@ public class HouseEntryFragment extends Fragment {
 
     // Save the House information
     private void saveHouseData() {
-        if (tableHouse.firstEntry) {
-            tableHouse.meterid=meterBaseid;
-            tableHouse.ismetersystemgenerated = false;
-
-            /*
-            * After running the app for the first time the assingned meter id is saved to the shared preferences
-            * for further use in the auto generating meter ids
-            */
-           requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-                   .edit().putLong(getString(R.string.system_generated_meterid_last_entry), meterBaseid)
-                   .apply();
-
-        }
 
         /*
-        * this will be generate new meter id based on the last id stored in the shared Prefferences.
-        */
+         * this will be generate new meter id based on the last id stored in the shared Prefferences.
+         */
         if (tableHouse.ismetersystemgenerated) {
-           SharedPreferences sharedPreferences =  requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-          tableHouse.setMeterid( sharedPreferences.getLong(getString(R.string.system_generated_meterid_last_entry),100000) + 1);
+            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            tableHouse.setMeterid(sharedPreferences.getLong(getString(R.string.system_generated_meterid_last_entry), 100000) + 1);
             sharedPreferences.edit().putLong(getString(R.string.system_generated_meterid_last_entry), tableHouse.meterid).apply();
         }
         houseViewModal.insertHouse(tableHouse);
     }
 
     private boolean isHouseunique(String gothousename) {
-        Log.d("house name list", String.valueOf(houseNameList.length));
-        for (HouseNameMeterId s : houseNameList) {
+        Log.d("house name list", String.valueOf(houseNameMeterIdList.length));
+        for (HouseNameMeterId s : houseNameMeterIdList) {
             if (gothousename.equals(s.housename)) {
                 Log.d("house name unique", s.housename);
                 return false;
@@ -405,7 +392,7 @@ public class HouseEntryFragment extends Fragment {
     }
 
     private boolean isHouseMeterunique(long gotmeterno) {
-        for (HouseNameMeterId s : houseNameList) {
+        for (HouseNameMeterId s : houseNameMeterIdList) {
             if (gotmeterno == s.meterId) {
                 return false;
             }

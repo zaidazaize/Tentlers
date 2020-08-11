@@ -1,19 +1,17 @@
 package com.example.easelife.ui.home;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.view.View;
 
 import com.example.easelife.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 
 public class SaveDialog {
+
 
     MaterialAlertDialogBuilder materialAlertDialogBuilder;
     Context context;

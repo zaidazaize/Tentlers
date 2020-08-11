@@ -9,9 +9,8 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_item_specific_house_addroom"
-        android:title="Add Room"
-        app:showAsAction="ifRoom" />
+        android:title="Add Room"/>
     <item android:title="Edit"
         android:id="@+id/menu_item_specific_house_edit"
-        app:showAsAction="withText|ifRoom"/>
+        app:showAsAction="withText"/>
 </menu>

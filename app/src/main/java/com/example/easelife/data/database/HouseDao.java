@@ -26,11 +26,17 @@ public interface HouseDao {
     @Update
     void updateHouseData(TableHouse tableHouse);
 
-    @Query("SELECT * FROM TableHouse")
+    @Query("SELECT * FROM TableHouse ORDER BY houseId")
     LiveData<List<TableHouse>> getAllTableHouse();
 
-    @Query("SELECT houseName,meterid FROM TABLEHOUSE ORDER BY date DESC")
+    @Query("SELECT houseName,meterid FROM TABLEHOUSE ORDER BY houseId DESC")
     HouseNameMeterId[] gethouseNameMeterId();
+
+    /*
+     * for updating no of rooms of the house
+     */
+    @Query("UPDATE tablehouse SET noOfRooms =noOfRooms + :increment  WHERE houseId = :houseid")
+    void updateNoOfRoomsInTableHosue(int increment, int houseid);
 
     // For rooms
     @Insert()

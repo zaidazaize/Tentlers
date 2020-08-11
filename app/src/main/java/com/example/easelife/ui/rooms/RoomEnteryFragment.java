@@ -21,10 +21,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -209,33 +209,35 @@ public class RoomEnteryFragment extends Fragment {
                 return true;
             }
 
-            String meterNumber = enteyBinding.textInputEditTextRoomElectricMeterNo.getText().toString();
-            if (meterNumber.length() != 0) {
-                long meterNumberLong = Long.parseLong(meterNumber);
-                /*
-                 *Check for uniqueness
-                 */
-                if (isMeterNoUnique(meterNumberLong)) {
+            if (enteyBinding.switchRoomElectricMeterNumberManual.isChecked()) {
+                String meterNumber = enteyBinding.textInputEditTextRoomElectricMeterNo.getText().toString();
+                if (meterNumber.length() != 0) {
+                    long meterNumberLong = Long.parseLong(meterNumber);
                     /*
-                     *set the error to null and add the meter no in the Tableroom object
+                     *Check for uniqueness
                      */
-                    tableRooms.meterId = meterNumberLong;
-                    enteyBinding.textInputLayoutRoomMeterNo.setError("");
-                    return true;
+                    if (isMeterNoUnique(meterNumberLong)) {
+                        /*
+                         *set the error to null and add the meter no in the Tableroom object
+                         */
+                        tableRooms.meterId = meterNumberLong;
+                        enteyBinding.textInputLayoutRoomMeterNo.setError("");
+                        return true;
+                    } else {
+                        /*
+                         *set the error that meter is not unique
+                         */
+                        enteyBinding.textInputLayoutRoomMeterNo.setError(getString(R.string.meter_no_already_exits));
+                        return false;
+                    }
+
                 } else {
                     /*
-                     *set the error that meter is not unique
+                     * show the error that meter no cannot be empty. error field recquired
                      */
-                    enteyBinding.textInputLayoutRoomMeterNo.setError(getString(R.string.meter_no_already_exits));
+                    enteyBinding.textInputLayoutRoomMeterNo.setError(getString(R.string.error_field_recquired));
                     return false;
                 }
-
-            } else {
-                /*
-                 * show the error that meter no cannot be empty. error field recquired
-                 */
-                enteyBinding.textInputLayoutRoomMeterNo.setError(getString(R.string.error_field_recquired));
-                return false;
             }
         }
 
@@ -380,7 +382,7 @@ public class RoomEnteryFragment extends Fragment {
     private void saveHouseData() {
         if (tableRooms.isSystemDeside) {
             SharedPreferences sh = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-            tableRooms.meterId = sh.getLong(getString(R.string.system_generated_meterid_last_entry), 0) + 1;
+            tableRooms.meterId = sh.getLong(getString(R.string.system_generated_meterid_last_entry), 100000) + 1;
             sh.edit().putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.meterId).apply();
         }
         viewModal.insertNewRoom(tableRooms);

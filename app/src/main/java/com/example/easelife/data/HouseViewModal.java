@@ -38,7 +38,7 @@ public class HouseViewModal extends AndroidViewModel {
         mRepository.insertNewHouse(tableHouse);
     }
 
-    public HouseNameMeterId[] getHouseNameId() {
+    public HouseNameMeterId[] getHouseNameMeterId() {
         return mRepository.mgetHousenameMeterId();
     }
 

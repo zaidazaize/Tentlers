@@ -113,14 +113,18 @@ public class SpecificHouseFragment extends Fragment {
         binding.specificHouseMeterNo.setText(meterno == 0 ? getString(R.string.not_provided) : String.valueOf(meterno));
 
         /*
-        * Set the listener on the "view All" button so as to view all the rooms of the hosue.
-        */
+         * Add the listener to "view All" rooms button which transefers the user to the room fragment
+         */
         binding.specificViewButtonRooms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Navigation.findNavController(v).navigate(R.id.nav_rooms);
             }
         });
+
+        /*
+        * On gettign the three rooms update its value in setting up those three list items of the rooms.
+        */
         viewModal.getThreeRooms(house.getHouseId()).observe(getViewLifecycleOwner(), new Observer<List<TableRooms>>() {
             @Override
             public void onChanged(List<TableRooms> tableRooms) {

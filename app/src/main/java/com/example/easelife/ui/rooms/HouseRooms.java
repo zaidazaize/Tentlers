@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
+import androidx.navigation.Navigation;
 
 
 /**
@@ -34,7 +35,7 @@ import androidx.lifecycle.ViewModelProvider;
 public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedListener {
 
     /*
-     * binding object for the homw layout
+     * binding object for the home layout
      */
     FragmentHouseRoomsListBinding bindingRoom;
 
@@ -55,9 +56,10 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
 
     /*
      * The spinner adapter is initialised. It updates the list of the houses in the spinner
-     * when ever a change in data base occurs.
+     * when ever a change in data base occurs.The array list which sets the list of house.
      */
     ArrayAdapter<String> arrayAdapter;
+    ArrayList<String> arrayList;
 
     /*
      *  The recycle view adapter the drawabel passed is used to
@@ -105,29 +107,35 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         bindingRoom = FragmentHouseRoomsListBinding.inflate(getLayoutInflater(), container, false);
 
         /*
+        * Set the spinner in the toolbar
+        * add the on item chose listener to the spinner
+        * the item listener is implemented in the
+        */
+        bindingRoom.spinnerToolbarRooms.setAdapter(arrayAdapter);
+        bindingRoom.spinnerToolbarRooms.setOnItemSelectedListener(this);
+
+        /*
          * get all the house names with the ids and update the spinner with the house names.
          */
         viewModal.getHouseNameIdforRooms().observe(getViewLifecycleOwner(), new Observer<List<HouseNameId>>() {
             @Override
             public void onChanged(List<HouseNameId> houseNameIds) {
                 nameIdList = houseNameIds;
-                arrayAdapter.addAll(getHouseNamearray());
+               getHouseNamearray();
+               setArrayListonSpinner();
             }
 
             /*
              * the meathod prepares the array of the house names
              */
-            private ArrayList<String> getHouseNamearray() {
-                if (nameIdList == null || nameIdList.size() == 0) {
-                    ArrayList<String> list = new ArrayList<String>();
-                    list.add("no item found");
-                    return list;
+            private void getHouseNamearray() {
+                if (!houseNamearray.isEmpty()) {
+                    houseNamearray.clear();
                 }
-
                 for (HouseNameId s : nameIdList) {
                     houseNamearray.add(s.houseName);
                 }
-                return houseNamearray;
+
             }
         });
 
@@ -135,22 +143,41 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
          * Set the adapter to the recycle view.
          */
         bindingRoom.recycleViewRooms.setAdapter(recyclerViewAdapter);
+
         return bindingRoom.getRoot();
     }
 
     /*
-     * Inflates the menu containing the spinner.
-     * Add the item select listener.
-     * Add the adapter to the spinner.
+    * Sets the array list on the array adapter of the spinner
+    * It also checks for the emptyness of the array list
+    */
+    private void setArrayListonSpinner() {
+        if (!houseNamearray.isEmpty()) {
+            arrayAdapter.clear();
+            arrayAdapter.addAll(houseNamearray);
+            arrayAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /*
+     * Inflates the menu.
      * Hide the setting options from the app bar.
      */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_fragment_rooms, menu);
         menu.findItem(R.id.action_settings).setVisible(false);
-        Spinner spinner = (Spinner) menu.findItem(R.id.menu_item_room_spinner).getActionView();
-        spinner.setAdapter(arrayAdapter);
-        spinner.setOnItemSelectedListener(this);
+    }
+
+    /*
+    * Handle the menu item selection for entering the new room and moving the user to that fragment
+    */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_room_addrooms) {
+            Navigation.findNavController(bindingRoom.getRoot()).navigate(R.id.action_nav_rooms_to_roomEnteyFragment);
+        }
+        return true;
     }
 
     /*
@@ -159,6 +186,10 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+        /*
+        * set the house id value in the view modal to be used for entering new room.
+        */
+        viewModal.setHouseIdForRoomEntry(nameIdList.get(position).houseId);
         viewModal.getAllRooms(nameIdList.get(position).houseId)
                 .observe(getViewLifecycleOwner(), new Observer<List<TableRooms>>() {
                     @Override

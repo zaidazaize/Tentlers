@@ -1,9 +1,333 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.tenants.TenantEntryFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.tenants.TenantEntryFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_outlined_tenant_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_left_right"
+                android:layout_marginTop="@dimen/margin_top_bottom"
+                android:layout_marginEnd="@dimen/margin_left_right"
+                app:counterEnabled="true"
+                app:counterMaxLength="30"
+                app:errorEnabled="true"
+                app:startIconDrawable="@drawable/ic_baseline_tenant_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_edit_text_outlined_tenant_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tenant_name"
+                    android:inputType="textCapWords" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-</androidx.core.widget.NestedScrollView>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_tenant_personal_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_left_right"
+                android:layout_marginTop="10sp"
+                android:layout_marginEnd="@dimen/margin_left_right"
+                android:layout_marginBottom="5sp"
+                android:checked="true"
+                android:drawableStart="@drawable/ic_tenant_profile_24px"
+                android:text="@string/add_tenant_personal_information" />
+
+            <LinearLayout
+                android:id="@+id/lenear_layout_add_tenant_tenant_personal_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5sp"
+                android:backgroundTint="@color/black_overlay"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="@string/personal_information"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_outlined_tenant_age"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_input_edit_text_outlined_tenant_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/age"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16sp"
+                        android:layout_marginTop="15sp"
+                        android:text="@string/gender"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="0sp"
+                        android:layout_marginStart="@dimen/margin_left_right"
+                        android:layout_marginEnd="@dimen/margin_left_right"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+
+                        <RadioButton
+                            android:id="@+id/radioButton_male"
+                            android:layout_width="0sp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/male" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_female"
+                            android:layout_width="0sp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/female" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_other"
+                            android:layout_width="0sp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/other" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_outlined_tenant_family_members"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    android:layout_marginBottom="5sp"
+                    app:helperText="@string/optional"
+                    app:helperTextEnabled="true"
+                    app:startIconDrawable="@drawable/ic_groups_24px">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_input_edit_text_outlined_tenant_family_members"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/total_family_members"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_outlined_tenant_phone_no"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_left_right"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="@dimen/margin_left_right"
+                android:layout_marginBottom="5sp"
+                app:helperText="@string/optional"
+                app:helperTextEnabled="true"
+                app:startIconDrawable="@drawable/ic_call_24px">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_edit_text_outlined_tenant_phone_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/phone_number"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="10sp"
+                android:layout_marginEnd="10sp"
+                android:text="Allot Rooms And Payment Scheme" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_tenant_allot_rooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_left_right"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="@dimen/margin_left_right"
+                android:checked="true"
+                android:drawableStart="@drawable/ic_emty_rooms_24"
+                android:text="Allot Rooms" />
+
+            <LinearLayout
+                android:id="@+id/linear_layout_allot_rooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_end_level2"
+                android:layout_marginEnd="@dimen/margin_start_end_level2"
+                android:layout_marginBottom="5sp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/textButton_select_house"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/choose_house"
+                    app:icon="@drawable/ic_baseline_house_24" />
+
+                <Button
+                    android:id="@+id/textButton_select_room"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3sp"
+                    android:text="@string/choose_room"
+                    app:icon="@drawable/ic_emty_rooms_24" />
+            </LinearLayout>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_tenant_payment_sheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_left_right"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="@dimen/margin_left_right"
+                android:layout_marginBottom="3sp"
+                android:checked="true"
+                android:drawableStart="@drawable/ic_bill_pay_24"
+                android:text="@string/payment_scheme" />
+
+            <LinearLayout
+                android:id="@+id/linear_layout_payment_scheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_outlined_monthly_fixed_charge"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_start_end_level2"
+                    android:layout_marginTop="3sp"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/text_input_edit_text_outlined_monthly_fixed_charge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/monthly_fixed_charge"
+                        android:inputType="numberDecimal" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switch_tenant_add_electricity_charges"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="21sp"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginEnd="21sp"
+                    android:checked="true"
+                    android:drawableStart="@drawable/ic_electric_meter_24px"
+                    android:text="Add Electricity Charges" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_add_electricity_charges"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_tenant_add_electricity_charges_auto_generate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25sp"
+                        android:layout_marginTop="3sp"
+                        android:layout_marginEnd="25sp"
+                        android:checked="true"
+                        android:drawableStart="@drawable/ic_system_decide_24px"
+                        android:text="@string/auto_generate_based_on_meter_readings_of_rooms" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_input_edit_text_outlined_initial_meter_reading"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="0sp"
+                        android:layout_marginStart="27sp"
+                        android:layout_marginTop="3sp"
+                        android:layout_marginEnd="27sp"
+                        android:layout_marginBottom="10sp"
+                        android:layout_weight="1"
+                        app:errorEnabled="true"
+                        app:helperText="Enter the current of the meter"
+                        app:startIconDrawable="@drawable/ic_meter_reading_24px">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/text_input_edit_text_initial_meter_reading"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_start_meter_reading"
+                            android:inputType="number" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_tenant_add_electricity_enter_manually"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25sp"
+                        android:layout_marginTop="3sp"
+                        android:layout_marginEnd="25sp"
+                        android:layout_marginBottom="15sp"
+                        android:checked="false"
+                        android:drawableStart="@drawable/ic_manually_enter_24px"
+                        android:text="Add Manually at Time of Billing" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

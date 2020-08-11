@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_left_right"
                     android:layout_marginEnd="@dimen/margin_left_right"
-                    android:checked="false"
+                    android:checked="true"
                     android:drawableStart="@drawable/ic_place_24px"
                     android:text="Add Address" />
 
@@ -68,8 +68,7 @@
                     android:id="@+id/linear_layout_address_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:orientation="vertical">
 
 
                     <LinearLayout
