@@ -8,12 +8,10 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class AllMetersData {
-    @PrimaryKey
-    public String meterId;
+    @PrimaryKey()
+    public long meterId;
 
     public Date date;
 
-    public int roomId;
-
-    public int houseId;
+    public long lastMeterReading;
 }

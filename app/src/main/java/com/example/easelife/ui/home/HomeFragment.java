@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
         // Inflate the menu items
         setHasOptionsMenu(true);
 
-        // Set the listitems
+        // Set the list items
 
         homeRecycleViewAdapter = new HomeRecycleViewAdapter(getContext(),this);
         homeBinding.recycleViewHome.setLayoutManager(
@@ -54,6 +54,10 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
 
             @Override
             public void onChanged(List<TableHouse> tableHouses) {
+                if (tableHouses.size() != 0) {/*update the last house id in the view modal so as to auto generate the house name*/
+                    houseViewModal.lastEnteredHouseId = (tableHouses.get(tableHouses.size()-1)).houseId;
+                }else{ houseViewModal.lastEnteredHouseId = 0;}
+
                 homeRecycleViewAdapter.setHouses(tableHouses);
             }
         });

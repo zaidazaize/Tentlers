@@ -65,7 +65,7 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
         } else return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mRoomno, mRoomName, mTenantName, isOccupied, mRoomCreateDate;
 
         public ViewHolder(View rootListitem) {

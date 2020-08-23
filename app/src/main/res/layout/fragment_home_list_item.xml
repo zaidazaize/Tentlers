@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="0sp"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="3sp"
+            android:layout_marginStart="3sp"
             android:layout_marginTop="5sp"
             android:layout_weight="1">
 
@@ -109,7 +109,7 @@
             tools:text="35" />
 
         <TextView
-            android:id="@+id/home_listitem_house_emptyrooms"
+            android:id="@+id/home_listitem_house_occupiedrooms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -8,4 +8,5 @@ public class RoomNoName {
 
     @ColumnInfo(name = "roomName")
     public String roomName;
+
 }

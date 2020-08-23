@@ -1,29 +1,24 @@
 package com.example.easelife.ui.tenants;
-
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.easelife.R;
-import com.example.easelife.ui.tenants.dummy.DummyContent.DummyItem;
+import com.example.easelife.data.tables.tenants.TenantNameHouseRoom;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyTenantsRecyclerViewAdapter extends RecyclerView.Adapter<MyTenantsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private List<TenantNameHouseRoom> mTenantList;
 
-    public MyTenantsRecyclerViewAdapter(List<DummyItem> items) {
-        mValues = items;
+    public MyTenantsRecyclerViewAdapter() {
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -32,33 +27,35 @@ public class MyTenantsRecyclerViewAdapter extends RecyclerView.Adapter<MyTenants
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        holder.chossenTenant = mTenantList.get(position);
+        holder.mTenantName.setText(holder.chossenTenant.tenantName);
+        holder.mHouseName.setText(holder.chossenTenant.houseName);
+        holder.mRoomName.setText(holder.chossenTenant.roomName);
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if (mTenantList != null) {
+            return mTenantList.size();
+        }
+        return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+    public void setTenantList(List<TenantNameHouseRoom> tenantList) {
+        mTenantList = tenantList;
+        notifyDataSetChanged();
+    }
 
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
-        }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public final TextView mTenantName, mHouseName, mRoomName;
+        public TenantNameHouseRoom chossenTenant;
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+        public ViewHolder(View itemview) {
+            super(itemview);
+            mTenantName = itemview.findViewById(R.id.tenant_listitem_tenant_name);
+            mHouseName = itemview.findViewById(R.id.tenant_listitem_tenant_house_name);
+            mRoomName = itemview.findViewById(R.id.tenant_listitem_tenant_room_name);
         }
     }
 }

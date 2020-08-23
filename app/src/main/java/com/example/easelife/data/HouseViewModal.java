@@ -4,11 +4,16 @@ import android.app.Application;
 import android.text.style.TtsSpan;
 
 import com.example.easelife.data.database.Repository;
+import com.example.easelife.data.tables.meters.AllMetersData;
+import com.example.easelife.data.tables.meters.GetLastMeterReading;
 import com.example.easelife.data.tables.queryobjects.HouseNameId;
 import com.example.easelife.data.tables.queryobjects.HouseNameMeterId;
 import com.example.easelife.data.tables.TableHouse;
 import com.example.easelife.data.tables.TableRooms;
 import com.example.easelife.data.tables.rooms.RoomNoName;
+import com.example.easelife.data.tables.rooms.RoomNoNameId;
+import com.example.easelife.data.tables.tenants.TenantNameHouseRoom;
+import com.example.easelife.data.tables.tenants.TenantsPersonal;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
@@ -23,6 +28,7 @@ public class HouseViewModal extends AndroidViewModel {
     private Repository mRepository;
     private LiveData<List<TableHouse>> mAllHouse;
     private int houseIdForRoomEntry;
+    public int lastEnteredHouseId;
 
     public HouseViewModal(@NonNull Application application) {
         super(application);
@@ -38,8 +44,13 @@ public class HouseViewModal extends AndroidViewModel {
         mRepository.insertNewHouse(tableHouse);
     }
 
-    public HouseNameMeterId[] getHouseNameMeterId() {
+    public void deleteHosue(TableHouse tableHouse) {
+        mRepository.deleteHouse(tableHouse);
+    }
+
+    public LiveData<HouseNameMeterId[]> getHouseNameMeterId() {
         return mRepository.mgetHousenameMeterId();
+
     }
 
 
@@ -53,7 +64,7 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
 
-    /* For displaying data in rooms fragment*/
+    /* For displaying data in rooms fragment */
     public LiveData<List<HouseNameId>> getHouseNameIdforRooms() {
         return mRepository.getHouseNameId();
     }
@@ -66,7 +77,6 @@ public class HouseViewModal extends AndroidViewModel {
     public LiveData<List<TableRooms>> getThreeRooms(int houseId) {
         return mRepository.getThreeRooms(houseId);
     }
-
     /*
     * This is used to display all the rooms in the Room fragment
     */
@@ -84,7 +94,9 @@ public class HouseViewModal extends AndroidViewModel {
         this.houseIdForRoomEntry = houseIdForRoomEntry;
     }
 
-    // Data for inserting new room in room ENtry Fragment
+     /*
+     *Data for inserting new room in room Entry Fragment
+     */
     public LiveData<List<Long>> getAllHousemeterids() {
         return mRepository.getallHosueMeterids();
     }
@@ -97,9 +109,8 @@ public class HouseViewModal extends AndroidViewModel {
         return mRepository.getRoomNoName(parentid);
     }
 
-
     /*
-     *Manuputating the Room Table for the room entry modification adition and deletion of room data.
+     * Manupulating the Room Table for the room entry modification adition and deletion of room data.
      */
     public void insertNewRoom(TableRooms rooms) {
 
@@ -112,5 +123,39 @@ public class HouseViewModal extends AndroidViewModel {
 
     public void updateTheRoom(TableRooms rooms) {
         mRepository.deleteRoom(rooms);
+    }
+
+    /*
+     * For manipulating the tenant table
+     */
+    public void insertNewtenant(TenantsPersonal tenantsPersonal) {
+        mRepository.insertNewTenant(tenantsPersonal);
+    }
+
+    public void deleteTenant(TenantsPersonal tenantsPersonal) {
+        mRepository.deleteTenant(tenantsPersonal);
+    }
+
+    public void updateTenant(TenantsPersonal tenantsPersonal) {
+        mRepository.updateTenant(tenantsPersonal);
+    }
+
+    /*Tenant entry table */
+    /* Getting the value of room name and id for entering in the room spinner*/
+    public LiveData<List<RoomNoNameId>> getRoomNoNameID(int houseId) {
+       return mRepository.getRoomNoNameId(houseId);
+    }
+
+    /* modifying all meters data table*/
+    public void insertNewMeterReading(AllMetersData metersData) {
+        mRepository.insertNewMeterReading(metersData);
+    }
+
+    public LiveData<Long[]> getLastEnteredMeterEntry(GetLastMeterReading lastMeterReading) {
+        return mRepository.getLastEnteredMeterReading(lastMeterReading);
+    }
+
+    public LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean withRoomAlloted) {
+        return mRepository.getAllTenantNHR(withRoomAlloted);
     }
 }

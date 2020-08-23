@@ -9,4 +9,7 @@ public class HouseNameId {
 
     @ColumnInfo(name = "houseName")
     public String houseName;
+
+    @ColumnInfo(name = "noOfRooms")
+    public int noOfRooms;
 }

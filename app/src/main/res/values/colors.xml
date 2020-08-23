@@ -9,4 +9,5 @@
     <color name="coclor_list_item_background">#F7F5FD</color>
     <color name="specific_house_adress_desc">#C1B0B0</color>
     <color name="specific_house_background_distintion">#ADEBF6F6</color>
+    <color name="background_address">#A4E0E0E0</color>
 </resources>

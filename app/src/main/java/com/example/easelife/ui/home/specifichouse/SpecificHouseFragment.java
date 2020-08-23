@@ -1,7 +1,9 @@
 package com.example.easelife.ui.home.specifichouse;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.easelife.R;
 import com.example.easelife.data.HouseViewModal;
@@ -20,6 +23,7 @@ import com.example.easelife.data.tables.TableHouse;
 import com.example.easelife.data.tables.TableRooms;
 import com.example.easelife.databinding.FragmentHouseRoomsListItemBinding;
 import com.example.easelife.databinding.FragmentSpecificHouseBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
@@ -41,7 +45,6 @@ public class SpecificHouseFragment extends Fragment {
     TableHouse house;
 
 
-
     public SpecificHouseFragment() {
         // Required empty public constructor
     }
@@ -52,43 +55,53 @@ public class SpecificHouseFragment extends Fragment {
         viewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
 
         /*
-         * Get the Hosue the user selected
+         * Get the House the user selected
          */
         house = viewModal.getmShowHouse();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentSpecificHouseBinding.inflate(getLayoutInflater(), container, false);
 
         /*
-        * Bind the toolbar and set the buttons
-        */
+         * Bind the toolbar and set the buttons
+         */
         binding.toolbarSpecificHosue.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_item_specific_house_addroom:
-                        viewModal.setHouseIdForRoomEntry(house.houseId);
-                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_global_nav_roomEnteyFragment);
-                        break;
+                        if (house.noOfRooms > 99) {
+                            Toast.makeText(getContext(), "Max room limit reached.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            viewModal.setHouseIdForRoomEntry(house.houseId);
+                            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_global_nav_roomEnteyFragment);
 
+                        }
+                        break;
+                    case R.id.menu_item_specific_house_addtenant:
+                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_global_tenantEntryFragment);
+                        break;
+                    case R.id.menu_item_specific_house_delete_room:
+                        getDeleteAlertDialog().show();
+                        break;
                 }
                 return true;
             }
         });
 
         /*
-        * Set the house Name and Date on the textView
-        */
+         * Set the house Name and Date on the textView
+         */
         binding.specificHouseName.setText(house.getHouseName());
         binding.specificHouseDate.setText(house.getDate().toString());
 
         /*
-        * Set the address on the address layout
-        */
+         * Set the address on the address layout
+         */
         if (house.address != null) {
             String houseno = String.valueOf(house.address.houseNo);
             binding.specificHouseTextviewHouseno.setText(houseno.length() == 0 ? getString(R.string.not_provided) : houseno);
@@ -107,8 +120,8 @@ public class SpecificHouseFragment extends Fragment {
         }
 
         /*
-        * Setting the metter id on the layout.
-        */
+         * Setting the metter id on the layout.
+         */
         long meterno = house.meterid;
         binding.specificHouseMeterNo.setText(meterno == 0 ? getString(R.string.not_provided) : String.valueOf(meterno));
 
@@ -123,8 +136,8 @@ public class SpecificHouseFragment extends Fragment {
         });
 
         /*
-        * On gettign the three rooms update its value in setting up those three list items of the rooms.
-        */
+         * On gettign the three rooms update its value in setting up those three list items of the rooms.
+         */
         viewModal.getThreeRooms(house.getHouseId()).observe(getViewLifecycleOwner(), new Observer<List<TableRooms>>() {
             @Override
             public void onChanged(List<TableRooms> tableRooms) {
@@ -145,11 +158,11 @@ public class SpecificHouseFragment extends Fragment {
         if (threeRooms != null) {
             int listsize = threeRooms.size();
             /*
-            * array of the binding objects for the three rooms
-            * The all three list items are from the room fragment list item they are invisible their visibility is on the basis of the room
-            * room data availabel . if mare than three of three rooms are present then all three are shown
-            * else as per the data .ie two for 2 rooms and 1 for one rooms.
-            */
+             * array of the binding objects for the three rooms
+             * The all three list items are from the room fragment list item they are invisible their visibility is on the basis of the room
+             * room data availabel . if mare than three of three rooms are present then all three are shown
+             * else as per the data .ie two for 2 rooms and 1 for one rooms.
+             */
             FragmentHouseRoomsListItemBinding[] list = new FragmentHouseRoomsListItemBinding[]{binding.roomItemFirst, binding.roomItemSecond, binding.roomItemThird};
             Log.d("size of the roomlist", String.valueOf(listsize));
             Log.d("size of the bindinglist", String.valueOf(list.length));
@@ -188,9 +201,9 @@ public class SpecificHouseFragment extends Fragment {
         if (isSet) {
             v.roomListItemContainer.setVisibility(View.VISIBLE);
             /*
-            * Get a refference to all the values in the room object use that in lambda expressions to
-            * handle the empty value.
-            */
+             * Get a refference to all the values in the room object use that in lambda expressions to
+             * handle the empty value.
+             */
             String roomName = rooms.roomName,
                     roomNo = String.valueOf(rooms.roomNo),
                     roomTenant = rooms.tenantsName;
@@ -203,13 +216,35 @@ public class SpecificHouseFragment extends Fragment {
 
             v.houseRoomListitemRoomsDate.setText(rooms.date.toString());
 
-            v.houseRoomListitemRoomTenant.setText(roomTenant == null?
-                     getString(R.string.no_tenant_added) : roomTenant);
+            v.houseRoomListitemRoomTenant.setText(roomTenant == null ?
+                    getString(R.string.no_tenant_added) : roomTenant);
 
             v.houseRoomListitemRoomsTenantStatus.setBackground(rooms.isOcupied ?
                     getResources().getDrawable(R.drawable.ic_baseline_yes_tenant_24)
                     : getResources().getDrawable(R.drawable.ic_baseline_no_tenants_24));
         } else v.roomListItemContainer.setVisibility(View.GONE);
+    }
+
+    /* Dialog for confirming the delete of the house.*/
+    public MaterialAlertDialogBuilder getDeleteAlertDialog() {
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireActivity());
+        dialogBuilder.setTitle("Delete House ?")
+                .setMessage("This will delete house and all its related data.")
+                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton("Delete House", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        viewModal.deleteHosue(house);
+                        dialog.dismiss();
+                        Navigation.findNavController(binding.getRoot()).navigateUp();
+                    }
+                });
+        return dialogBuilder;
     }
 
     @Override

@@ -58,20 +58,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10sp"
                     android:layout_marginTop="20sp"
-                    android:fontFamily="sans-serif-thin"
-                    android:text="Address"
-                    android:textStyle="italic"
-                    android:typeface="normal" />
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:text="Address" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10sp"
+                    android:background="@color/specific_house_background_distintion"
                     android:layout_marginTop="5sp"
                     android:layout_marginEnd="10sp"
-                    android:layout_marginBottom="10sp"
-                    android:background="@color/specific_house_background_distintion"
-                    android:elevation="3sp">
+                    android:layout_marginBottom="15sp">
 
 
                     <TextView
@@ -164,6 +161,7 @@
                         android:id="@+id/specific_house_textview_country"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10sp"
                         android:layout_alignBaseline="@id/specific_house_country"
                         android:layout_alignEnd="@+id/specific_house_textview_locality"
                         android:layout_alignParentStart="true"
@@ -193,8 +191,7 @@
                     android:layout_marginBottom="5sp"
                     android:fontFamily="sans-serif-thin"
                     android:text="Electricity/Energy Meter"
-                    android:textStyle="italic"
-                    android:typeface="normal" />
+                    style="@style/TextAppearance.MaterialComponents.Caption" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -202,8 +199,7 @@
                     android:layout_marginStart="10sp"
                     android:layout_marginEnd="10sp"
                     android:layout_marginBottom="20sp"
-                    android:background="@color/specific_house_background_distintion"
-                    android:elevation="3sp">
+                    android:background="@color/specific_house_background_distintion">
 
 
                     <TextView

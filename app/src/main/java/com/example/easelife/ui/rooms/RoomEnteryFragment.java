@@ -21,6 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -61,19 +62,21 @@ public class RoomEnteryFragment extends Fragment {
      * This variable stores the system generated room number and room name
      */
     private RoomNoName generatedroomNOName = new RoomNoName();
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        viewModal = null;
-    }
-
-
     @Override
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
+        /*
+        * Add back pressed callback for handling the back button using the back pressed dispatcher.
+        */
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getExitDialoge().show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
 
         /*
          *  Assing the house id from the view modal tho tableroom object.
@@ -103,6 +106,8 @@ public class RoomEnteryFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         enteyBinding = FragmentRoomEnteyBinding.inflate(getLayoutInflater(), container, false);
+        tableRooms.isSystemDeside = true;
+        tableRooms.isMeterEnabled = true;
 
         /*
          * Pre assign the room no and name in for the room
@@ -131,23 +136,21 @@ public class RoomEnteryFragment extends Fragment {
          * Handle the navigation icon and menu item click
          * both displaying the exit and save dialog resp. when clicked.
          */
-        enteyBinding.toolbarHouseEnter.setNavigationOnClickListener(new View.OnClickListener() {
+        enteyBinding.toolbarRoomEnter.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getExitDialoge().show();
             }
         });
 
-        enteyBinding.toolbarHouseEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        enteyBinding.toolbarRoomEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Log.d("the clicked item id", String.valueOf(item.getItemId()));
-                switch (item.getItemId()) {
-                    case R.id.meuitem_house_save:
-                        if (checkforDataValidity()) {
-                            getSaveDialoge().show();
-                        }
-                        break;
+                if (item.getItemId() == R.id.meuitem_house_save) {
+                    if (checkforDataValidity()) {
+                        getSaveDialoge().show();
+                    }
                 }
                 return true;
             }
@@ -379,11 +382,13 @@ public class RoomEnteryFragment extends Fragment {
      * Insert the room in the data base . This meathod also generates the
      * meter id if user has enabled the system generated meter id.
      */
-    private void saveHouseData() {
+    private void saveRoomData() {
         if (tableRooms.isSystemDeside) {
-            SharedPreferences sh = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-            tableRooms.meterId = sh.getLong(getString(R.string.system_generated_meterid_last_entry), 100000) + 1;
-            sh.edit().putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.meterId).apply();
+            SharedPreferences sh = requireActivity().getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
+            tableRooms.setMeterId(sh.getLong(getString(R.string.system_generated_meterid_last_entry), 100000) + 1);
+            sh.edit()
+                    .putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.meterId)
+                    .apply();
         }
         viewModal.insertNewRoom(tableRooms);
     }
@@ -395,7 +400,7 @@ public class RoomEnteryFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                saveHouseData();
+                                saveRoomData();
                                 dialog.dismiss();
                                 Navigation.findNavController(enteyBinding.getRoot()).navigateUp();
                             }

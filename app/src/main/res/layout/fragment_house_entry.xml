@@ -215,6 +215,8 @@
                     android:layout_height="0dp"
                     android:layout_marginStart="@dimen/margin_left_right"
                     android:layout_marginTop="@dimen/margin_left_right"
+                    app:errorEnabled="true"
+                    app:helperText="Auto creates the given number of rooms."
                     android:layout_marginEnd="@dimen/margin_left_right"
                     android:layout_marginBottom="@dimen/margin_left_right"
                     android:layout_weight="1"

@@ -18,16 +18,7 @@ public class TableRooms {
     public int roomId;
 
     @ColumnInfo
-    @NonNull
     public int houseId;
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     public int roomNo;
 
@@ -36,6 +27,10 @@ public class TableRooms {
 
     @ColumnInfo
     public boolean isOcupied;
+
+    public void setMeterId(long meterId) {
+        this.meterId = meterId;
+    }
 
     @ColumnInfo
     public long meterId;
@@ -49,6 +44,16 @@ public class TableRooms {
     @ColumnInfo(defaultValue = "NULL")
     public String tenantsName;
 
+    @ColumnInfo(defaultValue = "NULL")
+    public int tenantId;
+
     public Date date;
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

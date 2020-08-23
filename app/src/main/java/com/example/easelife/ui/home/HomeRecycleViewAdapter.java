@@ -22,7 +22,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
 
     /* Interface to handle list item click events. */
     public interface OnItemClickListener {
-        void onItemClicked(int position ,View v);
+        void onItemClicked(int position, View v);
     }
 
     public HomeRecycleViewAdapter(Context context, OnItemClickListener l) {
@@ -39,27 +39,20 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
 
     @Override
     public void onBindViewHolder(@NonNull HomeHelper holder, int position) {
-        if (getItemCount() != 0) {
 
-            TableHouse tableHouse = mAllHouse.get(position);
-            Log.d("tostring", tableHouse.toString());
-            holder.houseid.setText(String.valueOf(tableHouse.getHouseId()));
-            holder.houseName.setText(tableHouse.houseName);
 
-            if (tableHouse.address != null) {
-                holder.houseAddress.setText(tableHouse.address.toString());
-            } else holder.houseAddress.setText("Address: Not Available");
-            holder.houseDate.setText(tableHouse.getDate().toString());
-            holder.totalRooms.setText(String.valueOf(tableHouse.getNoOfRooms()));
-            holder.emptyRooms.setText(String.valueOf(tableHouse.emptyrooms));
-            holder.onBindListener();
-        } else {
-            holder.houseName.setText("House Name");
-            holder.houseid.setText("23");
-            holder.emptyRooms.setText("12");
-            holder.totalRooms.setText("20");
+        TableHouse tableHouse = mAllHouse.get(position);
+        holder.houseid.setText(String.valueOf(position + 1));
+        holder.houseName.setText(tableHouse.houseName);
 
-        }
+        if (tableHouse.address != null) {
+            holder.houseAddress.setText(tableHouse.address.toString());
+        } else holder.houseAddress.setText("Address: Not Available");
+        holder.houseDate.setText(tableHouse.getDate().toString());
+        holder.totalRooms.setText(String.valueOf(tableHouse.getNoOfRooms()));
+        holder.occupiedRooms.setText(String.valueOf(tableHouse.emptyrooms));
+        holder.onBindListener();
+
     }
 
     public void setHouses(List<TableHouse> allhouse) {
@@ -78,8 +71,8 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
         return mAllHouse.get(position);
     }
 
-    public class HomeHelper extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView houseid, houseName, houseAddress, totalRooms, emptyRooms, houseDate;
+    public static class HomeHelper extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final TextView houseid, houseName, houseAddress, totalRooms, occupiedRooms, houseDate;
         private final OnItemClickListener homeOnClicklistener;
 
         public HomeHelper(@NonNull View itemView, OnItemClickListener listener) {
@@ -88,7 +81,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
             houseAddress = itemView.findViewById(R.id.home_listitem_house_address);
             houseName = itemView.findViewById(R.id.home_listitem_house_name);
             totalRooms = itemView.findViewById(R.id.home_listitem_house_totalrooms);
-            emptyRooms = itemView.findViewById(R.id.home_listitem_house_emptyrooms);
+            occupiedRooms = itemView.findViewById(R.id.home_listitem_house_occupiedrooms);
             houseDate = itemView.findViewById(R.id.home_listitem_house_date);
             homeOnClicklistener = listener;
             itemView.setOnClickListener(this);
@@ -96,7 +89,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
 
         @Override
         public void onClick(View v) {
-            homeOnClicklistener.onItemClicked(getLayoutPosition(),v);
+            homeOnClicklistener.onItemClicked(getLayoutPosition(), v);
         }
 
         public void onBindListener() {
