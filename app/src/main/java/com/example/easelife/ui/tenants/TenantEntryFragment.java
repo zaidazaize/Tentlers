@@ -13,9 +13,8 @@ import android.widget.RadioGroup;
 
 import com.example.easelife.R;
 import com.example.easelife.data.HouseViewModal;
-import com.example.easelife.data.tables.meters.AllMetersData;
 import com.example.easelife.data.tables.meters.GetLastMeterReading;
-import com.example.easelife.data.tables.queryobjects.HouseNameId;
+import com.example.easelife.data.tables.queryobjects.HouseNameAndId;
 import com.example.easelife.data.tables.rooms.RoomNoNameId;
 import com.example.easelife.data.tables.tenants.TenantsPersonal;
 import com.example.easelife.databinding.FragmentTenantEntryBinding;
@@ -38,18 +37,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemClickListener, AdapterView.OnItemSelectedListener {
-    public TenantEntryFragment() {
 
+    public TenantEntryFragment() {
     }
 
-    /*
-     * Binding Class object nullified in the destroy method.
-     */
     FragmentTenantEntryBinding tenantEntryBinding;
-
-    /*
-     * object for viewmodal
-     */
     HouseViewModal viewModal;
 
     /*
@@ -64,11 +56,12 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
     the variables hold the all the house id and name  And the rooms id  room name of the selected house
      * These objects are used to fetch the ids of houses and rooms selected in the spinner.
      * */
-    List<HouseNameId> mhouseNameIdList;
+    List<HouseNameAndId> mhouseNameAndIdList;
     List<RoomNoNameId> mroomNoNameIds;
 
     /* This object holds the room chosen to be allotted to tenant*/
     RoomNoNameId choosenRoom;
+    private boolean isHosueAvailable;/* Tells whether is there any house available that has some rooms which can be allotted.*/
 
     /* Snack bar object*/
     Snackbar snackbar;
@@ -84,36 +77,17 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
          * Handle back button pressed event by using on back pressed dispatcher.
          * show the exit dialogue when  back button is pressed.
          */
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 getExitDialoge().show();
             }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+        });
 
         /* Initialise the array adapters*/
         roomAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
         houseAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
 
-        /* update the room and house spinner data*/
-        /* This adds a house list in which those houses are listed which have atleast one room */
-        viewModal.getHouseNameIdforRooms().observe(this, new Observer<List<HouseNameId>>() {
-            @Override
-            public void onChanged(List<HouseNameId> houseNameIdList) {
-                houseAdapter.addAll(getHouseNamearray(houseNameIdList));
-                houseAdapter.notifyDataSetChanged();
-                mhouseNameIdList = houseNameIdList;
-            }
-
-            private ArrayList<String> getHouseNamearray(List<HouseNameId> houseNameId) {
-                ArrayList<String> houseArray = new ArrayList<>();
-                for (HouseNameId s : houseNameId) {
-                    houseArray.add(s.houseName);
-                }
-                return houseArray;
-            }
-        });
 
     }
 
@@ -147,7 +121,6 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
          * switch for controlling the visibility of the personal info fields.
          * If the switch is closed the
          * the personal info in tenant object is set to false;
-         * the radio group is cleared
          * Initialise the switch to true after adding the listener. At the end of oncreateview;
          */
         tenantEntryBinding.switchTenantPersonalInfo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -192,6 +165,32 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                 setAutoGenerateSwitchAndInput();
             }
         });
+
+        /* update the room and house spinner data*/
+        /* This adds a house list in which those houses are listed which have atleast one room */
+        viewModal.getHouseNameIdTEspinner().observe(getViewLifecycleOwner(), new Observer<List<HouseNameAndId>>() {
+            @Override
+            public void onChanged(List<HouseNameAndId> houseNameAndIdList) {
+                //TODO: Show snack bar that there are no houses that can be added.
+                if (houseNameAndIdList.isEmpty()) {/*If there is no house available then allot meter will be set to false.*/
+                    isHosueAvailable = false;
+                    tenantEntryBinding.switchTenantAllotRooms.setChecked(false);
+                    tenantEntryBinding.switchTenantAllotRooms.setEnabled(false);
+                }else isHosueAvailable = true;
+                houseAdapter.addAll(getHouseNamearray(houseNameAndIdList));
+                houseAdapter.notifyDataSetChanged();
+                mhouseNameAndIdList = houseNameAndIdList;
+            }
+
+            private ArrayList<String> getHouseNamearray(List<HouseNameAndId> houseNameId) {
+                ArrayList<String> houseArray = new ArrayList<>();
+                for (HouseNameAndId s : houseNameId) {
+                    houseArray.add(s.houseName);
+                }
+                return houseArray;
+            }
+        });
+
         /* set the spinner values in the room and house spinner
          * Add the the item select listener to the house spinner which updates the room names*/
         tenantEntryBinding.spinnerAddHouse.setAdapter(houseAdapter);
@@ -261,8 +260,18 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                     tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.setVisibility(View.GONE);
                     return;
                 }
+                if (!isHosueAvailable) {/* Shows snack bar if there are no houses to which tenant can be added.*/
+                    tenantEntryBinding.switchTenantAddElectricityChargesAutoGenerate.setChecked(false);
+                    snackbar = Snackbar.make(tenantEntryBinding.coordinatorLayoutTenantEntry,
+                            R.string.no_house_available_to_add_tenant,
+                            BaseTransientBottomBar.LENGTH_SHORT);
+                    snackbar.show();
+                    return;
+                }
                 if (!tenantEntryBinding.switchTenantAllotRooms.isChecked()) {/* The room is not alloted Show snack bar to allot the room*/
-                    snackbar = Snackbar.make(tenantEntryBinding.coordinatorLayoutTenantEntry, R.string.room_not_alloted, BaseTransientBottomBar.LENGTH_SHORT);
+                    snackbar = Snackbar.make(tenantEntryBinding.coordinatorLayoutTenantEntry,
+                            R.string.room_not_alloted,
+                            BaseTransientBottomBar.LENGTH_SHORT);
                     snackbar.setAction("Allot Rooms", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -270,13 +279,16 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                         }
                     })
                             .show();
-                    setAutoGenerateSwitchAndInput();
+                    tenantEntryBinding.switchTenantAddElectricityChargesAutoGenerate.setChecked(false);
                     return;
                 }
                 if (choosenRoom != null && choosenRoom.isMeterEnabled) {/* Make the visibility of input field visible and set the manual switch to off*/
                     tenantEntryBinding.switchTenantAddElectricityEnterManually.setChecked(false);
                     tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.setVisibility(View.VISIBLE);
                 } else {/* Meter is not enabled in the room. snack bar to enable the room*/
+                    if (snackbar != null) {
+                        snackbar.dismiss();
+                    }
                     snackbar = Snackbar.make(tenantEntryBinding.coordinatorLayoutTenantEntry, R.string.meter_is_missing_add_meter_to_the_selected_room, BaseTransientBottomBar.LENGTH_SHORT);
                     snackbar.setAction("Add Meter", new View.OnClickListener() {
                         @Override
@@ -285,7 +297,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                         }
                     })
                             .show();
-                    setAutoGenerateSwitchAndInput();
+                    tenantEntryBinding.switchTenantAddElectricityChargesAutoGenerate.setChecked(false);
                 }
             }
         });
@@ -411,7 +423,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                 return false;
             } else {/* Initial reading cannot be less than previous reading*/
                 if (Integer.parseInt(initialMeterReading) < lastMeterReading) {
-                    tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.setError(getString(R.string.invalid_entry_meter_reading_is_less_than_previous_reading));
+                    tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.setError(getString(R.string.invalid_entry_meter_reading_is_less_than_last_entered_reading));
                     return false;
                 } else {
                     /* enter the meter informations in the tenant personal table this is used to
@@ -517,14 +529,14 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
     /* these listener methods updates the room spinner.*/
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        /* Querry the room info based on the house chossen and change the values in the spinner*/
-        tenantsPersonal.setHouseId(mhouseNameIdList.get(position).houseId);
-        viewModal.getRoomNoNameID(mhouseNameIdList.get(position).houseId).observe(getViewLifecycleOwner(), new Observer<List<RoomNoNameId>>() {
+        /* Quarry the room info based on the house chosen and change the values in the spinner*/
+        tenantsPersonal.setHouseId(mhouseNameAndIdList.get(position).houseId);
+        setAutoGenerateSwitchAndInput();
+        roomAdapter.clear();
+        viewModal.getRoomNoNameID(mhouseNameAndIdList.get(position).houseId, false)
+                .observe(getViewLifecycleOwner(), new Observer<List<RoomNoNameId>>() {
             @Override
             public void onChanged(List<RoomNoNameId> roomNoNameIds) {
-                if (mroomNoNameIds != null) {
-                    roomAdapter.clear();
-                }
                 if (!roomNoNameIds.isEmpty()) {/* if the got room list is empty no need to add the list to spinner.*/
                     roomAdapter.addAll(getHouseNamearray(roomNoNameIds));
                     roomAdapter.notifyDataSetChanged();

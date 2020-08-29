@@ -2,15 +2,20 @@ package com.example.easelife.data.database;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import com.example.easelife.data.tables.bills.BillItemForCard;
+import com.example.easelife.data.tables.bills.Bills;
 import com.example.easelife.data.tables.meters.AllMetersData;
 import com.example.easelife.data.tables.meters.GetLastMeterReading;
-import com.example.easelife.data.tables.queryobjects.HouseNameId;
+import com.example.easelife.data.tables.queryobjects.HouseNameAndId;
+import com.example.easelife.data.tables.queryobjects.HouseNameIdNoRooms;
 import com.example.easelife.data.tables.queryobjects.HouseNameMeterId;
 import com.example.easelife.data.tables.TableHouse;
 import com.example.easelife.data.tables.TableRooms;
 import com.example.easelife.data.tables.rooms.RoomNoName;
 import com.example.easelife.data.tables.rooms.RoomNoNameId;
+import com.example.easelife.data.tables.tenants.TenantBillEntry;
 import com.example.easelife.data.tables.tenants.TenantNameHouseRoom;
 import com.example.easelife.data.tables.tenants.TenantsPersonal;
 
@@ -106,14 +111,15 @@ public class Repository {
     public LiveData<HouseNameMeterId[]> mgetHousenameMeterId() {
         return mdao.gethouseNameMeterId();
     }
+
     /*
      * getting all houses name for diaplaying in "Rooms fragment" in the spinner
      */
-    public LiveData<List<HouseNameId>> getHouseNameId() {
+    public LiveData<List<HouseNameIdNoRooms>> getHouseNameId() {
         return mdao.getHouseNameId();
     }
 
-    /* Querries for room tables*/
+    /* Quarries for room tables*/
 
     /*
      * Getting the three rooms for displaying in the "Specific house Fragement
@@ -128,6 +134,7 @@ public class Repository {
     public LiveData<List<TableRooms>> getAllRooms(int mhouseId) {
         return mdao.getAllRoomsOfHouse(mhouseId);
     }
+
     /*
      * All the data recquired to check the uniquenes of the room
      * meterid and room name for a specific house
@@ -241,19 +248,14 @@ public class Repository {
             mAsyncCreateTenantDao.insertNewTenant(tenantsPersonals[0]);
 
             if (tenantsPersonals[0].isRoomAlloted) {
-                mAsyncCreateTenantDao.updateNoOfEmptyRoomsInTable(1,tenantsPersonals[0].houseId);
-                mAsyncCreateTenantDao.updatetheRoomOccupiedStatus(false,tenantsPersonals[0].roomId);
+                mAsyncCreateTenantDao.updateNoOfEmptyRoomsInTable(1, tenantsPersonals[0].houseId);
+                mAsyncCreateTenantDao.updatetheRoomOccupiedStatus(true, tenantsPersonals[0].roomId);
             }
             if (tenantsPersonals[0].meterPay) {
                 mAsyncCreateTenantDao.insertMeterReading(tenantsPersonals[0].getAllMetersData());
             }
             return null;
         }
-    }
-
-    /* entering the room name in the room name spinner.*/
-    public LiveData<List<RoomNoNameId>> getRoomNoNameId(int houseId) {
-        return mdao.getroomNoNameId(houseId);
     }
 
     /*
@@ -298,6 +300,21 @@ public class Repository {
         }
     }
 
+    /*For tenant Entry entry table.*/
+    /*
+     * For entering house names in the spinner which meets the adecuate set conditions.
+     */
+    public LiveData<List<HouseNameAndId>> getHouseNameIdTEspinner() {
+        return mdao.getHouseNameIdForTEspinner();
+    }
+
+    /*
+     * entering the room name in the room name spinner.
+     */
+    public LiveData<List<RoomNoNameId>> getRoomNoNameId(int houseId, boolean isOccupied) {
+        return mdao.getroomNoNameId(houseId, isOccupied);
+    }
+
     /* For modifying the allmetersdata table*/
     public void insertNewMeterReading(AllMetersData metersData) {
         new AsyncInsertNewMeterReading(mdao).execute(metersData);
@@ -320,7 +337,7 @@ public class Repository {
     /* Based on the data given repository will call the respective dao function to fetch the last meter reading.*/
     public LiveData<Long[]> getLastEnteredMeterReading(GetLastMeterReading meterDataObj) {
         if (meterDataObj.isMeterid) {
-            return mdao.getLastMeterEntry(meterDataObj.meterId,meterDataObj.noOfReadings);
+            return mdao.getLastMeterEntry(meterDataObj.meterId, meterDataObj.noOfReadings);
         } else if (meterDataObj.isRoomId) {
             return mdao.getLastMeterReadingForRoom(meterDataObj.roomId, meterDataObj.noOfReadings);
         } else if (meterDataObj.isHouseIdForhouseMeter) {
@@ -329,9 +346,54 @@ public class Repository {
         return null;
     }
 
-    /* Get all tenant list tenant fragment*/
+    /* Get all tenant list for tenant fragment*/
     public LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean withRoomAlloted) {
         return mdao.getAllTenantNHR(withRoomAlloted);
+    }
+
+    /* for bill entry fragment.*/
+    /* Get the selected tenant's object.*/
+    public LiveData<TenantBillEntry> getSelectedTenant(int tenantid) {
+        return mdao.getSelectedTenant(tenantid);
+    }
+
+    /* Creating new bills*/
+    /* updates the no of bills in the tenant table*/
+    /* Inserts meter reading if paid through meter reading.*/
+    public void insertNewBills(Bills bills) {
+        new AsyncInsertNewBill(mdao).execute(bills);
+    }
+
+    private static class AsyncInsertNewBill extends AsyncTask<Bills, Void, Void> {
+        private final HouseDao asyncinsertnewbilldao;
+
+        AsyncInsertNewBill(HouseDao dao) {
+            asyncinsertnewbilldao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Bills... bills) {
+            bills[0].setCreateDate();
+            asyncinsertnewbilldao.insertNewBill(bills[0]);
+            asyncinsertnewbilldao.updateTotalBillsinTenant(+1, bills[0].tenantId);
+            if (bills[0].ismeterPay) {
+                /* fetch meter id using room id and set in the meters table sub-object bills table.*/
+                bills[0].metersData.meterId = asyncinsertnewbilldao.getMeterId(bills[0].metersData.Roomid);
+                asyncinsertnewbilldao.insertMeterReading(bills[0].getMetersData());
+            }
+            return null;
+        }
+    }
+    //TODO:add meathod to update the paid bills;
+
+    //  returns whether alleast any tenant is active or not.
+    public LiveData<Boolean> getIsAntActiveTenant(boolean isactivetenant) {
+        return mdao.getIsAnyTenantActive(isactivetenant);
+    }
+
+    /* gets data for card in bills*/
+    public LiveData<List<BillItemForCard>> getAllBillForCard(boolean isBillPaid) {
+        return mdao.getAllBillForCard(isBillPaid);
     }
 
 }

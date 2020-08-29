@@ -1,7 +1,6 @@
 package com.example.easelife.ui.home;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +49,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
         } else holder.houseAddress.setText("Address: Not Available");
         holder.houseDate.setText(tableHouse.getDate().toString());
         holder.totalRooms.setText(String.valueOf(tableHouse.getNoOfRooms()));
-        holder.occupiedRooms.setText(String.valueOf(tableHouse.emptyrooms));
+        holder.occupiedRooms.setText(String.valueOf(tableHouse.occupiedRooms));
         holder.onBindListener();
 
     }

@@ -148,11 +148,12 @@ public class TenantsPersonal {
     }
 
     @Ignore
-    public void setAllMetersData(AllMetersData allMetersData) {
-        this.allMetersData = allMetersData;
-    }
-
-    @Ignore
     public AllMetersData allMetersData = new AllMetersData();
+
+    @ColumnInfo
+    public int totalBills;
+
+    @ColumnInfo
+    public int paidBills;
 
 }

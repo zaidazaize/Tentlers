@@ -1,12 +1,19 @@
 package com.example.easelife.data.database;
 
+import android.view.ViewDebug;
+import android.widget.LinearLayout;
+
+import com.example.easelife.data.tables.bills.BillItemForCard;
+import com.example.easelife.data.tables.bills.Bills;
 import com.example.easelife.data.tables.meters.AllMetersData;
-import com.example.easelife.data.tables.queryobjects.HouseNameId;
+import com.example.easelife.data.tables.queryobjects.HouseNameAndId;
+import com.example.easelife.data.tables.queryobjects.HouseNameIdNoRooms;
 import com.example.easelife.data.tables.queryobjects.HouseNameMeterId;
 import com.example.easelife.data.tables.TableHouse;
 import com.example.easelife.data.tables.TableRooms;
 import com.example.easelife.data.tables.rooms.RoomNoName;
 import com.example.easelife.data.tables.rooms.RoomNoNameId;
+import com.example.easelife.data.tables.tenants.TenantBillEntry;
 import com.example.easelife.data.tables.tenants.TenantNameHouseRoom;
 import com.example.easelife.data.tables.tenants.TenantsPersonal;
 
@@ -15,9 +22,9 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
-import androidx.room.Ignore;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 @Dao
@@ -75,8 +82,8 @@ public interface HouseDao {
     /*
      *For displaying house names in the spinner of rooms fragment.
      */
-    @Query("SELECT houseName , houseId, noOfRooms FROM TableHouse WHERE noOfRooms > 0")
-    LiveData<List<HouseNameId>> getHouseNameId();
+    @Query("SELECT houseName , houseId, noOfRooms FROM TableHouse")
+    LiveData<List<HouseNameIdNoRooms>> getHouseNameId();
 
     /*
      * For extracting all meter ids used for comparison while entering meterno for rooms.
@@ -108,46 +115,108 @@ public interface HouseDao {
 
     /*for tenant entry fragment*/
 
-    /*for showing the empty rooms in the spinner of tenant entry fragment*/
-    /* 0 is the integer value of boolean false.*/
-    @Query("SELECT roomId,roomName,isMeterEnabled, meterId FROM tablerooms WHERE houseId = :thehouseId AND isOcupied = 0")
-    LiveData<List<RoomNoNameId>> getroomNoNameId(int thehouseId);
+    /*
+     * For showing the eligible houses to which tenant can be added.
+     * such having atleast one room available that can be added.
+     */
+    @Query("SELECT houseName,houseId FROM tablehouse WHERE noOfRooms >0 AND occupiedRooms < noOfRooms")
+    LiveData<List<HouseNameAndId>> getHouseNameIdForTEspinner();
+
+    /*
+     * for showing the empty rooms in the spinner of tenant entry fragment
+     */
+    @Query("SELECT roomId,roomName,isMeterEnabled, meterId FROM tablerooms WHERE houseId = :thehouseId AND isOcupied = :gotOccupied")
+    LiveData<List<RoomNoNameId>> getroomNoNameId(int thehouseId, boolean gotOccupied);
+
+    /*
+     * update number of occupied rooms.
+     */
+    @Query("UPDATE tablehouse SET occupiedRooms = occupiedRooms + :updaterooms WHERE houseId = :gothouseId")
+    void updateNoOfEmptyRoomsInTable(int updaterooms, int gothouseId);
+
+    /*
+     * update the room status to occupied
+     */
+    @Query("UPDATE tablerooms SET isOcupied = :gotIsOccupied WHERE roomId = :gotRoomid")
+    void updatetheRoomOccupiedStatus(boolean gotIsOccupied, int gotRoomid);
+
+
+    /* Tenant fragment.
+     * Getting the all tenant information.
+     * This is can handle both the querries for currently active tenant and previously active tenant.
+     * in the houses
+     */
+    @Query("SELECT tenantspersonal.tenantId, tenantName, houseName,roomName " +
+            "FROM tenantspersonal,tablehouse , tablerooms " +
+            "WHERE tenantspersonal.houseId = tablehouse.houseId " +
+            "AND tenantspersonal.roomId = tablerooms.roomId " +
+            "AND tenantspersonal.isRoomAlloted = :gotisRoomAlloted")
+    LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean gotisRoomAlloted);
+
+    /* Bills Fragment*/
+
+    /* Bill entry fragment.
+     * returns the selected tenant's :  tenantsPersonal object */
+    @Query("SELECT roomId, meterPay, nonMeterPay, mFixedCharges FROM TenantsPersonal WHERE tenantId = :gotTenantId")
+    LiveData<TenantBillEntry> getSelectedTenant(int gotTenantId);
+
+    /* For creating new bill.*/
+    @Insert
+    void insertNewBill(Bills bills);
+
+    @Update
+    void updateBill(Bills bills);
+
+    /* Update the Total bills*/
+    @Query("UPDATE tenantspersonal SET totalBills = totalBills + :gotTotalbills WHERE tenantId = :gotTenantId")
+    void updateTotalBillsinTenant(int gotTotalbills, int gotTenantId);
+
+    /* Update the paid bills*/
+    @Query("UPDATE tenantspersonal SET paidBills = paidBills + :gotPaidBills WHERE tenantId = :gotTenantId")
+    void updatePaidBillsinTenant(int gotPaidBills, int gotTenantId);
+
+    /* Getting to know if atleast one tenant is active*/
+    @Query("SELECT isRoomAlloted FROM tenantspersonal WHERE isRoomAlloted = :getbolean LIMIT 1 ")
+    LiveData<Boolean> getIsAnyTenantActive(boolean getbolean);
+
+    /*Showing bills in recycle view of bills page*/
+    @Transaction
+    @Query("SELECT billId, bills.createDate, bills.monthlycharge, bills.additionalcharge, bills.totalAmt, " +
+            "bills.electricCost, bills.isBillPaid, tenantspersonal.tenantName, tablehouse.houseName, tablerooms.roomName " +
+            "FROM bills,tenantspersonal,tablehouse,tablerooms " +
+            "WHERE bills.tenantId =  tenantspersonal.tenantId  " +
+            "AND TenantsPersonal.roomId = tablerooms.roomId " +
+            "AND TenantsPersonal.houseId = tableHouse.houseId " +
+            "AND bills.isBillPaid = :gotBillPaid ORDER BY bills.createDate DESC" )
+    LiveData<List<BillItemForCard>> getAllBillForCard(boolean gotBillPaid);
 
     /* For entering meter reading.*/
     @Insert()
     void insertMeterReading(AllMetersData metersData);
 
-    @Query("SELECT lastMeterReading FROM allmetersdata WHERE meterId = :givenMeterId ORDER BY date LIMIT :noOfReadings ")
+    /* getting last meter reading based on the either house id , room id or meter id
+     * logic of handling which querry to call is handled in repository.*/
+    /* new date will be larger than the previous date.*/
+
+    @Query("SELECT lastMeterReading FROM allmetersdata WHERE meterId = :givenMeterId ORDER BY date DESC LIMIT :noOfReadings ")
     LiveData<Long[]> getLastMeterEntry(long givenMeterId, int noOfReadings);
 
     @Query("SELECT allmetersdata.lastMeterReading "
             + "FROM allmetersdata , tablehouse" +
             " WHERE  tablehouse.meterid = allmetersdata.meterId AND tablehouse.houseId = :gotHouseid " +
-            "ORDER BY allmetersdata.date LIMIT :noOfreadings ")
+            "ORDER BY allmetersdata.date DESC LIMIT :noOfreadings ")
     LiveData<Long[]> getLastMeterReadingForHouse(long gotHouseid, int noOfreadings);
 
     @Query("SELECT allmetersdata.lastMeterReading "
             + "FROM allmetersdata , tablerooms" +
             " WHERE tablerooms.meterId = allmetersdata.meterId" +
             " AND tablerooms.roomId = :gotRoomid " +
-            "ORDER BY allmetersdata.date LIMIT :noOfReadings ")
+            "ORDER BY allmetersdata.date DESC LIMIT :noOfReadings ")
     LiveData<Long[]> getLastMeterReadingForRoom(int gotRoomid, int noOfReadings);
 
-    /* update no of occupied rooms*/
-    @Query("UPDATE tablehouse SET emptyrooms = emptyrooms + :updaterooms WHERE houseId = :gothouseId")
-    void updateNoOfEmptyRoomsInTable(int updaterooms, int gothouseId);
-
-    /* update the room status to occupied */
-    @Query("UPDATE tablerooms SET isOcupied = :gotIsOccupied WHERE roomId = :gotRoomid")
-    void updatetheRoomOccupiedStatus(boolean gotIsOccupied, int gotRoomid);
-
-    /* Tenant fragment. Getting the all tenant information.*/
-    @Query("SELECT tenantName, houseName,roomName " +
-            "FROM tenantspersonal,tablehouse , tablerooms " +
-            "WHERE tenantspersonal.houseId = tablehouse.houseId " +
-            "AND tenantspersonal.roomId = tablerooms.roomId " +
-            "AND tenantspersonal.isRoomAlloted = :gotisRoomAlloted")
-    LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean gotisRoomAlloted);
+    /* get Meter no from room id*/
+    @Query("SELECT meterid FROM tablerooms WHERE roomId = :gotRoomId")
+    long getMeterId(int gotRoomId);
 
 }
 

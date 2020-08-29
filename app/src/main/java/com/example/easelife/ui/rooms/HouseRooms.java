@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.example.easelife.R;
 import com.example.easelife.data.HouseViewModal;
 import com.example.easelife.data.tables.TableRooms;
-import com.example.easelife.data.tables.queryobjects.HouseNameId;
+import com.example.easelife.data.tables.queryobjects.HouseNameIdNoRooms;
 import com.example.easelife.databinding.FragmentHouseRoomsListBinding;
 
 import java.util.ArrayList;
@@ -45,9 +45,9 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
     HouseViewModal viewModal;
 
     /*
-     * list of all house names along with their ids stored in the object of "HouseNameId"
+     * list of all house names along with their ids stored in the object of "HouseNameIdNoRooms"
      */
-    List<HouseNameId> nameIdNoofRoomsList;
+    List<HouseNameIdNoRooms> nameIdNoofRoomsList;
 
     /*
      * The spinner adapter is initialised. It updates the list of the houses in the spinner
@@ -109,11 +109,11 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         bindingRoom.spinnerToolbarRooms.setOnItemSelectedListener(this);
 
         /*
-         * get all the house names with the ids and update the spinner with the house names.
+         * get all the house names even if no room exists with the ids and update the spinner with the house names.
          */
-        viewModal.getHouseNameIdforRooms().observe(getViewLifecycleOwner(), new Observer<List<HouseNameId>>() {
+        viewModal.getHouseNameIdforRooms().observe(getViewLifecycleOwner(), new Observer<List<HouseNameIdNoRooms>>() {
             @Override
-            public void onChanged(List<HouseNameId> houseNameIds) {
+            public void onChanged(List<HouseNameIdNoRooms> houseNameIds) {
 
                 setArrayListonSpinner(getHouseNamearray(houseNameIds), houseNameIds);
             }
@@ -121,9 +121,9 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
             /*
              * the meathod prepares the array of the house names
              */
-            private ArrayList<String> getHouseNamearray(List<HouseNameId> houseNameId) {
+            private ArrayList<String> getHouseNamearray(List<HouseNameIdNoRooms> houseNameId) {
                 ArrayList<String> houseArray = new ArrayList<>();
-                for (HouseNameId s : houseNameId) {
+                for (HouseNameIdNoRooms s : houseNameId) {
                     houseArray.add(s.houseName);
                 }
                 return houseArray;
@@ -142,7 +142,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
      * Sets the array list on the array adapter of the spinner
      * It also checks for the emptyness of the array list
      */
-    private void setArrayListonSpinner(ArrayList<String> houseNamearray, List<HouseNameId> houseNameIds) {
+    private void setArrayListonSpinner(ArrayList<String> houseNamearray, List<HouseNameIdNoRooms> houseNameIds) {
         nameIdNoofRoomsList = houseNameIds;
         if (!houseNamearray.isEmpty()) {
             noOfRoomsForChosenHouse = nameIdNoofRoomsList.get(0).noOfRooms;

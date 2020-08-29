@@ -1,6 +1,7 @@
 package com.example.easelife.ui.home.specifichouse;
 
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;

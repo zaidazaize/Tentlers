@@ -26,7 +26,7 @@ public class TableHouse {
     public int noOfRooms;
 
     @ColumnInfo(defaultValue = "0")
-    public int emptyrooms;
+    public int occupiedRooms;
 
     @ColumnInfo(defaultValue = "false")
     public boolean includeMeter;
@@ -64,8 +64,8 @@ public class TableHouse {
         return noOfRooms;
     }
 
-    public int getEmptyrooms() {
-        return emptyrooms;
+    public int getOccupiedRooms() {
+        return occupiedRooms;
     }
 
     public long getMeterid() {
@@ -88,8 +88,15 @@ public class TableHouse {
         this.noOfRooms = noOfRooms;
     }
 
-    public void setEmptyrooms(int emptyrooms) {
-        this.emptyrooms = emptyrooms;
+    public int setNoOfRoomsFromString(String noOfRoomsFromString) {
+        if (noOfRoomsFromString.length() != 0) {
+            this.noOfRooms = Integer.parseInt(noOfRoomsFromString);
+        }
+        return this.noOfRooms;
+    }
+
+    public void setOccupiedRooms(int occupiedRooms) {
+        this.occupiedRooms = occupiedRooms;
     }
 
     public void setMeterid(long meterid) {
@@ -115,7 +122,7 @@ public class TableHouse {
                 ", houseName='" + houseName  +
                 ", date='" + date  +
                 ", noOfRooms=" + noOfRooms +
-                ", emptyrooms=" + emptyrooms +
+                ", emptyrooms=" + occupiedRooms +
                 ", includeMeter=" + includeMeter +
                 ", meterid=" + meterid +
                 ", address=" + getAddress() +

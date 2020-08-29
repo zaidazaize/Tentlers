@@ -1,6 +1,8 @@
 package com.example.easelife.data.database;
+
 import android.content.Context;
 
+import com.example.easelife.data.tables.bills.Bills;
 import com.example.easelife.data.tables.dataconvertes.Converters;
 import com.example.easelife.data.tables.TableHouse;
 import com.example.easelife.data.tables.TableRooms;
@@ -12,11 +14,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {TableHouse.class , TableRooms.class, TenantsPersonal.class, AllMetersData.class},version = 11 ,exportSchema = false)
+@Database(entities = {TableHouse.class, TableRooms.class, TenantsPersonal.class, AllMetersData.class, Bills.class},
+        version = 14, exportSchema = false)
+
 @TypeConverters({Converters.class})
-public abstract class DatabaseHouse extends RoomDatabase{
+public abstract class DatabaseHouse extends RoomDatabase {
 
     public abstract HouseDao mHouseDao();
+
     private static volatile DatabaseHouse INSTANCE;
 
     public static DatabaseHouse getDatabase(final Context context) {
@@ -32,7 +37,7 @@ public abstract class DatabaseHouse extends RoomDatabase{
 
                     // Name of the database;
 
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), DatabaseHouse.class,"housedatabase")
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), DatabaseHouse.class, "housedatabase")
                             .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();

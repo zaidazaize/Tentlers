@@ -70,12 +70,14 @@
     <string name="additional_charges">Additional Charges</string>
     <string name="enter_meter_reading">Enter Meter Reading</string>
     <string name="edit_house">Edit House</string>
-    <string name="age_cannot_be_negative">Error : Age cannot be negative.</string>
-    <string name="last_entered_house_id">laseEnteredHouseId</string>
-    <string name="last_entered_Room_id">lastEnteredRoomId</string>
-    <string name="last_Entered_Tenant_id">laseEnteredTenantId</string>
     <string name="delete_house">Delete House</string>
     <string name="room_not_alloted">Room not alloted</string>
     <string name="meter_is_missing_add_meter_to_the_selected_room">Meter is missing. Add Meter to the selected rooms</string>
-    <string name="invalid_entry_meter_reading_is_less_than_previous_reading">Invalid Entry! Meter Reading is less than the previous reading.</string>
+    <string name="invalid_entry_meter_reading_is_less_than_last_entered_reading">Invalid Entry! Meter Reading is less than the last meter reading.</string>
+    <string name="no_house_available_to_add_tenant">No House available To Add Tenant.</string>
+    <string name="monthly_charges">Monthly Charges</string>
+    <string name="paid">Paid</string>
+    <string name="pending">Pending</string>
+    <string name="no_active_tenant_found">No Active Tenant Found</string>
+    <string name="no_of_rooms_must_be_less_than_100">! Number of rooms must be less than 100</string>
 </resources>

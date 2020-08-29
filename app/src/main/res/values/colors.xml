@@ -10,4 +10,5 @@
     <color name="specific_house_adress_desc">#C1B0B0</color>
     <color name="specific_house_background_distintion">#ADEBF6F6</color>
     <color name="background_address">#A4E0E0E0</color>
+    <color name="color_background_house_list_item">#EDF4F6</color>
 </resources>

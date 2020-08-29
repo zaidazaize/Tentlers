@@ -30,7 +30,15 @@
         android:id="@+id/nav_bills"
         android:name="com.example.easelife.ui.bills.BillsFragment"
         android:label="Bills List"
-        tools:layout="@layout/fragment_bills_list" />
+        tools:layout="@layout/fragment_bills_list" >
+        <action
+            android:id="@+id/action_nav_bills_to_billEntryFragment"
+            app:destination="@id/nav_billEntryFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_tenants"
@@ -99,5 +107,10 @@
         app:exitAnim="@android:anim/slide_out_right"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+        android:id="@+id/nav_billEntryFragment"
+        android:name="com.example.easelife.ui.bills.BillEntryFragment"
+        android:label="BillEntryFragment"
+        tools:layout="@layout/fragment_bill_entry"/>
 
 </navigation>

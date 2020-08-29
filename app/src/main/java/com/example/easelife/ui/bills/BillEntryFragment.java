@@ -1,66 +1,418 @@
 package com.example.easelife.ui.bills;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.example.easelife.R;
+import com.example.easelife.data.HouseViewModal;
+import com.example.easelife.data.tables.bills.Bills;
+import com.example.easelife.data.tables.meters.GetLastMeterReading;
+import com.example.easelife.data.tables.tenants.TenantBillEntry;
+import com.example.easelife.data.tables.tenants.TenantNameHouseRoom;
+import com.example.easelife.databinding.FragmentBillEntryBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BillEntryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class BillEntryFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class BillEntryFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+    HouseViewModal viewModal;
+    FragmentBillEntryBinding billEntryBinding;
+    ArrayAdapter<String> arrayAdapter;
+    List<TenantNameHouseRoom> tenantNameHouseRoomsList;
+    TenantBillEntry choosenTenant;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    Bills createdbill = new Bills();
 
     public BillEntryFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BillEntryFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BillEntryFragment newInstance(String param1, String param2) {
-        BillEntryFragment fragment = new BillEntryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        viewModal = new ViewModelProvider(this).get(HouseViewModal.class);
+        arrayAdapter = new ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getCancesDialog().show();
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bill_entry, container, false);
+        billEntryBinding = FragmentBillEntryBinding.inflate(getLayoutInflater(), container, false);
+
+        billEntryBinding.toolbarBillEnter.setNavigationOnClickListener(this);
+        billEntryBinding.toolbarBillEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (isBillDataValid()) {//Show save data only when Data is valid.
+                    getSaveDialog().show();
+                } else {
+                    Snackbar.make(billEntryBinding.billEntryCoordinatorLayout,
+                            "Bill data entered is invalid", BaseTransientBottomBar.LENGTH_SHORT)
+                            .show();
+                }
+                return true;
+            }
+        });
+
+        billEntryBinding.spinnerBillsTenantsName.setAdapter(arrayAdapter);
+        billEntryBinding.spinnerBillsTenantsName.setOnItemSelectedListener(this);
+        /*
+         * Get all the tenants and add all the tenants name to spinner.
+         * In on click method handle when a item is clicked.
+         */
+        viewModal.getAllTenantNHR(true).observe(getViewLifecycleOwner(),
+                new Observer<List<TenantNameHouseRoom>>() {
+                    @Override
+                    public void onChanged(List<TenantNameHouseRoom> tenantNameHouseRooms) {
+                        //TODO: show dialog if no tenant is added.
+                        tenantNameHouseRoomsList = tenantNameHouseRooms;
+                        arrayAdapter.addAll(getHouseNamearray(tenantNameHouseRooms));
+                    }
+
+                    private ArrayList<String> getHouseNamearray(List<TenantNameHouseRoom> tenantNameHouseRooms) {
+                        ArrayList<String> tenantNameArray = new ArrayList<>();
+                        for (TenantNameHouseRoom s : tenantNameHouseRooms) {
+                            tenantNameArray.add(s.tenantName);
+                        }
+                        return tenantNameArray;
+                    }
+                });
+        /* updates the total amount in the total amt view.*/
+        /* by fixed charge input field.*/
+        billEntryBinding.textInputEditTextOutlinedMonthlyFixedCharge.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() != 0) {
+                    createdbill.monthlycharge = Float.parseFloat(s.toString());
+                    setTotalAmount();
+                }
+            }
+        });
+
+        /* By aditional charge field*/
+        billEntryBinding.textInputEditTextOutlinedAditionalCharge.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() != 0) {
+                    createdbill.additionalcharge = Float.parseFloat(s.toString());
+                    setTotalAmount();
+                }
+            }
+        });
+
+        /* by Manual electricity charge entry*/
+        billEntryBinding.textInputEditTextOutlinedMonthlyElectricCharge.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() != 0) {
+                    createdbill.manuallyEnteredElectricCost = Float.parseFloat(s.toString());
+                    setTotalAmount();
+                }
+            }
+        });
+
+        /* by per unit cost*/
+        billEntryBinding.textInputEditTextOutlinedMonthlyElectricPerUnitCharge.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() != 0) {
+                    createdbill.perUnitcoat = Float.parseFloat(s.toString());
+                    setTotalAmount();
+                }
+            }
+        });
+
+        /* By meter reading*/
+        // checks whether the initial reading is correct or not then updates the total amount.
+        billEntryBinding.billEntryTextInputEditTextFinalMeterReading.addTextChangedListener(new TextWatcher() {
+
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() == 0) {
+                    return;
+                }
+                if (Long.parseLong(s.toString()) < createdbill.initialMeterR) {
+                    billEntryBinding.billEntryTextInputEditTextOutlinedFinalMeterReading
+                            .setError(getString(R.string.invalid_entry_meter_reading_is_less_than_last_entered_reading));
+                } else {
+                    billEntryBinding.billEntryTextInputEditTextOutlinedFinalMeterReading.setError("");
+                    createdbill.endMeterR = Long.parseLong(s.toString());
+                    setTotalAmount();
+                }
+
+            }
+        });
+
+        return billEntryBinding.getRoot();
     }
+
+    /* responce to the tenant name selected.
+     * makes visible the meter or bills data.
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        final TenantNameHouseRoom tenantNHR = tenantNameHouseRoomsList.get(position);
+        billEntryBinding.billEntryHouseName.setText(tenantNHR.houseName);
+        billEntryBinding.billEntryRoomName.setText(tenantNHR.roomName);
+        createdbill.tenantId = tenantNHR.tenantId;
+        viewModal.getSelectedTenant(tenantNHR.tenantId).observe(getViewLifecycleOwner(),
+                new Observer<TenantBillEntry>() {
+                    @Override
+                    public void onChanged(TenantBillEntry tenantBillEntry) {
+                        choosenTenant = tenantBillEntry;
+                        //TODO: Optional: change the helper string if the charge is fixed charge.
+                        /*Set the fixed charge.*/
+                        billEntryBinding.textInputEditTextOutlinedMonthlyFixedCharge.setText(String.valueOf(tenantBillEntry.mFixedCharges));
+                        createdbill.monthlycharge = tenantBillEntry.mFixedCharges;
+
+                        /*Electricity charge entry, heading visibility*/
+                        billEntryBinding.billEntryTextviewElectricityCharges.setVisibility(/* if any one of the either auto or manual electricity is enabledn then the heading of the add electricity charge will be visible.*/
+                                tenantBillEntry.meterPay | tenantBillEntry.nonMeterPay ? View.VISIBLE : View.GONE);
+
+                        /*set manual electric charge heading visibility.*/
+                        billEntryBinding.billEntryManuallyEnterElectricCost.setVisibility(tenantBillEntry.nonMeterPay ? View.VISIBLE : View.GONE);
+
+                        /*set manual charge entry edit text visibility. */
+                        billEntryBinding.textInputLayoutOutlinedMonthlyElectricCharge.setVisibility(
+                                tenantBillEntry.nonMeterPay ? View.VISIBLE : View.GONE);
+
+                        /*Set auto generate charge heading visibility*/
+                        billEntryBinding.billEntryAutoGenerateElectricCost.setVisibility(tenantBillEntry.meterPay ? View.VISIBLE : View.GONE);
+
+                        /*Set auto generate charge edittext visibility */
+                        billEntryBinding.textInputLayoutOutlinedMonthlyElectricPerUnitCharge.setVisibility(
+                                tenantBillEntry.meterPay ? View.VISIBLE : View.GONE);
+
+                        /**/
+                        billEntryBinding.billEntryTextInputEditTextOutlinedFinalMeterReading.setVisibility(
+                                tenantBillEntry.meterPay ? View.VISIBLE : View.GONE);
+
+                        billEntryBinding.billEntryLiniarlayoutLastmeterReading.setVisibility(
+                                tenantBillEntry.meterPay ? View.VISIBLE : View.GONE);
+
+                        if (tenantBillEntry.meterPay) {
+                            viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(tenantBillEntry.roomId))
+                                    .observe(getViewLifecycleOwner(), new Observer<Long[]>() {
+                                        @Override
+                                        public void onChanged(Long[] longs) {
+                                            billEntryBinding.billEntryStartMeterReading.setText(String.valueOf(longs[0]));
+                                            createdbill.initialMeterR = longs[0];
+                                        }
+                                    });
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private void setTotalAmount() {//set nothing if total is less than 0;
+        billEntryBinding.billEntryTotalAmt.setText(createdbill.getTotalAmt()<0 ?"" : String.valueOf(createdbill.getTotalAmt()));
+    }
+
+    private boolean isBillDataValid() {
+        String monthlyCharge = Objects.requireNonNull(billEntryBinding.textInputEditTextOutlinedMonthlyFixedCharge.getText()).toString();
+        String aditionalcharge = Objects.requireNonNull(billEntryBinding.textInputEditTextOutlinedAditionalCharge.getText()).toString();
+        if (monthlyCharge.length() != 0) {
+            createdbill.monthlycharge = Float.parseFloat(monthlyCharge);
+        }
+        if (aditionalcharge.length() != 0) {
+            createdbill.additionalcharge = Float.parseFloat(aditionalcharge);
+        } else createdbill.additionalcharge = 0;
+
+        if (choosenTenant != null) {
+            if (choosenTenant.meterPay) {
+                createdbill.metersData.Roomid = choosenTenant.roomId;
+                return isMeterPayValid() && isperUnitvalid();
+            }
+            if (choosenTenant.nonMeterPay) {
+                return isNonMeterPayValid();
+            }
+
+        }
+        return true;
+    }
+
+    private boolean isMeterPayValid() {
+        //TODO: add switch to either add metered bill or unmetered bill optionally.
+        String value = Objects.requireNonNull(billEntryBinding.billEntryTextInputEditTextFinalMeterReading.getText()).toString();
+        if (value.length() != 0) {
+            /* Set the meter pay of bill here.*/
+            createdbill.setEndMeterR(Long.parseLong(value));
+            if (createdbill.endMeterR < createdbill.initialMeterR) {
+                billEntryBinding.billEntryTextInputEditTextOutlinedFinalMeterReading
+                        .setError(getText(R.string.invalid_entry_meter_reading_is_less_than_last_entered_reading));
+                return false;
+            } else {
+                billEntryBinding.billEntryTextInputEditTextOutlinedFinalMeterReading.setError("");
+                return true;
+            }
+        } else return true;
+
+    }
+
+    private boolean isNonMeterPayValid() {
+        if (choosenTenant.nonMeterPay) {
+            String value2 = Objects.requireNonNull(billEntryBinding.textInputEditTextOutlinedMonthlyElectricCharge.getText()).toString();
+            if (value2.length() != 0) {
+                createdbill.setManuallyEnteredElectricCost(Float.parseFloat(value2));
+            }
+        }
+        return true;
+    }
+
+    private boolean isperUnitvalid() {
+        String perunitcost = Objects.requireNonNull(billEntryBinding.textInputEditTextOutlinedMonthlyElectricPerUnitCharge.getText()).toString();
+        if (perunitcost.length() == 0) {
+            billEntryBinding.textInputEditTextOutlinedMonthlyElectricPerUnitCharge.requestFocus();
+            billEntryBinding.textInputLayoutOutlinedMonthlyElectricPerUnitCharge.setError(getText(R.string.error_field_recquired));
+            return false;
+        } else {
+            createdbill.perUnitcoat = Float.parseFloat(perunitcost);
+            billEntryBinding.textInputLayoutOutlinedMonthlyElectricPerUnitCharge.setError("");
+            return true;
+        }
+    }
+
+    private void generateBill() {
+        createdbill.setCreateDate();
+        if (createdbill.ismeterPay) {
+            createdbill.electricCost = createdbill.getMeteredElectricityCost();
+            Log.d("billentry", String.valueOf(createdbill.electricCost));
+            Log.d("billEntry", String.valueOf(createdbill.metersData.lastMeterReading));
+        }
+        createdbill.setTotalAmt();
+        viewModal.insertNewBill(createdbill);
+    }
+
+    @Override
+    public void onClick(View v) {
+        getCancesDialog().show();
+    }
+
+    @NonNull
+    private MaterialAlertDialogBuilder getSaveDialog() {
+        return new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Generate Bill ?")
+                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        generateBill();
+                        dialog.dismiss();
+                        Navigation.findNavController(billEntryBinding.getRoot()).navigateUp();
+                    }
+                })
+                .setNeutralButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+    }
+
+    @NonNull
+    private MaterialAlertDialogBuilder getCancesDialog() {
+
+        return new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Cancel Bill ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        Navigation.findNavController(billEntryBinding.getRoot()).navigateUp();
+                    }
+                })
+                .setNeutralButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+    }
+
 }

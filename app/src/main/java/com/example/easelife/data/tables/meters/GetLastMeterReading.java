@@ -10,9 +10,10 @@ public class GetLastMeterReading {
     public int roomId;
     public long meterId;
 
-    public void setHouseIdForhouseMeter(int houseIdForhouseMeter) {
+    public GetLastMeterReading setHouseIdForhouseMeter(int houseIdForhouseMeter) {
         this.houseId = houseIdForhouseMeter;
         isHouseIdForhouseMeter = true;
+        return this;
     }
 
     public GetLastMeterReading setRoomId(int roomId) {
@@ -21,9 +22,10 @@ public class GetLastMeterReading {
         return this;
     }
 
-    public void setMeterId(long meterId) {
+    public GetLastMeterReading setMeterId(long meterId) {
         this.meterId = meterId;
         isMeterid = true;
+        return this;
     }
 
 }

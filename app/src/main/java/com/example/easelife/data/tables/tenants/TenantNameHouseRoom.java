@@ -3,6 +3,9 @@ package com.example.easelife.data.tables.tenants;
 import androidx.room.ColumnInfo;
 
 public class TenantNameHouseRoom {
+    @ColumnInfo(name = "tenantId")
+    public int tenantId;
+
     @ColumnInfo(name = "tenantName")
     public String tenantName;
 

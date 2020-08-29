@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,8 @@ import com.example.easelife.R;
 import com.example.easelife.data.HouseViewModal;
 import com.example.easelife.data.tables.tenants.TenantNameHouseRoom;
 import com.example.easelife.databinding.FragmentTenantsListBinding;
+
+import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
@@ -39,6 +42,12 @@ public class TenantsFragment extends Fragment {
         listBinding = FragmentTenantsListBinding.inflate(getLayoutInflater(), container, false);
         viewModal = new ViewModelProvider(this).get(HouseViewModal.class);
 
+        listBinding.floatingActionButtonAddTenant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(listBinding.getRoot()).navigate(R.id.action_nav_tenants_to_tenantEntryFragment);
+            }
+        });
 
         final MyTenantsRecyclerViewAdapter adapter = new MyTenantsRecyclerViewAdapter();
         listBinding.recycleViewTenants.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -50,6 +59,7 @@ public class TenantsFragment extends Fragment {
                 adapter.setTenantList(tenantNameHouseRooms);
             }
         });
+
         return listBinding.getRoot();
     }
 }

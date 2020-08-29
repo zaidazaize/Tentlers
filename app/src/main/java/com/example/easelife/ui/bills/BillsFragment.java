@@ -3,70 +3,94 @@ package com.example.easelife.ui.bills;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.easelife.R;
-import com.example.easelife.ui.bills.dummy.DummyContent;
+import com.example.easelife.data.HouseViewModal;
+import com.example.easelife.data.tables.bills.BillItemForCard;
+import com.example.easelife.databinding.FragmentBillsListBinding;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  */
 public class BillsFragment extends Fragment {
+    HouseViewModal viewModal;
+    FragmentBillsListBinding billsListBinding;
+    boolean isAnyActiveTenant;
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-
-    /**
+    /*
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public BillsFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static BillsFragment newInstance(int columnCount) {
-        BillsFragment fragment = new BillsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+        viewModal = new  ViewModelProvider(requireActivity()).get(HouseViewModal.class);
+        viewModal.getIsAnyActivetenant(true).observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean != null) {
+                    isAnyActiveTenant = aBoolean;
+                }
+            }
+        });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bills_list, container, false);
-
-        RecyclerView recyclerView = view.findViewById(R.id.recycle_view_bills);
-        // Set the adapter
-        if (recyclerView instanceof RecyclerView) {
-            Context context = view.getContext();
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        billsListBinding = FragmentBillsListBinding.inflate(getLayoutInflater(), container, false);
+        /*add bill button listener*/
+        billsListBinding.floatingActionButtonGenerateBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isAnyActiveTenant) {
+                    Navigation.findNavController(v).navigate(R.id.action_nav_bills_to_billEntryFragment);
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.no_active_tenant_found), Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
-            recyclerView.setAdapter(new MyBillsRecyclerViewAdapter(DummyContent.ITEMS));
-        }
-        return view;
+        });
+
+        /* add adapter to the list recycle view*/
+        final MyBillsRecyclerViewAdapter adapter = new MyBillsRecyclerViewAdapter(R.drawable.ic_baseline_check_circle_outline_24,
+                R.drawable.ic_baseline_error_outline_24,
+                R.drawable.ic_baseline_expand_more_24,
+                R.drawable.ic_baseline_expand_less_24);
+
+        billsListBinding.recycleViewBills.setLayoutManager(new GridLayoutManager(getContext(),1));
+        billsListBinding.recycleViewBills.setAdapter(adapter);
+
+        /* Set the data */
+        viewModal.getAllBillForCard(false).observe(getViewLifecycleOwner(),
+                new Observer<List<BillItemForCard>>() {
+                    @Override
+                    public void onChanged(List<BillItemForCard> billItemForCards) {
+                        adapter.setBillsList(billItemForCards);
+                    }
+                });
+        return billsListBinding.getRoot();
     }
 }

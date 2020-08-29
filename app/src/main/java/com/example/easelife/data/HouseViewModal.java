@@ -1,20 +1,22 @@
 package com.example.easelife.data;
 
 import android.app.Application;
-import android.text.style.TtsSpan;
 
 import com.example.easelife.data.database.Repository;
+import com.example.easelife.data.tables.bills.BillItemForCard;
+import com.example.easelife.data.tables.bills.Bills;
 import com.example.easelife.data.tables.meters.AllMetersData;
 import com.example.easelife.data.tables.meters.GetLastMeterReading;
-import com.example.easelife.data.tables.queryobjects.HouseNameId;
+import com.example.easelife.data.tables.queryobjects.HouseNameAndId;
+import com.example.easelife.data.tables.queryobjects.HouseNameIdNoRooms;
 import com.example.easelife.data.tables.queryobjects.HouseNameMeterId;
 import com.example.easelife.data.tables.TableHouse;
 import com.example.easelife.data.tables.TableRooms;
 import com.example.easelife.data.tables.rooms.RoomNoName;
 import com.example.easelife.data.tables.rooms.RoomNoNameId;
+import com.example.easelife.data.tables.tenants.TenantBillEntry;
 import com.example.easelife.data.tables.tenants.TenantNameHouseRoom;
 import com.example.easelife.data.tables.tenants.TenantsPersonal;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
 
@@ -53,7 +55,6 @@ public class HouseViewModal extends AndroidViewModel {
 
     }
 
-
     /* For displaying specific House details. */
     public TableHouse getmShowHouse() {
         return mShowHouse;
@@ -65,21 +66,22 @@ public class HouseViewModal extends AndroidViewModel {
 
 
     /* For displaying data in rooms fragment */
-    public LiveData<List<HouseNameId>> getHouseNameIdforRooms() {
+    public LiveData<List<HouseNameIdNoRooms>> getHouseNameIdforRooms() {
         return mRepository.getHouseNameId();
     }
 
     /* For displaying rooms details*/
 
     /*
-    * this is used to display the three rooms in the specific house fragemnt
-    */
+     * this is used to display the three rooms in the specific house fragemnt
+     */
     public LiveData<List<TableRooms>> getThreeRooms(int houseId) {
         return mRepository.getThreeRooms(houseId);
     }
+
     /*
-    * This is used to display all the rooms in the Room fragment
-    */
+     * This is used to display all the rooms in the Room fragment
+     */
     public LiveData<List<TableRooms>> getAllRooms(int houseId) {
         return mRepository.getAllRooms(houseId);
     }
@@ -94,7 +96,7 @@ public class HouseViewModal extends AndroidViewModel {
         this.houseIdForRoomEntry = houseIdForRoomEntry;
     }
 
-     /*
+    /*
      *Data for inserting new room in room Entry Fragment
      */
     public LiveData<List<Long>> getAllHousemeterids() {
@@ -141,9 +143,14 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
     /*Tenant entry table */
+    /*Getting the values of House name and id which meet the condition.*/
+    public LiveData<List<HouseNameAndId>> getHouseNameIdTEspinner() {
+        return mRepository.getHouseNameIdTEspinner();
+    }
+
     /* Getting the value of room name and id for entering in the room spinner*/
-    public LiveData<List<RoomNoNameId>> getRoomNoNameID(int houseId) {
-       return mRepository.getRoomNoNameId(houseId);
+    public LiveData<List<RoomNoNameId>> getRoomNoNameID(int houseId, boolean isOccupied) {
+        return mRepository.getRoomNoNameId(houseId, isOccupied);
     }
 
     /* modifying all meters data table*/
@@ -157,5 +164,22 @@ public class HouseViewModal extends AndroidViewModel {
 
     public LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean withRoomAlloted) {
         return mRepository.getAllTenantNHR(withRoomAlloted);
+    }
+
+    /* Bill entery fragment*/
+    public LiveData<TenantBillEntry> getSelectedTenant(int tenantId) {
+        return mRepository.getSelectedTenant(tenantId);
+    }
+
+    public void insertNewBill(Bills bills) {
+        mRepository.insertNewBills(bills);
+    }
+
+    public LiveData<Boolean> getIsAnyActivetenant(boolean isactive) {
+        return mRepository.getIsAntActiveTenant(isactive);
+    }
+
+    public LiveData<List<BillItemForCard>> getAllBillForCard(boolean isBillActive) {
+        return mRepository.getAllBillForCard(isBillActive);
     }
 }
