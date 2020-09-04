@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -84,12 +85,12 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
          * Initialise the recycle view adapter.
          */
         recyclerViewAdapter = new MyroomsRecyclerViewAdapter(
-                requireActivity().getDrawable(R.drawable.ic_baseline_yes_tenant_24),
-                requireActivity().getDrawable(R.drawable.ic_baseline_no_tenants_24));
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_yes_tenant_24),
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_no_tenants_24));
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         /*
          * this meathod trasfers the appbar item click from main activity to this fragment

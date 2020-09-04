@@ -4,10 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.easelife.R;
-import com.example.easelife.data.tables.TableHouse;
+import com.example.easelife.data.tables.queryobjects.HouseForHomeFragment;
 
 import java.util.List;
 
@@ -16,13 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleViewAdapter.HomeHelper> {
     final LayoutInflater inflater;
-    List<TableHouse> mAllHouse;
+    List<HouseForHomeFragment> mAllHouse;
     final OnItemClickListener listener;
 
-    /* Interface to handle list item click events. */
-    public interface OnItemClickListener {
-        void onItemClicked(int position, View v);
+    @Override
+    public void onBindViewHolder(@NonNull HomeHelper holder, int position) {
+
+
+        HouseForHomeFragment tableHouse = mAllHouse.get(position);
+        holder.houseid.setText(String.valueOf(position + 1));
+        holder.houseName.setText(tableHouse.houseName);
+        holder.houseDate.setText(tableHouse.date.toString());
+        holder.totalRooms.setText(String.valueOf(tableHouse.noOfRooms));
+        holder.occupiedRooms.setText(String.valueOf(tableHouse.occupiedRooms));
+
     }
+
 
     public HomeRecycleViewAdapter(Context context, OnItemClickListener l) {
         inflater = LayoutInflater.from(context);
@@ -36,27 +46,13 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
         return new HomeHelper(view, listener);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull HomeHelper holder, int position) {
-
-
-        TableHouse tableHouse = mAllHouse.get(position);
-        holder.houseid.setText(String.valueOf(position + 1));
-        holder.houseName.setText(tableHouse.houseName);
-
-        if (tableHouse.address != null) {
-            holder.houseAddress.setText(tableHouse.address.toString());
-        } else holder.houseAddress.setText("Address: Not Available");
-        holder.houseDate.setText(tableHouse.getDate().toString());
-        holder.totalRooms.setText(String.valueOf(tableHouse.getNoOfRooms()));
-        holder.occupiedRooms.setText(String.valueOf(tableHouse.occupiedRooms));
-        holder.onBindListener();
-
-    }
-
-    public void setHouses(List<TableHouse> allhouse) {
+    public void setHouses(List<HouseForHomeFragment> allhouse) {
         mAllHouse = allhouse;
         notifyDataSetChanged();
+    }
+
+    public HouseForHomeFragment getHouseAtPosition(int position) {
+        return mAllHouse.get(position);
     }
 
     @Override
@@ -66,33 +62,40 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
         } else return 0;
     }
 
-    public TableHouse getHouseAtPosition(int position) {
-        return mAllHouse.get(position);
+    /* Interface to handle list item click events. */
+    public interface OnItemClickListener {
+        void onItemClicked(int position, View v);
+
+        void onImageCliked(int position, View view);
+
     }
 
     public static class HomeHelper extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView houseid, houseName, houseAddress, totalRooms, occupiedRooms, houseDate;
+        private final TextView houseid, houseName, totalRooms, occupiedRooms, houseDate;
         private final OnItemClickListener homeOnClicklistener;
 
-        public HomeHelper(@NonNull View itemView, OnItemClickListener listener) {
+        public HomeHelper(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             houseid = itemView.findViewById(R.id.home_listitem_house_no);
-            houseAddress = itemView.findViewById(R.id.home_listitem_house_address);
             houseName = itemView.findViewById(R.id.home_listitem_house_name);
             totalRooms = itemView.findViewById(R.id.home_listitem_house_totalrooms);
             occupiedRooms = itemView.findViewById(R.id.home_listitem_house_occupiedrooms);
             houseDate = itemView.findViewById(R.id.home_listitem_house_date);
             homeOnClicklistener = listener;
+            ImageView menuImageview = itemView.findViewById(R.id.house_room_listitem_image_more);
+            menuImageview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {/*for showing pop up menu*/
+                    listener.onImageCliked(getLayoutPosition(), v);
+                }
+            });
             itemView.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View v) {
             homeOnClicklistener.onItemClicked(getLayoutPosition(), v);
-        }
-
-        public void onBindListener() {
-            this.itemView.setOnClickListener(this);
         }
     }
 }

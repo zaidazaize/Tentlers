@@ -65,7 +65,7 @@
     <string name="choose_room">Choose Room</string>
     <string name="payment_scheme">Payment Scheme</string>
     <string name="monthly_fixed_charge">Monthly Fixed Charge</string>
-    <string name="auto_generate_based_on_meter_readings_of_rooms">Auto Generate Based on Meter Readings of Rooms</string>
+    <string name="auto_generate_based_on_meter_readings_of_rooms">Use Electric Meter</string>
     <string name="enter_start_meter_reading">Enter Start Meter Reading</string>
     <string name="additional_charges">Additional Charges</string>
     <string name="enter_meter_reading">Enter Meter Reading</string>
@@ -80,4 +80,5 @@
     <string name="pending">Pending</string>
     <string name="no_active_tenant_found">No Active Tenant Found</string>
     <string name="no_of_rooms_must_be_less_than_100">! Number of rooms must be less than 100</string>
+    <string name="LastEnteredHouseId">LastEnteredHouseId</string>
 </resources>

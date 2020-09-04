@@ -9,6 +9,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:background="@color/color_background_house_list_item"
         android:id="@+id/recycle_view_home"
         android:name="com.example.easelife.ui.bills.BillsFragment"
         android:layout_width="match_parent"

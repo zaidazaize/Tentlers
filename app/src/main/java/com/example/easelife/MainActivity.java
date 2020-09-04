@@ -13,12 +13,12 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,12 +42,15 @@ public class MainActivity extends AppCompatActivity {
             sharedPref.edit().putBoolean(getString(R.string.is_app_first_launch), false)
                     .apply();
             /*
-            * The app is running for the first time then set the base ids for all the unique ids to be
-            * generated while the app is running
-            */
+             * The app is running for the first time then set the base ids for all the unique ids to be
+             * generated while the app is running.
+             */
             getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), MODE_PRIVATE).edit()
                     .putLong(getString(R.string.system_generated_meterid_last_entry), 100000)
+                    .putInt(getString(R.string.LastEnteredHouseId), 0)
                     .apply();
+
+            /* Add last entered house id to be 1 if it is run for the first time*/
         }
 
         /*

@@ -14,7 +14,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecyclerViewAdapter.ViewHolder> {
 
     private List<TableRooms> mRoomList;

@@ -1,16 +1,14 @@
 package com.example.easelife.data.database;
 
-import android.view.ViewDebug;
-import android.widget.LinearLayout;
-
+import com.example.easelife.data.tables.TableHouse;
+import com.example.easelife.data.tables.TableRooms;
 import com.example.easelife.data.tables.bills.BillItemForCard;
 import com.example.easelife.data.tables.bills.Bills;
 import com.example.easelife.data.tables.meters.AllMetersData;
+import com.example.easelife.data.tables.queryobjects.HouseForHomeFragment;
 import com.example.easelife.data.tables.queryobjects.HouseNameAndId;
 import com.example.easelife.data.tables.queryobjects.HouseNameIdNoRooms;
 import com.example.easelife.data.tables.queryobjects.HouseNameMeterId;
-import com.example.easelife.data.tables.TableHouse;
-import com.example.easelife.data.tables.TableRooms;
 import com.example.easelife.data.tables.rooms.RoomNoName;
 import com.example.easelife.data.tables.rooms.RoomNoNameId;
 import com.example.easelife.data.tables.tenants.TenantBillEntry;
@@ -39,6 +37,9 @@ public interface HouseDao {
     @Delete
     void deleteHouse(TableHouse tableHouse);
 
+    @Query("DELETE FROM TableHouse WHERE houseId = :gotHouseId")
+    void deleteHouseById(int gotHouseId);
+
     /* Deleting all the records related to the house.*/
     @Query("DELETE FROM tablerooms WHERE houseId = :houseId")
     void deleteRoomsOfTheHouse(int houseId);
@@ -49,8 +50,13 @@ public interface HouseDao {
     @Update
     void updateHouseData(TableHouse tableHouse);
 
-    @Query("SELECT * FROM TableHouse ORDER BY houseId")
-    LiveData<List<TableHouse>> getAllTableHouse();
+    /*select all the house to display in the list on home fragment.*/
+    @Query("SELECT houseId, houseName, noOfRooms,occupiedRooms,date FROM TableHouse ORDER BY houseId")
+    LiveData<List<HouseForHomeFragment>> getAllHouseForHomeFragment();
+
+    /*for displaying specific house.*/
+    @Query("SELECT * FROM TableHouse WHERE houseId = :gotHouseid")
+    LiveData<TableHouse> getHouseForSpecificHouse(int gotHouseid);
 
     @Query("SELECT houseName,meterid FROM TABLEHOUSE ORDER BY houseId DESC")
     LiveData<HouseNameMeterId[]> gethouseNameMeterId();

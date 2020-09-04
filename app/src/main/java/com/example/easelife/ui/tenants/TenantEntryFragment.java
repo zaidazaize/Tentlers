@@ -2,6 +2,8 @@ package com.example.easelife.ui.tenants;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,10 +30,10 @@ import java.util.List;
 import java.util.Objects;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -108,7 +110,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
          */
         tenantEntryBinding.toolbarTenantEnter.setOnMenuItemClickListener(this);
         /*
-         * Show the exit dialogue when the navigation icon is clicked.
+         * Show the exit dialogue when the navigation icon is clicked.Means to cancel the task;
          */
         tenantEntryBinding.toolbarTenantEnter.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,8 +121,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         /*
          * Switch checked change listeners.
          * switch for controlling the visibility of the personal info fields.
-         * If the switch is closed the
-         * the personal info in tenant object is set to false;
+         * If the switch is closed the personal info in tenant object is set to false;
          * Initialise the switch to true after adding the listener. At the end of oncreateview;
          */
         tenantEntryBinding.switchTenantPersonalInfo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -176,7 +177,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                     isHosueAvailable = false;
                     tenantEntryBinding.switchTenantAllotRooms.setChecked(false);
                     tenantEntryBinding.switchTenantAllotRooms.setEnabled(false);
-                }else isHosueAvailable = true;
+                } else isHosueAvailable = true;
                 houseAdapter.addAll(getHouseNamearray(houseNameAndIdList));
                 houseAdapter.notifyDataSetChanged();
                 mhouseNameAndIdList = houseNameAndIdList;
@@ -201,6 +202,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
          * The values of switch in add electric meter will be re enitialised if room is changed.
          */
         tenantEntryBinding.spinnerAddRoom.setAdapter(roomAdapter);
+
         tenantEntryBinding.spinnerAddRoom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -214,8 +216,9 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                                 public void onChanged(Long[] longs) {
                                     if (longs.length != 0) {
                                         lastMeterReading = longs[0];
-                                        // TODO: update the last meter reading in the text view.
-                                        // TODO: add a text view below the meter initial meter reading to show last meter reading.
+                                        tenantEntryBinding.tenantEntryStartMeterReading.setText(String.valueOf(lastMeterReading));
+                                    } else {
+                                        tenantEntryBinding.tenantEntryStartMeterReading.setText(String.valueOf(0));
                                     }
                                 }
                             });
@@ -255,9 +258,10 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         tenantEntryBinding.switchTenantAddElectricityChargesAutoGenerate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
+                if (!isChecked) {/* make the input field of initial meter reading and last meter reading invisible. Set the manual switch to off.*/
                     tenantEntryBinding.switchTenantAddElectricityEnterManually.setChecked(true);
                     tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.setVisibility(View.GONE);
+                    tenantEntryBinding.tenantEntryLiniarlayoutLastmeterReading.setVisibility(View.GONE);
                     return;
                 }
                 if (!isHosueAvailable) {/* Shows snack bar if there are no houses to which tenant can be added.*/
@@ -282,9 +286,10 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                     tenantEntryBinding.switchTenantAddElectricityChargesAutoGenerate.setChecked(false);
                     return;
                 }
-                if (choosenRoom != null && choosenRoom.isMeterEnabled) {/* Make the visibility of input field visible and set the manual switch to off*/
+                if (choosenRoom != null && choosenRoom.isMeterEnabled) {/* Make the input field and last meter reading field visible and set the manual switch to off*/
                     tenantEntryBinding.switchTenantAddElectricityEnterManually.setChecked(false);
                     tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.setVisibility(View.VISIBLE);
+                    tenantEntryBinding.tenantEntryLiniarlayoutLastmeterReading.setVisibility(View.VISIBLE);
                 } else {/* Meter is not enabled in the room. snack bar to enable the room*/
                     if (snackbar != null) {
                         snackbar.dismiss();
@@ -293,7 +298,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                     snackbar.setAction("Add Meter", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            /* Show the dialog here. to add the meter.*/
+                            //TODO Show the dialog here. to add the meter.*/
                         }
                     })
                             .show();
@@ -315,29 +320,26 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
          * This watcher inspects the meter reading entered in the edittext and show error if the reading is less than
          * the previous reading
          */
-//        tenantEntryBinding.textInputEditTextInitialMeterReading.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (s.toString().length() != 0) {
-//                    if (Integer.parseInt(s.toString()) <= lastMeterReading) {
-//                        tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.setError(getString(R.string.invalid_entry_meter_reading_is_less_than_previous_reading));
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if (s.toString().length() != 0) {
-//                    if (Integer.parseInt(s.toString()) >= lastMeterReading) {
-//                        tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.setError("");
-//                    }
-//                }
-//            }
-//        });
+        tenantEntryBinding.textInputEditTextInitialMeterReading.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                tenantsPersonal.allMetersData.setLastMeterReadingFromString(s.toString());
+                if (tenantsPersonal.allMetersData.lastMeterReading <= lastMeterReading) {
+                    tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.
+                            setError(getString(R.string.invalid_entry_meter_reading_is_less_than_last_entered_reading));
+
+                } else
+                    tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.setError("");
+            }
+        });
 
         /* Initialisig all the switch buttons.*/
         tenantEntryBinding.switchTenantPersonalInfo.setChecked(true);
@@ -423,6 +425,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                 return false;
             } else {/* Initial reading cannot be less than previous reading*/
                 if (Integer.parseInt(initialMeterReading) < lastMeterReading) {
+                    tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.requestFocus();
                     tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.setError(getString(R.string.invalid_entry_meter_reading_is_less_than_last_entered_reading));
                     return false;
                 } else {
@@ -535,24 +538,24 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         roomAdapter.clear();
         viewModal.getRoomNoNameID(mhouseNameAndIdList.get(position).houseId, false)
                 .observe(getViewLifecycleOwner(), new Observer<List<RoomNoNameId>>() {
-            @Override
-            public void onChanged(List<RoomNoNameId> roomNoNameIds) {
-                if (!roomNoNameIds.isEmpty()) {/* if the got room list is empty no need to add the list to spinner.*/
-                    roomAdapter.addAll(getHouseNamearray(roomNoNameIds));
-                    roomAdapter.notifyDataSetChanged();
-                }
-                mroomNoNameIds = roomNoNameIds;
-            }
+                    @Override
+                    public void onChanged(List<RoomNoNameId> roomNoNameIds) {
+                        if (!roomNoNameIds.isEmpty()) {/* if the got room list is empty no need to add the list to spinner.*/
+                            roomAdapter.addAll(getHouseNamearray(roomNoNameIds));
+                            roomAdapter.notifyDataSetChanged();
+                        }
+                        mroomNoNameIds = roomNoNameIds;
+                    }
 
-            private ArrayList<String> getHouseNamearray(List<RoomNoNameId> roomnonameid) {
-                ArrayList<String> houseArray = new ArrayList<>();
-                for (RoomNoNameId s : roomnonameid) {
-                    houseArray.add(s.roomName);
-                }
-                return houseArray;
-            }
+                    private ArrayList<String> getHouseNamearray(List<RoomNoNameId> roomnonameid) {
+                        ArrayList<String> houseArray = new ArrayList<>();
+                        for (RoomNoNameId s : roomnonameid) {
+                            houseArray.add(s.roomName);
+                        }
+                        return houseArray;
+                    }
 
-        });
+                });
     }
 
     @Override

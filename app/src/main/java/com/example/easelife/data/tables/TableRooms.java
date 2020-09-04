@@ -1,15 +1,13 @@
 package com.example.easelife.data.tables;
 
-import java.security.PublicKey;
+import com.example.easelife.data.tables.meters.AllMetersData;
+
 import java.sql.Date;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 @Entity
 public class TableRooms {
@@ -28,9 +26,8 @@ public class TableRooms {
     @ColumnInfo
     public boolean isOcupied;
 
-    public void setMeterId(long meterId) {
-        this.meterId = meterId;
-    }
+    @Ignore
+    public AllMetersData allMetersData = new AllMetersData();
 
     @ColumnInfo
     public long meterId;
@@ -40,6 +37,13 @@ public class TableRooms {
 
     @Ignore
     public boolean isSystemDeside;
+    @ColumnInfo
+    public Date date;
+
+    public void setMeterId(long meterId) {
+        this.meterId = meterId;
+        allMetersData.meterId = meterId;
+    }
 
     @ColumnInfo(defaultValue = "NULL")
     public String tenantsName;
@@ -47,7 +51,10 @@ public class TableRooms {
     @ColumnInfo(defaultValue = "NULL")
     public int tenantId;
 
-    public Date date;
+    @Ignore
+    public AllMetersData getAllMetersData() {
+        return this.allMetersData;
+    }
 
     public Date getDate() {
         return date;
@@ -55,5 +62,6 @@ public class TableRooms {
 
     public void setDate(Date date) {
         this.date = date;
+        allMetersData.date = date;
     }
 }

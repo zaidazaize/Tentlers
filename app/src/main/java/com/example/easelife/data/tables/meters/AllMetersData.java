@@ -20,6 +20,12 @@ public class AllMetersData {
     @ColumnInfo(defaultValue = "NULL")
     public long lastMeterReading;
 
+    public void setLastMeterReadingFromString(String lastMeterReading) {
+        if (!lastMeterReading.isEmpty()) {
+            this.lastMeterReading = Long.parseLong(lastMeterReading);
+        } else this.lastMeterReading = 0;
+    }
+
     @Ignore
     public int Roomid;/* for entering the meter reading while creating the bill.*/
 }

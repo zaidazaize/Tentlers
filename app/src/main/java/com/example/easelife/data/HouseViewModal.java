@@ -3,15 +3,16 @@ package com.example.easelife.data;
 import android.app.Application;
 
 import com.example.easelife.data.database.Repository;
+import com.example.easelife.data.tables.TableHouse;
+import com.example.easelife.data.tables.TableRooms;
 import com.example.easelife.data.tables.bills.BillItemForCard;
 import com.example.easelife.data.tables.bills.Bills;
 import com.example.easelife.data.tables.meters.AllMetersData;
 import com.example.easelife.data.tables.meters.GetLastMeterReading;
+import com.example.easelife.data.tables.queryobjects.HouseForHomeFragment;
 import com.example.easelife.data.tables.queryobjects.HouseNameAndId;
 import com.example.easelife.data.tables.queryobjects.HouseNameIdNoRooms;
 import com.example.easelife.data.tables.queryobjects.HouseNameMeterId;
-import com.example.easelife.data.tables.TableHouse;
-import com.example.easelife.data.tables.TableRooms;
 import com.example.easelife.data.tables.rooms.RoomNoName;
 import com.example.easelife.data.tables.rooms.RoomNoNameId;
 import com.example.easelife.data.tables.tenants.TenantBillEntry;
@@ -26,20 +27,24 @@ import androidx.lifecycle.LiveData;
 
 public class HouseViewModal extends AndroidViewModel {
 
-    private TableHouse mShowHouse;
+    private HouseForHomeFragment mShowHouse;
     private Repository mRepository;
-    private LiveData<List<TableHouse>> mAllHouse;
+    private LiveData<List<HouseForHomeFragment>> mAllHouse;
     private int houseIdForRoomEntry;
     public int lastEnteredHouseId;
 
     public HouseViewModal(@NonNull Application application) {
         super(application);
         mRepository = new Repository(application);
-        mAllHouse = mRepository.mgetAllHouse();
+        mAllHouse = mRepository.mgetAllHouseForHomeFragment();
     }
 
-    public LiveData<List<TableHouse>> getAllHouse() {
+    public LiveData<List<HouseForHomeFragment>> getAllHouseForHomeFragment() {
         return mAllHouse;
+    }
+
+    public LiveData<TableHouse> getHouseForSpecificHouse(int houseId) {
+        return mRepository.getHosueForSpecificHouse(houseId);
     }
 
     public void insertHouse(TableHouse tableHouse) {
@@ -56,11 +61,11 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
     /* For displaying specific House details. */
-    public TableHouse getmShowHouse() {
+    public HouseForHomeFragment getmShowHouse() {
         return mShowHouse;
     }
 
-    public void setmShowHouse(TableHouse mShowHouse) {
+    public void setmShowHouse(HouseForHomeFragment mShowHouse) {
         this.mShowHouse = mShowHouse;
     }
 

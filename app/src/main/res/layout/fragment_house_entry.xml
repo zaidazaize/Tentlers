@@ -243,10 +243,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="">
+                    android:visibility="gone">
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switch_electric_meter_number"
+                        android:id="@+id/switch_manual_enter_electric_meter_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_left_right"
@@ -256,7 +256,7 @@
                         android:text="Manually Enter Meter Number" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/text_input_layout__house_MeterNo"
+                        android:id="@+id/text_input_layout__manual_enter_house_MeterNo"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -272,7 +272,7 @@
                         app:startIconDrawable="@drawable/ic_meter_reading_24px">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/text_input_edit_text_house_electric_meter_no"
+                            android:id="@+id/text_input_edit_text_manually_enter_house_electric_meter_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Meter Number"
@@ -296,8 +296,8 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
+                        android:layout_marginTop="5sp"
                         android:layout_marginStart="21dp"
-                        android:layout_marginTop="@dimen/margin_top_bottom"
                         android:layout_marginEnd="@dimen/margin_left_right"
                         android:layout_marginBottom="@dimen/margin_left_right"
                         android:layout_weight="1"

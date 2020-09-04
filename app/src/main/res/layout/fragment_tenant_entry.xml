@@ -301,7 +301,6 @@
                         android:id="@+id/linear_layout_payment_scheme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10sp"
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -310,7 +309,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_left_right"
-                            android:layout_marginTop="@dimen/margin_left_right"
+                            android:layout_marginTop="6sp"
                             android:layout_marginEnd="@dimen/margin_left_right"
                             android:layout_marginBottom="@dimen/margin_left_right"
                             app:errorEnabled="true"
@@ -339,10 +338,8 @@
 
                         <LinearLayout
                             android:id="@+id/linear_layout_add_electricity_charges"
-
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10sp"
                             android:orientation="vertical">
 
                             <com.google.android.material.switchmaterial.SwitchMaterial
@@ -361,9 +358,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="0sp"
                                 android:layout_marginStart="26sp"
-                                android:layout_marginTop="@dimen/margin_left_right"
+                                android:layout_marginTop="12sp"
                                 android:layout_marginEnd="26sp"
-                                android:layout_marginBottom="@dimen/margin_left_right"
+                                android:layout_marginBottom="12sp"
                                 android:layout_weight="1"
                                 android:visibility="gone"
                                 app:errorEnabled="true"
@@ -378,6 +375,31 @@
                                     android:inputType="number" />
 
                             </com.google.android.material.textfield.TextInputLayout>
+
+                            <LinearLayout
+                                android:id="@+id/tenant_entry_liniarlayout_lastmeter_reading"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="26sp"
+                                android:layout_marginEnd="@dimen/margin_left_right"
+                                android:layout_marginBottom="@dimen/margin_top_bottom"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="20sp"
+                                    android:text="Last Meter Reading"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                                <TextView
+                                    android:id="@+id/tenant_entry_start_meter_reading"
+                                    style="@style/TextAppearance.MaterialComponents.Body1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    tools:text="2343244" />
+                            </LinearLayout>
 
                             <com.google.android.material.switchmaterial.SwitchMaterial
                                 android:id="@+id/switch_tenant_add_electricity_enter_manually"

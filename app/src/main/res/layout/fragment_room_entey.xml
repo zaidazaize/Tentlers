@@ -82,16 +82,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_left_right"
                     android:layout_marginEnd="@dimen/margin_left_right"
-                    android:checked="true"
                     android:drawableStart="@drawable/ic_meter_reading_24px"
-                    android:text="Add Seperate Electric/Energy Meter" />
+                    android:text="Add Seperate Electric Meter" />
 
                 <LinearLayout
                     android:id="@+id/layout_room_meter_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_room_electric_meter_number_manual"
@@ -137,6 +137,27 @@
                         android:clickable="false"
                         android:drawableStart="@drawable/ic_system_decide_24px"
                         android:text="@string/use_system_generated_number" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_input_layout_room_initial_meter_reading"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="@dimen/margin_left_right"
+                        android:layout_marginBottom="@dimen/margin_left_right"
+                        android:layout_weight="1"
+                        app:helperText="Initialise the meter with some reading">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/text_input_edit_text_room_initial_meter_reading"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Start Meter Reading"
+                            android:inputType="number" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>

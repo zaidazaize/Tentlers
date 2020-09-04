@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,10 +34,6 @@ import androidx.navigation.Navigation;
 public class RoomEnteryFragment extends Fragment {
     FragmentRoomEnteyBinding enteyBinding;
     HouseViewModal viewModal;
-    /*
-     * bolean value discribing the uniqueeness of the roomNo and ROom name
-     */
-    private boolean isTheENteredRoomNoUnique = false, isTheENteredRoomNameUnique = false;
 
     /*
      * this object holds the meter ids of all the rooms in the database.
@@ -62,30 +59,29 @@ public class RoomEnteryFragment extends Fragment {
      * This variable stores the system generated room number and room name
      */
     private RoomNoName generatedroomNOName = new RoomNoName();
+
     @Override
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
         /*
-        * Add back pressed callback for handling the back button using the back pressed dispatcher.
-        */
+         * Add back pressed callback for handling the back button using the back pressed dispatcher.
+         */
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 getExitDialoge().show();
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
         /*
          *  Assing the house id from the view modal tho tableroom object.
          */
         tableRooms.houseId = viewModal.getHouseIdForRoomEntry();
 
-        /*
-         * asign the observer to the all house meter ids  and all room meter ids.
-         */
+        /*assign the observer to the all house meter ids  and all room meter ids.*/
         viewModal.getAllHousemeterids().observe(this, new Observer<List<Long>>() {
             @Override
             public void onChanged(List<Long> longs) {
@@ -106,8 +102,6 @@ public class RoomEnteryFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         enteyBinding = FragmentRoomEnteyBinding.inflate(getLayoutInflater(), container, false);
-        tableRooms.isSystemDeside = true;
-        tableRooms.isMeterEnabled = true;
 
         /*
          * Pre assign the room no and name in for the room
@@ -118,14 +112,10 @@ public class RoomEnteryFragment extends Fragment {
             @Override
             public void onChanged(List<RoomNoName> roomNoNames) {
                 gotAllRoomNoName = roomNoNames;
-                if (roomNoNames.size() != 0) {
-                    generatedroomNOName.roomNo = roomNoNames.get(0).roomNo + 1;
-                    generatedroomNOName.roomName = String.format("Room%d", roomNoNames.get(0).roomNo + 1);
 
-                } else {
-                    generatedroomNOName.roomNo = 1;
-                    generatedroomNOName.roomName = "Room1";
-                }
+                /*if list of rooms is empty set the room number to 1 */
+                generatedroomNOName.roomNo = roomNoNames.size() == 0 ? generatedroomNOName.roomNo = 1 : roomNoNames.get(0).roomNo + 1;
+                generatedroomNOName.roomName = ("Room" + generatedroomNOName.roomNo);
 
                 enteyBinding.textInputEditTextOutlinedRoomNo.setText(String.valueOf(generatedroomNOName.roomNo));
                 enteyBinding.textInputEditTextOutlinedRoomName.setText(generatedroomNOName.roomName);
@@ -146,7 +136,6 @@ public class RoomEnteryFragment extends Fragment {
         enteyBinding.toolbarRoomEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Log.d("the clicked item id", String.valueOf(item.getItemId()));
                 if (item.getItemId() == R.id.meuitem_house_save) {
                     if (checkforDataValidity()) {
                         getSaveDialoge().show();
@@ -157,37 +146,48 @@ public class RoomEnteryFragment extends Fragment {
         });
 
         /*
-         * Manges the switches for encluding meters and meter numbers
+         * Manges the switches for including meters and meter numbers
+         * the switch is initialised at the end of onCreateView.
          */
         enteyBinding.switchRoomElectricMeterPermission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    tableRooms.isMeterEnabled = true;
-                    enteyBinding.layoutRoomMeterNumber.setVisibility(View.VISIBLE);
-                } else {
-                    tableRooms.isMeterEnabled = false;
-                    enteyBinding.layoutRoomMeterNumber.setVisibility(View.GONE);
-                }
+                tableRooms.isMeterEnabled = isChecked;
+                enteyBinding.layoutRoomMeterNumber.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+
             }
         });
 
         enteyBinding.switchRoomElectricMeterNumberManual.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    tableRooms.isSystemDeside = false;
-                    enteyBinding.textInputLayoutRoomMeterNo.setVisibility(View.VISIBLE);
-                    enteyBinding.switchRoomElectricMeterNumberSystemDecide.setChecked(false);
-                } else {
-                    tableRooms.isSystemDeside = true;
-                    enteyBinding.textInputLayoutRoomMeterNo.setVisibility(View.GONE);
-                    enteyBinding.switchRoomElectricMeterNumberSystemDecide.setChecked(true);
-                }
+
+                tableRooms.isSystemDeside = !isChecked; /*  This is use for auto generating meter number*/
+                enteyBinding.textInputLayoutRoomMeterNo.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                enteyBinding.switchRoomElectricMeterNumberSystemDecide.setChecked(!isChecked);
             }
         });
 
+        /*Set the initial meter reding in the allmeteres data object of tablerooms*/
+        enteyBinding.textInputEditTextRoomInitialMeterReading.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                tableRooms.allMetersData.setLastMeterReadingFromString(s.toString());
+            }
+        });
+
+        /*initialise the meter entry switch*/
+        enteyBinding.switchRoomElectricMeterPermission.setChecked(true);
         return enteyBinding.getRoot();
     }
 
@@ -196,7 +196,7 @@ public class RoomEnteryFragment extends Fragment {
      * for the specific house.
      */
     private boolean checkforDataValidity() {
-        return (checkForRoomNameValidity() & isMeterValid() & checkForRoomnoVAlidiy());
+        return (checkForRoomNameValidity() && isMeterValid() && checkForRoomnoVAlidiy());
     }
 
     /*
@@ -204,40 +204,25 @@ public class RoomEnteryFragment extends Fragment {
      * also manages the error shown on the input layout of the edit text.
      */
     private boolean isMeterValid() {
-        if (tableRooms.isMeterEnabled) {
-            if (tableRooms.isSystemDeside) {
-                /*
-                 * system generated meter number will be unique
-                 */
+        if (enteyBinding.switchRoomElectricMeterPermission.isChecked()) {
+            if (enteyBinding.switchRoomElectricMeterNumberSystemDecide.isChecked()) {/*system generated meter number will be unique*/
                 return true;
             }
-
             if (enteyBinding.switchRoomElectricMeterNumberManual.isChecked()) {
                 String meterNumber = enteyBinding.textInputEditTextRoomElectricMeterNo.getText().toString();
-                if (meterNumber.length() != 0) {
+                if (meterNumber.length() != 0) { /*Check for uniqueness*/
+
                     long meterNumberLong = Long.parseLong(meterNumber);
-                    /*
-                     *Check for uniqueness
-                     */
-                    if (isMeterNoUnique(meterNumberLong)) {
-                        /*
-                         *set the error to null and add the meter no in the Tableroom object
-                         */
-                        tableRooms.meterId = meterNumberLong;
+                    if (isMeterNoUnique(meterNumberLong)) {/*set the error to null and add the meter no in the Tableroom object*/
+                        tableRooms.setMeterId(meterNumberLong);
                         enteyBinding.textInputLayoutRoomMeterNo.setError("");
                         return true;
-                    } else {
-                        /*
-                         *set the error that meter is not unique
-                         */
+                    } else {/*set the error that meter is not unique*/
                         enteyBinding.textInputLayoutRoomMeterNo.setError(getString(R.string.meter_no_already_exits));
                         return false;
                     }
 
-                } else {
-                    /*
-                     * show the error that meter no cannot be empty. error field recquired
-                     */
+                } else { /* show the error that meter no cannot be empty. error field recquired*/
                     enteyBinding.textInputLayoutRoomMeterNo.setError(getString(R.string.error_field_recquired));
                     return false;
                 }
@@ -262,7 +247,7 @@ public class RoomEnteryFragment extends Fragment {
             }
         }
         /*
-         *  Check for uniquenes in house ids
+         *  Check for uniquenes in house meter ids
          */
         if (gotAllHouseMeterIds != null) {
             for (long i : gotAllHouseMeterIds) {
@@ -282,29 +267,22 @@ public class RoomEnteryFragment extends Fragment {
     private boolean checkForRoomNameValidity() {
 
         String roomName = enteyBinding.textInputEditTextOutlinedRoomName.getText().toString();
-//
-        /*
-         * First check for the room name should not be empty.
-         */
-        if (roomName.length() != 0) {
-            /*
-             * Check for the uiquness of the room name
-             */
-            if (checkForUniqueRoomName(roomName)) {
-                /*
-                 * if name is unique asign error text to be null else assign to enter any other name
-                 * Add the room name in the table room object
-                 */
-                enteyBinding.textInputLayoutOutlinedRoomName.setError("");
-                tableRooms.roomName = roomName;
-                return true;
-            } else {
-                enteyBinding.textInputLayoutOutlinedRoomName.setError(getString(R.string.room_name_already_exists));
-                return false;
-            }
 
-        } else {
+        if (roomName.length() == 0) { /* First check for the room name should not be empty. */
             enteyBinding.textInputLayoutOutlinedRoomName.setError(getString(R.string.room_name_cannot_be_empty));
+            return false;
+        }
+
+        if (checkForUniqueRoomName(roomName)) {/* Check for the uiquness of the room name */
+            /*
+             * if name is unique asign error text to be null else assign to enter any other name
+             * Add the room name in the table room object
+             */
+            enteyBinding.textInputLayoutOutlinedRoomName.setError("");
+            tableRooms.roomName = roomName;
+            return true;
+        } else {
+            enteyBinding.textInputLayoutOutlinedRoomName.setError(getString(R.string.room_name_already_exists));
             return false;
         }
 
@@ -324,7 +302,7 @@ public class RoomEnteryFragment extends Fragment {
             return true;
         }
 
-        if (gotAllRoomNoName != null & gotAllRoomNoName.size() != 0) {
+        if (gotAllRoomNoName != null && gotAllRoomNoName.size() != 0) {
             for (RoomNoName n : gotAllRoomNoName) {   // Here it loops to check for uniqueness
                 if (n.roomName.equals(roomnaeminputed)) {
                     return false;
@@ -334,10 +312,7 @@ public class RoomEnteryFragment extends Fragment {
         return true;
     }
 
-    /*
-     * Meathod checks for room name validity
-     * and also handles the error shown
-     */
+    /* Meathod checks for room name validity and also handles the error shown */
     private boolean checkForRoomnoVAlidiy() {
         String roomNo = enteyBinding.textInputEditTextOutlinedRoomNo.getText().toString();
 
@@ -361,14 +336,12 @@ public class RoomEnteryFragment extends Fragment {
         }
     }
 
-    /*
-     * This method checks for the uniqueness of room no entered by the user
-     */
+    /* This method checks for the uniqueness of room no entered by the user */
     private boolean isRoomNoUnique(int roomNo) {
         if (roomNo == generatedroomNOName.roomNo) {
-            isTheENteredRoomNoUnique = true;
+            return true;
         }
-        if (gotAllRoomNoName != null & gotAllRoomNoName.size() != 0) {
+        if (gotAllRoomNoName != null) {
             for (RoomNoName n : gotAllRoomNoName) {   // Here it loops to check for uniqueness
                 if (n.roomNo == roomNo) {
                     return false;
@@ -386,15 +359,13 @@ public class RoomEnteryFragment extends Fragment {
         if (tableRooms.isSystemDeside) {
             SharedPreferences sh = requireActivity().getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
             tableRooms.setMeterId(sh.getLong(getString(R.string.system_generated_meterid_last_entry), 100000) + 1);
-            sh.edit()
-                    .putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.meterId)
+            sh.edit().putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.meterId)
                     .apply();
         }
         viewModal.insertNewRoom(tableRooms);
     }
 
     private MaterialAlertDialogBuilder getSaveDialoge() {
-
         return (new SaveDialog(requireActivity(), enteyBinding.getRoot()))
                 .getSaveDialogue(
                         new DialogInterface.OnClickListener() {
@@ -422,7 +393,6 @@ public class RoomEnteryFragment extends Fragment {
     }
 
     private MaterialAlertDialogBuilder getExitDialoge() {
-
         return (new SaveDialog(requireActivity(), enteyBinding.getRoot()))
                 .getCancelDialog(
                         new DialogInterface.OnClickListener() {

@@ -1,5 +1,7 @@
 package com.example.easelife.data.tables;
 
+import com.example.easelife.data.tables.meters.AllMetersData;
+
 import java.sql.Date;
 
 import androidx.room.ColumnInfo;
@@ -47,6 +49,21 @@ public class TableHouse {
     @Ignore
     public int houseIdForAutoRoom;
 
+    @Ignore
+    public boolean isDeleteHouseByid;
+    @Ignore
+    public AllMetersData allMetersData = new AllMetersData();
+
+    @Ignore
+    public TableHouse setDeleteHouseByid(boolean deleteHouseByid) {
+        isDeleteHouseByid = deleteHouseByid;
+        return this;
+    }
+
+    public AllMetersData getAllMetersData() {
+        return this.allMetersData;
+    }
+
 
     public int getHouseId() {
         return houseId;
@@ -72,8 +89,9 @@ public class TableHouse {
         return meterid;
     }
 
-    public void setHouseId(int houseId) {
+    public TableHouse setHouseId(int houseId) {
         this.houseId = houseId;
+        return this;
     }
 
     public void setHouseName(String houseName) {
@@ -82,6 +100,7 @@ public class TableHouse {
 
     public void setDate(Date date) {
         this.date = date;
+        allMetersData.date = date;
     }
 
     public void setNoOfRooms(int noOfRooms) {
@@ -101,6 +120,7 @@ public class TableHouse {
 
     public void setMeterid(long meterid) {
         this.meterid = meterid;
+        this.allMetersData.meterId = meterid;
     }
 
     public void setAddress(Address address) {

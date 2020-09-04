@@ -1,17 +1,7 @@
 package com.example.easelife.ui.home.specifichouse;
 
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,11 +12,19 @@ import com.example.easelife.R;
 import com.example.easelife.data.HouseViewModal;
 import com.example.easelife.data.tables.TableHouse;
 import com.example.easelife.data.tables.TableRooms;
+import com.example.easelife.data.tables.queryobjects.HouseForHomeFragment;
 import com.example.easelife.databinding.FragmentHouseRoomsListItemBinding;
 import com.example.easelife.databinding.FragmentSpecificHouseBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 public class SpecificHouseFragment extends Fragment {
     /*
@@ -43,7 +41,8 @@ public class SpecificHouseFragment extends Fragment {
      * This object holds the data of the house chosed by the user
      * for displaying the house Details.
      */
-    TableHouse house;
+    HouseForHomeFragment house;
+    TableHouse selectedHouse;
 
 
     public SpecificHouseFragment() {
@@ -97,34 +96,46 @@ public class SpecificHouseFragment extends Fragment {
         /*
          * Set the house Name and Date on the textView
          */
-        binding.specificHouseName.setText(house.getHouseName());
-        binding.specificHouseDate.setText(house.getDate().toString());
+        binding.specificHouseName.setText(house.houseName);
+        binding.specificHouseDate.setText(house.date.toString());
 
-        /*
-         * Set the address on the address layout
-         */
-        if (house.address != null) {
-            String houseno = String.valueOf(house.address.houseNo);
-            binding.specificHouseTextviewHouseno.setText(houseno.length() == 0 ? getString(R.string.not_provided) : houseno);
+        viewModal.getHouseForSpecificHouse(house.houseId).observe(getViewLifecycleOwner(), new Observer<TableHouse>() {
+            @Override
+            public void onChanged(TableHouse tableHouse) {
+                selectedHouse = tableHouse;
+                /*
+                 * Set the address on the address layout
+                 */
+                if (tableHouse.address != null) {
+                    String houseno = String.valueOf(tableHouse.address.houseNo);
+                    binding.specificHouseTextviewHouseno.setText(houseno.length() == 0 ? getString(R.string.not_provided) : houseno);
 
-            String loacality = house.address.locality;
-            binding.specificHouseLocality.setText(loacality == null ? getString(R.string.not_provided) : loacality);
 
-            String postalcode = house.address.postalcode;
-            binding.specificHousePostalcode.setText(postalcode == null ? getString(R.string.not_provided) : postalcode);
+                    binding.specificHouseLocality.setText(
+                            tableHouse.address.locality == null ? getString(R.string.not_provided)
+                                    : tableHouse.address.locality);
 
-            String city = house.address.city;
-            binding.specificHouseCity.setText(city == null ? getString(R.string.not_provided) : city);
 
-            String country = house.address.country;
-            binding.specificHouseCountry.setText(country == null ? getString(R.string.not_provided) : country);
-        }
+                    binding.specificHousePostalcode.setText(tableHouse.address.postalcode == null ?
+                            getString(R.string.not_provided) : tableHouse.address.postalcode);
 
-        /*
-         * Setting the metter id on the layout.
-         */
-        long meterno = house.meterid;
-        binding.specificHouseMeterNo.setText(meterno == 0 ? getString(R.string.not_provided) : String.valueOf(meterno));
+                    binding.specificHouseCity.setText(tableHouse.address.city == null ?
+                            getString(R.string.not_provided) : tableHouse.address.city);
+
+                    binding.specificHouseCountry.setText(
+                            tableHouse.address.country == null ? getString(R.string.not_provided)
+                                    : tableHouse.address.country);
+                }
+
+                /*
+                 * Setting the metter id on the layout.
+                 */
+                binding.specificHouseMeterNo.setText(
+                        tableHouse.meterid == 0 ? getString(R.string.not_provided) : String.valueOf(tableHouse.meterid));
+
+            }
+        });
+
 
         /*
          * Add the listener to "view All" rooms button which transefers the user to the room fragment
@@ -139,7 +150,7 @@ public class SpecificHouseFragment extends Fragment {
         /*
          * On gettign the three rooms update its value in setting up those three list items of the rooms.
          */
-        viewModal.getThreeRooms(house.getHouseId()).observe(getViewLifecycleOwner(), new Observer<List<TableRooms>>() {
+        viewModal.getThreeRooms(house.houseId).observe(getViewLifecycleOwner(), new Observer<List<TableRooms>>() {
             @Override
             public void onChanged(List<TableRooms> tableRooms) {
                 setThreeRooms(tableRooms);
@@ -165,8 +176,6 @@ public class SpecificHouseFragment extends Fragment {
              * else as per the data .ie two for 2 rooms and 1 for one rooms.
              */
             FragmentHouseRoomsListItemBinding[] list = new FragmentHouseRoomsListItemBinding[]{binding.roomItemFirst, binding.roomItemSecond, binding.roomItemThird};
-            Log.d("size of the roomlist", String.valueOf(listsize));
-            Log.d("size of the bindinglist", String.valueOf(list.length));
             switch (listsize) {
                 case 0:
                     for (int i = 0; i < 3; i++) {
@@ -228,24 +237,17 @@ public class SpecificHouseFragment extends Fragment {
 
     /* Dialog for confirming the delete of the house.*/
     public MaterialAlertDialogBuilder getDeleteAlertDialog() {
-        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireActivity());
-        dialogBuilder.setTitle("Delete House ?")
-                .setMessage("This will delete house and all its related data.")
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton("Delete House", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        viewModal.deleteHosue(house);
-                        dialog.dismiss();
-                        Navigation.findNavController(binding.getRoot()).navigateUp();
-                    }
-                });
-        return dialogBuilder;
+
+        return new GetDeleteRoomDialog().getdeleteRoomDilog(requireContext(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (selectedHouse != null) {
+                    viewModal.deleteHosue(selectedHouse);
+                    dialog.dismiss();
+                    Navigation.findNavController(binding.getRoot()).navigateUp();
+                } else dialog.cancel();
+            }
+        });
     }
 
     @Override
