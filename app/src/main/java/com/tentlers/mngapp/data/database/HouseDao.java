@@ -9,6 +9,7 @@ import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameMeterId;
+import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
@@ -79,11 +80,19 @@ public interface HouseDao {
     @Delete
     void deleteRoom(TableRooms rooms);
 
-    @Query("SELECT * FROM TableRooms WHERE houseId = :givenhouseId ORDER BY date")
-    LiveData<List<TableRooms>> getAllRoomsOfHouse(int givenhouseId);
+    /*gets all the rooms of a house for room list*/
+    @Query("SELECT tablerooms.roomId,roomNo,roomName,isOcupied,tenantsName" +
+            " FROM TableRooms" +
+            " WHERE tablerooms.houseId = :givenhouseId " +
+            "ORDER BY date")
+    LiveData<List<RoomForRoomList>> getAllRoomsOfHouse(int givenhouseId);
 
-    @Query("SELECT * FROM TableRooms  WHERE houseId = :houseidgot ORDER BY date LIMIT 3 ")
-    LiveData<List<TableRooms>> getThreerooms(int houseidgot);
+    /*gets three rooms of the house for specific house list*/
+    @Query("SELECT tablerooms.roomId,roomNo,roomName,isOcupied,tenantsName" +
+            " FROM TableRooms " +
+            "WHERE tablerooms.houseId = :houseidgot" +
+            " ORDER BY date LIMIT 3 ")
+    LiveData<List<RoomForRoomList>> getThreerooms(int houseidgot);
 
     /*
      *For displaying house names in the spinner of rooms fragment.

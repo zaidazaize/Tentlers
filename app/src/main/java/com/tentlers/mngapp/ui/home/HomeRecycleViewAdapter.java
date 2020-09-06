@@ -81,7 +81,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
             occupiedRooms = itemView.findViewById(R.id.home_listitem_house_occupiedrooms);
             houseDate = itemView.findViewById(R.id.home_listitem_house_date);
             homeOnClicklistener = listener;
-            ImageView menuImageview = itemView.findViewById(R.id.house_room_listitem_image_more);
+            ImageView menuImageview = itemView.findViewById(R.id.home_istitem_image_popup_menu);
             menuImageview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {/*for showing pop up menu*/

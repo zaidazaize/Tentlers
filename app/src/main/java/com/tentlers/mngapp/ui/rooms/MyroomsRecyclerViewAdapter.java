@@ -1,13 +1,13 @@
 package com.tentlers.mngapp.ui.rooms;
 
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tentlers.mngapp.R;
-import com.tentlers.mngapp.data.tables.TableRooms;
+import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 
 import java.util.List;
 
@@ -16,12 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecyclerViewAdapter.ViewHolder> {
 
-    private final Drawable mYesdrawabel, mNoDrawable;
-    private List<TableRooms> mRoomList;
+    private List<RoomForRoomList> mRoomList;
 
-    public MyroomsRecyclerViewAdapter(Drawable yes, Drawable NoDrawable) {
-        mYesdrawabel = yes;
-        mNoDrawable = NoDrawable;
+    public MyroomsRecyclerViewAdapter() {
+
     }
 
     @NonNull
@@ -33,26 +31,25 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         if (getItemCount() != 0) {
-            TableRooms room = mRoomList.get(position);
+            RoomForRoomList room = mRoomList.get(position);
             holder.mRoomno.setText(String.valueOf(room.roomNo));
-            if (room.tenantsName != null) {
-                holder.mTenantName.setText(room.tenantsName);
-            }
-            if (room.isOcupied) {
-                holder.isOccupied.setBackground(mYesdrawabel);
-            } else holder.isOccupied.setBackground(mNoDrawable);
 
-            holder.mRoomCreateDate.setText(room.date.toString());
-            if (room.roomName != null) {
-                holder.mRoomName.setText(room.roomName);
-            } else holder.mRoomName.setText("Room" + room.roomNo);
+            if (room.isOcupied) {
+                holder.isOccupied.setVisibility(View.VISIBLE);
+                holder.mTenantName.setText(room.tenantName);
+            } else {
+                holder.isOccupied.setVisibility(View.INVISIBLE);
+                holder.mTenantName.setText(holder.itemView.getContext().getString(R.string.no_tenant_added));
+            }
+
+            holder.mRoomName.setText(room.roomName);
 
         }
     }
 
-    public void setmRoomList(List<TableRooms> roomList) {
+    public void setmRoomList(List<RoomForRoomList> roomList) {
         mRoomList = roomList;
         notifyDataSetChanged();
     }
@@ -65,7 +62,8 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mRoomno, mRoomName, mTenantName, isOccupied, mRoomCreateDate;
+        public final TextView mRoomno, mRoomName, mTenantName;
+        public final ImageView isOccupied;
 
         public ViewHolder(View rootListitem) {
             super(rootListitem);
@@ -73,8 +71,7 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
             mRoomno = (TextView) rootListitem.findViewById(R.id.house_room_listitem_room_no);
             mRoomName = (TextView) rootListitem.findViewById(R.id.house_room_listitem_room_name);
             mTenantName = (TextView) rootListitem.findViewById(R.id.house_room_listitem_room_tenant);
-            isOccupied = (TextView) rootListitem.findViewById(R.id.house_room_listitem_rooms_tenant_status);
-            mRoomCreateDate = (TextView) rootListitem.findViewById(R.id.house_room_listitem_rooms_date);
+            isOccupied = (ImageView) rootListitem.findViewById(R.id.house_room_listitem_rooms_tenant_status);
 
         }
     }

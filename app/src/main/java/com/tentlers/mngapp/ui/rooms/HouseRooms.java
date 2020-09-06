@@ -1,6 +1,7 @@
 package com.tentlers.mngapp.ui.rooms;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,15 +14,14 @@ import android.widget.Toast;
 
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
-import com.tentlers.mngapp.data.tables.TableRooms;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
+import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.databinding.FragmentHouseRoomsListBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -84,9 +84,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         /*
          * Initialise the recycle view adapter.
          */
-        recyclerViewAdapter = new MyroomsRecyclerViewAdapter(
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_yes_tenant_24),
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_no_tenants_24));
+        recyclerViewAdapter = new MyroomsRecyclerViewAdapter();
     }
 
     @Override
@@ -119,9 +117,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
                 setArrayListonSpinner(getHouseNamearray(houseNameIds), houseNameIds);
             }
 
-            /*
-             * the meathod prepares the array of the house names
-             */
+            /* the meathod prepares the array of the house names*/
             private ArrayList<String> getHouseNamearray(List<HouseNameIdNoRooms> houseNameId) {
                 ArrayList<String> houseArray = new ArrayList<>();
                 for (HouseNameIdNoRooms s : houseNameId) {
@@ -198,10 +194,11 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         viewModal.setHouseIdForRoomEntry(nameIdNoofRoomsList.get(position).houseId);
         noOfRoomsForChosenHouse = nameIdNoofRoomsList.get(position).noOfRooms;
         viewModal.getAllRooms(nameIdNoofRoomsList.get(position).houseId)
-                .observe(getViewLifecycleOwner(), new Observer<List<TableRooms>>() {
+                .observe(getViewLifecycleOwner(), new Observer<List<RoomForRoomList>>() {
                     @Override
-                    public void onChanged(List<TableRooms> tableRooms) {
-                        recyclerViewAdapter.setmRoomList(tableRooms);
+                    public void onChanged(List<RoomForRoomList> roomsForRoomList) {
+                        Log.d("roomlistsize", String.valueOf(roomsForRoomList.size()));
+                        recyclerViewAdapter.setmRoomList(roomsForRoomList);
                     }
                 });
 

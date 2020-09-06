@@ -1,117 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:id="@+id/room_listItem_container"
-        android:layout_height="70dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="10dp"
-        android:background="#EDF4F6"
-        android:layout_marginBottom="4dp"
-        android:baselineAligned="false"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8sp"
+        android:layout_marginTop="4sp"
+        android:layout_marginEnd="8sp"
+        android:layout_marginBottom="4sp"
         android:clickable="true"
-        android:elevation="2dp"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground"
-        android:gravity="center">
+        app:cardElevation="3dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/room_listItem_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5sp"
+            android:layout_marginTop="5sp"
+            android:layout_marginEnd="5sp"
+            android:layout_marginBottom="8sp">
 
             <TextView
                 android:id="@+id/house_room_listitem_room_no"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
+                android:layout_width="35sp"
+                android:layout_height="35sp"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="2sp"
                 android:background="@drawable/circle_house_number"
                 android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="@color/color_house_name"
-                android:textSize="25sp"
-                android:textStyle="bold"
                 tools:text="1" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:orientation="vertical">
+            <TextView
+                android:id="@+id/house_room_listitem_room_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/house_room_listitem_room_no"
+                android:layout_marginStart="10sp"
 
+                android:layout_toEndOf="@id/house_room_listitem_room_no"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                tools:text="Room Name" />
 
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/house_room_istitem_image_popup_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/house_room_listitem_room_no"
+                android:layout_alignBottom="@id/house_room_listitem_room_no"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_baseline_more_vert_24" />
+
+            <ImageView
+                android:id="@+id/house_room_listitem_rooms_tenant_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/house_room_istitem_image_popup_menu"
+                android:layout_alignBottom="@id/house_room_istitem_image_popup_menu"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5sp"
+                android:layout_toStartOf="@id/house_room_istitem_image_popup_menu"
+                android:gravity="center"
+                android:src="@drawable/ic_baseline_check_circle_outline_24"
+                android:visibility="invisible" />
+
+            <View
+                android:id="@+id/house_room_listitem_line_below_room_name"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1">
+                android:layout_height="1dp"
+                android:layout_below="@id/house_room_listitem_room_no"
+                android:layout_marginTop="4sp"
+                android:background="@color/dividing_line_color" />
 
-                <TextView
-                    android:id="@+id/house_room_listitem_room_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="bottom"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#0C0C0C"
-                    tools:text="Room Name" />
 
-                <TextView
-                    android:id="@+id/house_room_listitem_rooms_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:fontFamily="sans-serif-thin"
-                    android:gravity="bottom"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:typeface="normal"
-                    tools:text="12/34/9000" />
-
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/house_room_show_tenat_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/house_room_listitem_line_below_room_name"
+                android:layout_alignStart="@id/house_room_listitem_room_name"
+                android:layout_marginTop="5sp"
+                android:text="Tenant Name"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
             <TextView
                 android:id="@+id/house_room_listitem_room_tenant"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="3dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:gravity="top"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                tools:text="Tenant Name" />
-        </LinearLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/house_room_show_tenat_name"
+                android:layout_marginStart="20sp"
+                android:layout_marginEnd="@dimen/margin_top_bottom"
+                android:layout_toEndOf="@id/house_room_show_tenat_name"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                tools:text="Mohammad zaidaziz" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+        </RelativeLayout>
 
-            <TextView
-                android:id="@+id/house_room_listitem_rooms_tenant_status"
-                android:layout_width="40sp"
-                android:layout_height="40sp"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/ic_baseline_yes_tenant_24"
-                android:gravity="center" />
+    </androidx.cardview.widget.CardView>
 
-
-        </LinearLayout>
-
-    </LinearLayout>
 </layout>

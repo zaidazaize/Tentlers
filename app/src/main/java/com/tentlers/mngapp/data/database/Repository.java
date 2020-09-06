@@ -13,6 +13,7 @@ import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameMeterId;
+import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
@@ -82,14 +83,14 @@ public class Repository {
     /*
      * Getting the three rooms for displaying in the "Specific house Fragement
      */
-    public LiveData<List<TableRooms>> getThreeRooms(int mhouseId) {
+    public LiveData<List<RoomForRoomList>> getThreeRooms(int mhouseId) {
         return mdao.getThreerooms(mhouseId);
     }
 
     /*
      * The data from this query is use to show all the rooms specific to hosue.
      */
-    public LiveData<List<TableRooms>> getAllRooms(int mhouseId) {
+    public LiveData<List<RoomForRoomList>> getAllRooms(int mhouseId) {
         return mdao.getAllRoomsOfHouse(mhouseId);
     }
 

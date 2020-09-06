@@ -18,6 +18,7 @@ public class TableRooms {
     @ColumnInfo
     public int houseId;
 
+    @ColumnInfo
     public int roomNo;
 
     @ColumnInfo(defaultValue = "NULL")
@@ -37,6 +38,7 @@ public class TableRooms {
 
     @Ignore
     public boolean isSystemDeside;
+
     @ColumnInfo
     public Date date;
     @ColumnInfo(defaultValue = "NULL")

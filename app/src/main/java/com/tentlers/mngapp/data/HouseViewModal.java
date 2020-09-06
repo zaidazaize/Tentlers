@@ -13,6 +13,7 @@ import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameMeterId;
+import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
@@ -27,7 +28,6 @@ import androidx.lifecycle.LiveData;
 
 public class HouseViewModal extends AndroidViewModel {
 
-    public int lastEnteredHouseId;
     private HouseForHomeFragment mShowHouse;
     private Repository mRepository;
     private LiveData<List<HouseForHomeFragment>> mAllHouse;
@@ -80,14 +80,14 @@ public class HouseViewModal extends AndroidViewModel {
     /*
      * this is used to display the three rooms in the specific house fragemnt
      */
-    public LiveData<List<TableRooms>> getThreeRooms(int houseId) {
+    public LiveData<List<RoomForRoomList>> getThreeRooms(int houseId) {
         return mRepository.getThreeRooms(houseId);
     }
 
     /*
      * This is used to display all the rooms in the Room fragment
      */
-    public LiveData<List<TableRooms>> getAllRooms(int houseId) {
+    public LiveData<List<RoomForRoomList>> getAllRooms(int houseId) {
         return mRepository.getAllRooms(houseId);
     }
 

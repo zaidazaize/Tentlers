@@ -52,11 +52,8 @@ public class HouseEntryFragment extends Fragment {
      * meter ids.
      **/
     HouseNameMeterId[] houseNameMeterIdList;
-    /*
-     *  This callback is attached to the OnBackPressedDidpatcher which is responsible for showing the
-     * exit dialogue when the user pressed the back button.
-     */
-    OnBackPressedCallback callback;
+    int lastEnteredHouseId;
+
     /*
      * This object holds all the data related to the house and
      * is used create a new row in the TableHouse
@@ -90,13 +87,12 @@ public class HouseEntryFragment extends Fragment {
          *Defining the callback and attaching it to the backpresseddispather
          * to handle the back button pressed events.
          */
-        callback = new OnBackPressedCallback(true) {
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 getExitDialoge().show();
             }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+        });
     }
 
     @Override
@@ -122,11 +118,14 @@ public class HouseEntryFragment extends Fragment {
          * Set the house name based on the last entered house id stored in the SharedPreferences.
          * Incrementing 1 in the layout of the list
          */
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
-        houseViewModal.lastEnteredHouseId = sharedPreferences.getInt(getString(R.string.LastEnteredHouseId), 0);
-        houseEntryBinding.textInputEditTextOutlinedHousename.setText(String.format("House%d", houseViewModal.lastEnteredHouseId + 1));
+        SharedPreferences sharedPreferences = requireActivity()
+                .getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
 
-        sharedPreferences.edit().putInt(getString(R.string.LastEnteredHouseId), houseViewModal.lastEnteredHouseId + 1)
+
+        lastEnteredHouseId = sharedPreferences.getInt(getString(R.string.LastEnteredHouseId), 0);
+        houseEntryBinding.textInputEditTextOutlinedHousename.setText(String.format("House%d", (lastEnteredHouseId + 1)));
+
+        sharedPreferences.edit().putInt(getString(R.string.LastEnteredHouseId), lastEnteredHouseId + 1)
                 .apply();
 
         /*
@@ -432,7 +431,7 @@ public class HouseEntryFragment extends Fragment {
                     .putLong(getString(R.string.system_generated_meterid_last_entry), tableHouse.meterid)
                     .apply();
         }
-        tableHouse.houseIdForAutoRoom = (houseViewModal.lastEnteredHouseId + 1);
+        tableHouse.houseIdForAutoRoom = (lastEnteredHouseId + 1);
         houseViewModal.insertHouse(tableHouse);
     }
 

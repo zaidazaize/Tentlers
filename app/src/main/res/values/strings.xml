@@ -35,7 +35,7 @@
     <string name="error_field_recquired">! Error: Field Required</string>
     <string name="houseNameAlreadyExists">!House Name already exits</string>
     <string name="not_provided">!Not Provided</string>
-    <string name="base_ids_sharedpreferences_file">com.example.skdfhsjhf</string>
+    <string name="base_ids_sharedpreferences_file">com.tentlers.baseids</string>
     <string name="system_generated_meterid_last_entry">systemGeneratedMeterId</string>
     <string name="room_name">Room Name</string>
     <string name="use_system_generated_number">Use System Generated Number</string>
@@ -47,7 +47,7 @@
     <string name="room_no_already_used">!Room Number Already Used.</string>
     <string name="add_room">Add Room</string>
     <string name="house">House</string>
-    <string name="first_launch_shared_prefferences">com.example.first.launch.com</string>
+    <string name="first_launch_shared_prefferences">com.tentlers.first.launch</string>
     <string name="is_app_first_launch">is_app_first_launch</string>
     <string name="house_name">House Name</string>
     <string name="tenant_name">Tenant Name</string>

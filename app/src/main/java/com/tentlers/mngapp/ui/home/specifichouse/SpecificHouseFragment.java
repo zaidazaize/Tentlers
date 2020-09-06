@@ -12,8 +12,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.TableHouse;
-import com.tentlers.mngapp.data.tables.TableRooms;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
+import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.databinding.FragmentHouseRoomsListItemBinding;
 import com.tentlers.mngapp.databinding.FragmentSpecificHouseBinding;
 
@@ -150,10 +150,10 @@ public class SpecificHouseFragment extends Fragment {
         /*
          * On gettign the three rooms update its value in setting up those three list items of the rooms.
          */
-        viewModal.getThreeRooms(house.houseId).observe(getViewLifecycleOwner(), new Observer<List<TableRooms>>() {
+        viewModal.getThreeRooms(house.houseId).observe(getViewLifecycleOwner(), new Observer<List<RoomForRoomList>>() {
             @Override
-            public void onChanged(List<TableRooms> tableRooms) {
-                setThreeRooms(tableRooms);
+            public void onChanged(List<RoomForRoomList> roomForRoomLists) {
+                setThreeRooms(roomForRoomLists);
             }
         });
 
@@ -163,10 +163,8 @@ public class SpecificHouseFragment extends Fragment {
     /*
      * This meathod is responsible for setting the three rooms in the specific house fragment.
      */
-    public void setThreeRooms(List<TableRooms> threeRooms) {
-        /*
-         * threeRooms : This list object holds the information about the the three rooms of the house
-         */
+    public void setThreeRooms(List<RoomForRoomList> threeRooms) {
+        /* threeRooms : This list object holds the information about the the three rooms of the house*/
         if (threeRooms != null) {
             int listsize = threeRooms.size();
             /*
@@ -176,62 +174,32 @@ public class SpecificHouseFragment extends Fragment {
              * else as per the data .ie two for 2 rooms and 1 for one rooms.
              */
             FragmentHouseRoomsListItemBinding[] list = new FragmentHouseRoomsListItemBinding[]{binding.roomItemFirst, binding.roomItemSecond, binding.roomItemThird};
-            switch (listsize) {
-                case 0:
-                    for (int i = 0; i < 3; i++) {
-                        setfirstRoom(false, list[i], null);
-                    }
-                    break;
-                case 1:
-                    setfirstRoom(true, list[0], threeRooms.get(0));
-                    for (int i = 1; i < 3; i++) {
-                        setfirstRoom(false, list[i], null);
-                    }
-                    break;
-                case 2:
-                    for (int i = 0; i < 2; i++) {
-                        setfirstRoom(true, list[i], threeRooms.get(i));
-                    }
-                    setfirstRoom(false, list[2], null);
-                    break;
-                case 3:
-                    for (int i = 0; i < 3; i++) {
-                        setfirstRoom(true, list[i], threeRooms.get(i));
-                    }
-                    break;
+
+            if (listsize != 0) {
+                for (int i = 0; i < listsize; i++) {
+                    setfirstRoom(true, list[i], threeRooms.get(i));
+                }
             }
         }
 
     }
 
-    /*
-     * This meathod one by one sets the room visibility and the text.
-     */
-    public void setfirstRoom(boolean isSet, FragmentHouseRoomsListItemBinding v, TableRooms rooms) {
+    /* This meathod one by one sets the room visibility and the text.*/
+    public void setfirstRoom(boolean isSet, FragmentHouseRoomsListItemBinding v, RoomForRoomList rooms) {
         if (isSet) {
             v.roomListItemContainer.setVisibility(View.VISIBLE);
-            /*
-             * Get a refference to all the values in the room object use that in lambda expressions to
-             * handle the empty value.
-             */
-            String roomName = rooms.roomName,
-                    roomNo = String.valueOf(rooms.roomNo),
-                    roomTenant = rooms.tenantsName;
+            /* Get a refference to all the values in the room object use that in lambda expressions to
+             * handle the empty value.*/
+            String roomTenant = rooms.tenantName;
 
-            v.houseRoomListitemRoomNo.setText(roomNo.length() == 0 ?
-                    String.valueOf(0) : roomNo);
+            v.houseRoomListitemRoomNo.setText(String.valueOf(rooms.roomNo));
 
-            v.houseRoomListitemRoomName.setText(roomName == null ?
-                    getString(R.string.not_provided) : roomName);
-
-            v.houseRoomListitemRoomsDate.setText(rooms.date.toString());
+            v.houseRoomListitemRoomName.setText(rooms.roomName);
 
             v.houseRoomListitemRoomTenant.setText(roomTenant == null ?
                     getString(R.string.no_tenant_added) : roomTenant);
 
-            v.houseRoomListitemRoomsTenantStatus.setBackground(rooms.isOcupied ?
-                    getResources().getDrawable(R.drawable.ic_baseline_yes_tenant_24)
-                    : getResources().getDrawable(R.drawable.ic_baseline_no_tenants_24));
+            v.houseRoomListitemRoomsTenantStatus.setVisibility(rooms.isOcupied ? View.VISIBLE : View.GONE);
         } else v.roomListItemContainer.setVisibility(View.GONE);
     }
 
