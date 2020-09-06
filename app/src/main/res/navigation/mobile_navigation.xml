@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.easelife.ui.home.HomeFragment"
+        android:name="com.tentlers.mngapp.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/nav_bills"
-        android:name="com.example.easelife.ui.bills.BillsFragment"
+        android:name="com.tentlers.mngapp.ui.bills.BillsFragment"
         android:label="Bills List"
         tools:layout="@layout/fragment_bills_list" >
         <action
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/nav_tenants"
-        android:name="com.example.easelife.ui.tenants.TenantsFragment"
+        android:name="com.tentlers.mngapp.ui.tenants.TenantsFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_tenants_list" >
         <action
@@ -55,12 +55,12 @@
     </fragment>
     <fragment
         android:id="@+id/nav_houseEntryFragment"
-        android:name="com.example.easelife.ui.home.HouseEntryFragment"
+        android:name="com.tentlers.mngapp.ui.home.HouseEntryFragment"
         tools:layout="@layout/fragment_house_entry" />
 
     <fragment
         android:id="@+id/nav_rooms"
-        android:name="com.example.easelife.ui.rooms.HouseRooms"
+        android:name="com.tentlers.mngapp.ui.rooms.HouseRooms"
         android:label="fragment_house_rooms_list"
         tools:layout="@layout/fragment_house_rooms_list" >
         <action
@@ -80,13 +80,13 @@
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <fragment
         android:id="@+id/nav_specificHouseFragment"
-        android:name="com.example.easelife.ui.home.specifichouse.SpecificHouseFragment"
+        android:name="com.tentlers.mngapp.ui.home.specifichouse.SpecificHouseFragment"
         android:label="fragment_specific_house"
         tools:layout="@layout/fragment_specific_house" >
     </fragment>
     <fragment
         android:id="@+id/nav_roomEnteyFragment"
-        android:name="com.example.easelife.ui.rooms.RoomEnteryFragment"
+        android:name="com.tentlers.mngapp.ui.rooms.RoomEnteryFragment"
         android:label="RoomEnteyFragment" />
     <action
         android:id="@+id/action_global_nav_roomEnteyFragment"
@@ -97,7 +97,7 @@
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <fragment
         android:id="@+id/nav_tenantEntryFragment"
-        android:name="com.example.easelife.ui.tenants.TenantEntryFragment"
+        android:name="com.tentlers.mngapp.ui.tenants.TenantEntryFragment"
         android:label="TenantEntryFragment"
         tools:layout="@layout/fragment_tenant_entry"/>
     <action
@@ -109,7 +109,7 @@
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <fragment
         android:id="@+id/nav_billEntryFragment"
-        android:name="com.example.easelife.ui.bills.BillEntryFragment"
+        android:name="com.tentlers.mngapp.ui.bills.BillEntryFragment"
         android:label="BillEntryFragment"
         tools:layout="@layout/fragment_bill_entry"/>
 
