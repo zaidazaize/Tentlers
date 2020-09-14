@@ -111,6 +111,10 @@
         android:id="@+id/nav_billEntryFragment"
         android:name="com.tentlers.mngapp.ui.bills.BillEntryFragment"
         android:label="BillEntryFragment"
-        tools:layout="@layout/fragment_bill_entry"/>
+        tools:layout="@layout/fragment_bill_entry" />
+    <fragment
+        android:id="@+id/metersFragment"
+        android:name="com.tentlers.mngapp.ui.meters.MetersFragment"
+        android:label="Meter Information" />
 
 </navigation>

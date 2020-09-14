@@ -34,34 +34,53 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <!-- TODO: make view circular and set it in center -->
+
+                        <ImageView
+                            android:id="@+id/tenant_entry_imageView_tenant_photo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_baseline_person_24"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/tenant_entry_imageview_addphoto"
+                            android:layout_width="30sp"
+                            android:layout_height="30sp"
+                            android:src="@drawable/ic_menu_camera"
+                            app:layout_constraintBottom_toBottomOf="@+id/tenant_entry_imageView_tenant_photo"
+                            app:layout_constraintEnd_toEndOf="@+id/tenant_entry_imageView_tenant_photo" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/text_input_layout_outlined_tenant_name"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginStart="@dimen/margin_left_right"
+                        android:layout_marginEnd="@dimen/margin_left_right"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="30"
+                        app:errorEnabled="true"
+                        app:startIconDrawable="@drawable/ic_baseline_tenant_name">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/text_input_layout_outlined_tenant_name"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/text_input_edit_text_outlined_tenant_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10sp"
-                            android:layout_marginTop="@dimen/margin_top_bottom"
-                            android:layout_marginEnd="@dimen/margin_left_right"
-                            app:counterEnabled="true"
-                            app:counterMaxLength="30"
-                            app:errorEnabled="true"
-                            app:startIconDrawable="@drawable/ic_baseline_tenant_name">
+                            android:hint="@string/tenant_name"
+                            android:inputType="textCapWords" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/text_input_edit_text_outlined_tenant_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/tenant_name"
-                                android:inputType="textCapWords" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </LinearLayout>
-
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_tenant_personal_info"
@@ -417,8 +436,11 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
+
         </LinearLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

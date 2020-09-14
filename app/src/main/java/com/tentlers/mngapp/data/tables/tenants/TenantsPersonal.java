@@ -2,6 +2,7 @@ package com.tentlers.mngapp.data.tables.tenants;
 
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 
+import java.io.File;
 import java.sql.Date;
 
 import androidx.room.ColumnInfo;
@@ -61,6 +62,15 @@ public class TenantsPersonal {
     public int totalBills;
     @ColumnInfo
     public int paidBills;
+
+    @ColumnInfo(defaultValue = "NULL")
+    public String imageName;
+    @Ignore
+    public File tenantPhoto;
+
+    public String getImageName() {
+        return imageName;
+    }
 
     public void setHouseId(int houseId) {
         this.houseId = houseId;
@@ -134,6 +144,19 @@ public class TenantsPersonal {
     @Ignore
     public AllMetersData getAllMetersData() {
         return allMetersData;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public File getTenantPhoto() {
+        return tenantPhoto;
+    }
+
+    public File setTenantPhoto(File tenantPhoto) {
+        this.tenantPhoto = tenantPhoto;
+        return this.tenantPhoto;
     }
 
 }

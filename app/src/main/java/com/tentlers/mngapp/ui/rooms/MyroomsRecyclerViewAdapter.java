@@ -16,10 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecyclerViewAdapter.ViewHolder> {
 
+    private final OnRoomItemClickedListener listener;
+
     private List<RoomForRoomList> mRoomList;
 
-    public MyroomsRecyclerViewAdapter() {
-
+    public MyroomsRecyclerViewAdapter(OnRoomItemClickedListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -27,7 +29,7 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_house_rooms_list_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, listener);
     }
 
     @Override
@@ -43,10 +45,14 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
                 holder.isOccupied.setVisibility(View.INVISIBLE);
                 holder.mTenantName.setText(holder.itemView.getContext().getString(R.string.no_tenant_added));
             }
-
+            holder.setPopupMenuImageListener(room.isOcupied);
             holder.mRoomName.setText(room.roomName);
 
         }
+    }
+
+    public RoomForRoomList getRoomAtPosition(int position) {
+        return mRoomList.get(position);
     }
 
     public void setmRoomList(List<RoomForRoomList> roomList) {
@@ -61,18 +67,45 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
         } else return 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mRoomno, mRoomName, mTenantName;
-        public final ImageView isOccupied;
+    public interface OnRoomItemClickedListener {
+        public void onPopUpMenuImageClickListener(View v, int position, boolean isOcupied);
 
-        public ViewHolder(View rootListitem) {
+        public void onRoomItemClickListener(View v, int position);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public final TextView mRoomno, mRoomName, mTenantName;
+        public final ImageView isOccupied, popupMenuImage;
+        private final OnRoomItemClickedListener roomItemClickedListener;
+
+        public ViewHolder(View rootListitem, final OnRoomItemClickedListener listener1) {
             super(rootListitem);
+
+            roomItemClickedListener = listener1;
 
             mRoomno = (TextView) rootListitem.findViewById(R.id.house_room_listitem_room_no);
             mRoomName = (TextView) rootListitem.findViewById(R.id.house_room_listitem_room_name);
             mTenantName = (TextView) rootListitem.findViewById(R.id.house_room_listitem_room_tenant);
             isOccupied = (ImageView) rootListitem.findViewById(R.id.house_room_listitem_rooms_tenant_status);
+            popupMenuImage = (ImageView) rootListitem.findViewById(R.id.house_room_istitem_image_popup_menu);
 
+            rootListitem.setOnClickListener(this);/*handles to show the specific room fragment*/
+
+        }
+
+        /*handles the showing of the popup menu*/
+        public void setPopupMenuImageListener(final boolean occupiedStatus) {
+            popupMenuImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    roomItemClickedListener.onPopUpMenuImageClickListener(v, getLayoutPosition(), occupiedStatus);
+                }
+            });
+        }
+
+        @Override
+        public void onClick(View v) {
+            roomItemClickedListener.onRoomItemClickListener(v, getLayoutPosition());
         }
     }
 }

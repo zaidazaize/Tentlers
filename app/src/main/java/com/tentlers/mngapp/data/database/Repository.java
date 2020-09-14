@@ -406,7 +406,7 @@ public class Repository {
             asyncinsertnewbilldao.updateTotalBillsinTenant(+1, bills[0].tenantId);
             if (bills[0].ismeterPay) {
                 /* fetch meter id using room id and set in the meters table sub-object bills table.*/
-                bills[0].metersData.meterId = asyncinsertnewbilldao.getMeterId(bills[0].metersData.Roomid);
+                bills[0].metersData.setMeterId(asyncinsertnewbilldao.getMeterId(bills[0].metersData.Roomid));
                 asyncinsertnewbilldao.insertMeterReading(bills[0].getMetersData());
             }
             return null;

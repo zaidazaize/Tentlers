@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!--TODO: make the corner radius round.-->
+    <TextView
+        android:id="@+id/meter_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10sp"
+        android:elevation="1dp"
+        android:gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        tools:background="@color/colorAccent"
+        tools:text="New Tenant"
+        tools:textColor="@color/color_house_name" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10sp"
+        android:layout_marginEnd="10sp"
+        android:layout_marginBottom="10sp"
+        android:elevation="1dp"
+        tools:layout_marginEnd="40sp">
+
+        <TextView
+            android:id="@+id/meter_show_bill_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/meter_show_reading"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="5sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            tools:text="Bill Id" />
+
+        <TextView
+            android:id="@+id/meter_bill_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/meter_show_bill_id"
+            android:layout_marginStart="10sp"
+            android:layout_toEndOf="@id/meter_show_bill_id"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            tools:text="58944538" />
+
+        <TextView
+            android:id="@+id/meter_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/meter_show_bill_id"
+            android:layout_alignStart="@id/meter_show_bill_id"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="325534234343" />
+
+        <TextView
+            android:id="@+id/meter_show_reading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5sp"
+            android:text="Reading"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+        <TextView
+            android:id="@+id/meter_reading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/meter_show_reading"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            tools:text="324234" />
+    </RelativeLayout>
+</LinearLayout>

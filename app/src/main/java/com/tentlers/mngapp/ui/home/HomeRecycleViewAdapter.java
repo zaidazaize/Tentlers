@@ -28,7 +28,6 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
     @Override
     public void onBindViewHolder(@NonNull HomeHelper holder, int position) {
 
-
         HouseForHomeFragment tableHouse = mAllHouse.get(position);
         holder.houseid.setText(String.valueOf(position + 1));
         holder.houseName.setText(tableHouse.houseName);
@@ -81,13 +80,13 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
             occupiedRooms = itemView.findViewById(R.id.home_listitem_house_occupiedrooms);
             houseDate = itemView.findViewById(R.id.home_listitem_house_date);
             homeOnClicklistener = listener;
-            ImageView menuImageview = itemView.findViewById(R.id.home_istitem_image_popup_menu);
-            menuImageview.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {/*for showing pop up menu*/
-                    listener.onImageCliked(getLayoutPosition(), v);
-                }
-            });
+            ((ImageView) itemView.findViewById(R.id.home_istitem_image_popup_menu))
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {/*for showing pop up menu*/
+                            listener.onImageCliked(getLayoutPosition(), v);
+                        }
+                    });
             itemView.setOnClickListener(this);
 
         }

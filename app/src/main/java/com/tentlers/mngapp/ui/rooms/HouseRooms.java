@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,21 +34,15 @@ import androidx.navigation.Navigation;
  * Implement the AdapterView.OnItemSelectListener so that it can handle the
  * items selected on the spinner
  */
-public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedListener {
+public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedListener, MyroomsRecyclerViewAdapter.OnRoomItemClickedListener, PopupMenu.OnMenuItemClickListener {
 
-    /*
-     * binding object for the home layout
-     */
+    /* binding object for the home layout*/
     FragmentHouseRoomsListBinding bindingRoom;
 
-    /*
-     * viewModal object holding the ui data
-     */
+    /* viewModal object holding the ui data*/
     HouseViewModal viewModal;
 
-    /*
-     * list of all house names along with their ids stored in the object of "HouseNameIdNoRooms"
-     */
+    /* list of all house names along with their ids stored in the object of "HouseNameIdNoRooms"*/
     List<HouseNameIdNoRooms> nameIdNoofRoomsList;
 
     /*
@@ -63,6 +58,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
      */
     MyroomsRecyclerViewAdapter recyclerViewAdapter;
 
+    int menuImageClicked;/*tells which image in the list is clicked.This is use to fetch the room selected.*/
 
     public HouseRooms() {
     }
@@ -84,7 +80,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         /*
          * Initialise the recycle view adapter.
          */
-        recyclerViewAdapter = new MyroomsRecyclerViewAdapter();
+        recyclerViewAdapter = new MyroomsRecyclerViewAdapter(this);
     }
 
     @Override
@@ -135,10 +131,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         return bindingRoom.getRoot();
     }
 
-    /*
-     * Sets the array list on the array adapter of the spinner
-     * It also checks for the emptyness of the array list
-     */
+    /* Sets the array list on the array adapter of the spinner It also checks for the emptyness of the array list*/
     private void setArrayListonSpinner(ArrayList<String> houseNamearray, List<HouseNameIdNoRooms> houseNameIds) {
         nameIdNoofRoomsList = houseNameIds;
         if (!houseNamearray.isEmpty()) {
@@ -149,10 +142,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         }
     }
 
-    /*
-     * Inflates the menu.
-     * Hide the setting options from the app bar.
-     */
+    /* Inflates the menu. Hide the setting options from the app bar.*/
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_fragment_rooms, menu);
@@ -170,7 +160,6 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
                 Toast.makeText(getContext(), "No house available to add room.", Toast.LENGTH_SHORT).show();
                 return true;
             }
-
             if (noOfRoomsForChosenHouse < 99) {
                 Navigation.findNavController(bindingRoom.getRoot()).navigate(R.id.action_nav_rooms_to_roomEnteyFragment);
             } else {
@@ -181,9 +170,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         return true;
     }
 
-    /*
-     * These both handles the item selection of the listener.
-     */
+    /*These both handles the item selection of the listener.*/
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -206,6 +193,45 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+    }
 
+    /*Handle showing of popup menu. */
+    private void showPopupmenu(View view, boolean isOccupied) {
+        PopupMenu popup = new PopupMenu(requireContext(), view);
+        MenuInflater inflater = popup.getMenuInflater();
+        popup.setOnMenuItemClickListener(this);
+        Menu popupmenu = popup.getMenu();
+        inflater.inflate(R.menu.room_popup_menu, popupmenu);
+        if (isOccupied) {/* set the visibility to add tenant or remove tenant.*/
+            popupmenu.findItem(R.id.room_popup_add_tenant).setVisible(false);
+        } else {
+            popupmenu.findItem(R.id.room_popup_remove_tenant).setVisible(false);
+        }
+        popup.show();
+    }
+
+    @Override
+    public void onPopUpMenuImageClickListener(View v, int position, boolean isOcupied) {
+        menuImageClicked = position;
+        showPopupmenu(v, isOcupied);
+    }
+
+    @Override
+    public void onRoomItemClickListener(View v, int position) {
+        //TODO: set the navigation to specific room fragment:
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.room_popup_add_tenant:
+            case R.id.room_popup_remove_tenant:
+                Toast.makeText(getContext(), "addtenant", Toast.LENGTH_SHORT).show();
+                return true;
+            //TODO: handle the asigning the and designing of the tenants. in the room.
+
+            default:
+                return false;
+        }
     }
 }

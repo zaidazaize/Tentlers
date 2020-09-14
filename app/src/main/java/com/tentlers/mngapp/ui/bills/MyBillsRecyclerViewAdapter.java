@@ -98,7 +98,7 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
         public final ImageView imageViewPaymentstatus, imageViewAmtDesc;
         public final TextView textViewdatetime, paymentStatus, textViewTotalamt, monthlyCharges, aditionalCharges, electricitycharges, tenantName, roomname, housename;
         public BillItemForCard chosenBill;
-        boolean descstate;
+        boolean expandmorestate;
 
         public ViewHolder(View view) {
             super(view);
@@ -121,14 +121,14 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
             imageViewAmtDesc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!descstate) {
-                        imageViewAmtDesc.setImageDrawable(expandMore);
-                        relativeAmtDesc.setVisibility(View.VISIBLE);
-                        descstate = true;
-                    } else {
+                    if (!expandmorestate) {
                         imageViewAmtDesc.setImageDrawable(expandLess);
+                        relativeAmtDesc.setVisibility(View.VISIBLE);
+                        expandmorestate = true;
+                    } else {
+                        imageViewAmtDesc.setImageDrawable(expandMore);
                         relativeAmtDesc.setVisibility(View.GONE);
-                        descstate = false;
+                        expandmorestate = false;
                     }
                 }
             });

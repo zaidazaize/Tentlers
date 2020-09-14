@@ -113,7 +113,7 @@ public class TableHouse {
 
     public void setMeterid(long meterid) {
         this.meterid = meterid;
-        this.allMetersData.meterId = meterid;
+        this.allMetersData.setMeterId(meterid);
     }
 
     public int setNoOfRoomsFromString(String noOfRoomsFromString) {

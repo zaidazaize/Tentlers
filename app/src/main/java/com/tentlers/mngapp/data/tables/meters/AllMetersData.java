@@ -13,7 +13,7 @@ public class AllMetersData {
     public long entryId;
 
     @ColumnInfo(defaultValue = "NULL")
-    public long meterId;
+    private long meterId;
 
     public Date date;
 
@@ -27,4 +27,38 @@ public class AllMetersData {
             this.lastMeterReading = Long.parseLong(lastMeterReading);
         } else this.lastMeterReading = 0;
     }
+
+    public long getMeterId() {
+        return meterId;
+    }
+
+    public void setMeterId(long meterId) {
+        this.meterId = meterId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public long getLastMeterReading() {
+        return lastMeterReading;
+    }
+
+    public void setLastMeterReading(long lastMeterReading) {
+        this.lastMeterReading = lastMeterReading;
+    }
+
+    public int getRoomid() {
+        return Roomid;
+    }
+
+    public void setRoomid(int roomid) {
+        Roomid = roomid;
+    }
+
+
 }

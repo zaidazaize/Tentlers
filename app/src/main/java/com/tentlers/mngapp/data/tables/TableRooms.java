@@ -48,7 +48,7 @@ public class TableRooms {
 
     public void setMeterId(long meterId) {
         this.meterId = meterId;
-        allMetersData.meterId = meterId;
+        allMetersData.setMeterId(meterId);
     }
 
     @Ignore
