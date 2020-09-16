@@ -12,6 +12,8 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class TenantsPersonal {
+    @ColumnInfo(name = "tenantName")
+    public String tenantName;
     @Ignore
     public static final int NOGENDER = 0;
     @Ignore
@@ -36,8 +38,8 @@ public class TenantsPersonal {
      */
     @ColumnInfo()
     public boolean isPersonalInfo;
-    @ColumnInfo()
-    public String tenantName;
+    @Ignore
+    public AllMetersData allMetersData;
     @ColumnInfo(defaultValue = "NULL")
     public int age;
     @ColumnInfo(defaultValue = "0")
@@ -56,8 +58,11 @@ public class TenantsPersonal {
     public boolean nonMeterPay;
     @ColumnInfo(defaultValue = "0")
     public float mFixedCharges;
-    @Ignore
-    public AllMetersData allMetersData = new AllMetersData();
+
+    public TenantsPersonal() {
+        allMetersData = new AllMetersData();
+    }
+
     @ColumnInfo
     public int totalBills;
     @ColumnInfo
@@ -86,7 +91,7 @@ public class TenantsPersonal {
 
     public void setCreateDate() {
         this.createDate = new Date(System.currentTimeMillis());
-        allMetersData.date = createDate;
+        allMetersData.setDate(createDate);
     }
 
     public void setIsPersonalInfo(boolean personalInfo) {

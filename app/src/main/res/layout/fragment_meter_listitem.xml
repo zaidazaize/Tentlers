@@ -1,78 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/meter_gravity_decider"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <!--TODO: make the corner radius round.-->
     <TextView
-        android:id="@+id/meter_status"
+        android:id="@+id/meter_reading_state"
         android:layout_width="wrap_content"
+        android:layout_marginBottom="20sp"
+        android:background="@color/colorAccent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10sp"
-        android:elevation="1dp"
+        android:elevation="2dp"
+        android:paddingStart="5sp"
+        android:paddingEnd="5sp"
         android:gravity="center_horizontal"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        tools:background="@color/colorAccent"
-        tools:text="New Tenant"
-        tools:textColor="@color/color_house_name" />
+        android:textColor="@color/design_default_color_surface"
+        tools:text="New Tenant" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:id="@+id/meter_relativelayout_for_orientation"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="10sp"
+        android:layout_marginBottom="20sp"
         android:layout_marginEnd="10sp"
-        android:layout_marginBottom="10sp"
-        android:elevation="1dp"
-        tools:layout_marginEnd="40sp">
+        android:elevation="2dp"
+        android:padding="5sp">
 
-        <TextView
-            android:id="@+id/meter_show_bill_id"
+        <RelativeLayout
+            android:id="@+id/meter_relativelayout_billId"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/meter_show_reading"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="5sp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-            tools:text="Bill Id" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/meter_bill_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/meter_show_bill_id"
-            android:layout_marginStart="10sp"
-            android:layout_toEndOf="@id/meter_show_bill_id"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            tools:text="58944538" />
+            <TextView
+                android:id="@+id/meter_show_bill_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                tools:text="Bill Id"
+                tools:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
-        <TextView
-            android:id="@+id/meter_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/meter_show_bill_id"
-            android:layout_alignStart="@id/meter_show_bill_id"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            tools:text="325534234343" />
+            <TextView
+                android:id="@+id/meter_bill_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/meter_show_bill_id"
+                android:layout_marginStart="5sp"
+                android:layout_toEndOf="@id/meter_show_bill_id"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="58944538" />
+
+            <TextView
+                android:id="@+id/meter_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/meter_show_bill_id"
+                android:layout_alignStart="@id/meter_show_bill_id"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                tools:text="325534234343" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/meter_show_reading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_marginStart="25sp"
             android:layout_marginEnd="5sp"
+            android:layout_toEndOf="@+id/meter_relativelayout_billId"
             android:text="Reading"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
         <TextView
             android:id="@+id/meter_reading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/meter_show_reading"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="5sp"
+            android:layout_alignStart="@id/meter_show_reading"
+
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="324234" />
     </RelativeLayout>

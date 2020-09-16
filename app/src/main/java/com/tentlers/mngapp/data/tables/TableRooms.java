@@ -11,6 +11,8 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class TableRooms {
+    @Ignore
+    public AllMetersData allMetersData;
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
     public int roomId;
@@ -26,9 +28,8 @@ public class TableRooms {
 
     @ColumnInfo
     public boolean isOcupied;
-
-    @Ignore
-    public AllMetersData allMetersData = new AllMetersData();
+    @ColumnInfo(defaultValue = "NULL")
+    public String tenantName;
 
     @ColumnInfo
     public long meterId;
@@ -41,8 +42,11 @@ public class TableRooms {
 
     @ColumnInfo
     public Date date;
-    @ColumnInfo(defaultValue = "NULL")
-    public String tenantsName;
+
+    public TableRooms() {
+        allMetersData = new AllMetersData();
+    }
+
     @ColumnInfo(defaultValue = "NULL")
     public int tenantId;
 
@@ -62,6 +66,6 @@ public class TableRooms {
 
     public void setDate(Date date) {
         this.date = date;
-        allMetersData.date = date;
+        allMetersData.setDate(date);
     }
 }

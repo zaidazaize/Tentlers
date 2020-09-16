@@ -11,6 +11,8 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Bills {
+    @Ignore
+    public AllMetersData metersData;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo()
@@ -41,20 +43,23 @@ public class Bills {
     public float manuallyEnteredElectricCost;
     @ColumnInfo
     public float totalAmt;
-    @Ignore
-    public AllMetersData metersData = new AllMetersData();
+
+    public Bills() {
+        metersData = new AllMetersData();
+    }
+
     @Ignore
     public boolean ismeterPay;/* to enter data in meter table if it is true.*/
 
     public void setEndMeterR(long endMeterR) {
         this.endMeterR = endMeterR;
-        metersData.lastMeterReading = endMeterR;
+        metersData.setLastMeterReading(endMeterR);
         ismeterPay = true;
     }
 
     public void setCreateDate() {
         this.createDate = new Date(System.currentTimeMillis());
-        metersData.date = createDate;
+        metersData.setDate(createDate);
     }
 
     public void setManuallyEnteredElectricCost(float manuallyEnteredElectricCost) {

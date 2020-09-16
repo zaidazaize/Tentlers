@@ -81,14 +81,14 @@ public interface HouseDao {
     void deleteRoom(TableRooms rooms);
 
     /*gets all the rooms of a house for room list*/
-    @Query("SELECT tablerooms.roomId,roomNo,roomName,isOcupied,tenantsName" +
+    @Query("SELECT tablerooms.roomId,roomNo,roomName,isOcupied,tenantName" +
             " FROM TableRooms" +
             " WHERE tablerooms.houseId = :givenhouseId " +
             "ORDER BY date")
     LiveData<List<RoomForRoomList>> getAllRoomsOfHouse(int givenhouseId);
 
     /*gets three rooms of the house for specific house list*/
-    @Query("SELECT tablerooms.roomId,roomNo,roomName,isOcupied,tenantsName" +
+    @Query("SELECT tablerooms.roomId,roomNo,roomName,isOcupied,tenantName" +
             " FROM TableRooms " +
             "WHERE tablerooms.houseId = :houseidgot" +
             " ORDER BY date LIMIT 3 ")
@@ -161,7 +161,7 @@ public interface HouseDao {
      * This is can handle both the querries for currently active tenant and previously active tenant.
      * in the houses
      */
-    @Query("SELECT tenantspersonal.tenantId, tenantName, houseName,roomName " +
+    @Query("SELECT tenantspersonal.tenantId, tenantspersonal.tenantName, houseName,roomName " +
             "FROM tenantspersonal,tablehouse , tablerooms " +
             "WHERE tenantspersonal.houseId = tablehouse.houseId " +
             "AND tenantspersonal.roomId = tablerooms.roomId " +
@@ -205,6 +205,7 @@ public interface HouseDao {
             "AND bills.isBillPaid = :gotBillPaid ORDER BY bills.createDate DESC")
     LiveData<List<BillItemForCard>> getAllBillForCard(boolean gotBillPaid);
 
+    /* For meters*/
     /* For entering meter reading.*/
     @Insert()
     void insertMeterReading(AllMetersData metersData);
@@ -232,6 +233,10 @@ public interface HouseDao {
     /* get Meter no from room id*/
     @Query("SELECT meterid FROM tablerooms WHERE roomId = :gotRoomId")
     long getMeterId(int gotRoomId);
+
+    /* Get all the reading of a meter*/
+    @Query("SELECT * FROM AllMetersData WHERE meterId = :gotMeterid")
+    LiveData<List<AllMetersData>> getAllMeterReading(long gotMeterid);
 
 }
 

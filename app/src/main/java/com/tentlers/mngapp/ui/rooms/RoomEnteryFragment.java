@@ -16,11 +16,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.TableRooms;
+import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.databinding.FragmentRoomEnteyBinding;
 import com.tentlers.mngapp.ui.home.SaveDialog;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -209,12 +211,13 @@ public class RoomEnteryFragment extends Fragment {
                 return true;
             }
             if (enteyBinding.switchRoomElectricMeterNumberManual.isChecked()) {
-                String meterNumber = enteyBinding.textInputEditTextRoomElectricMeterNo.getText().toString();
+                String meterNumber = Objects.requireNonNull(enteyBinding.textInputEditTextRoomElectricMeterNo.getText()).toString();
                 if (meterNumber.length() != 0) { /*Check for uniqueness*/
 
                     long meterNumberLong = Long.parseLong(meterNumber);
                     if (isMeterNoUnique(meterNumberLong)) {/*set the error to null and add the meter no in the Tableroom object*/
                         tableRooms.setMeterId(meterNumberLong);
+                        tableRooms.getAllMetersData().setOnlyReadingState(AllMetersData.CREATE);/* Set the reading state to create*/
                         enteyBinding.textInputLayoutRoomMeterNo.setError("");
                         return true;
                     } else {/*set the error that meter is not unique*/
@@ -357,6 +360,7 @@ public class RoomEnteryFragment extends Fragment {
      */
     private void saveRoomData() {
         if (tableRooms.isSystemDeside) {
+            tableRooms.getAllMetersData().setReadingState(AllMetersData.CREATE);
             SharedPreferences sh = requireActivity().getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
             tableRooms.setMeterId(sh.getLong(getString(R.string.system_generated_meterid_last_entry), 100000) + 1);
             sh.edit().putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.meterId)

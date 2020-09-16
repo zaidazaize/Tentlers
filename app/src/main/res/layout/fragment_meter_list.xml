@@ -42,7 +42,7 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list"
+                android:id="@+id/meter_recycle_view"
                 android:name="com.tentlers.mngapp.ui.meters.MetersFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

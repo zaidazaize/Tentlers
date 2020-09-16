@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.bills.Bills;
+import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
@@ -305,7 +306,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
 
         if (choosenTenant != null) {
             if (choosenTenant.meterPay) {
-                createdbill.metersData.Roomid = choosenTenant.roomId;
+                createdbill.metersData.setRoomid(choosenTenant.roomId);
                 return isMeterPayValid() && isperUnitvalid();
             }
             if (choosenTenant.nonMeterPay) {
@@ -328,6 +329,8 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
                 return false;
             } else {
                 billEntryBinding.billEntryTextInputEditTextOutlinedFinalMeterReading.setError("");
+                createdbill.getMetersData().setOnlyReadingState(AllMetersData.BILLED);/* Set the state of the meter reading.*/
+                Log.d("allmetersdata", String.valueOf(createdbill.getMetersData().getReadingState()));
                 return true;
             }
         } else return true;
@@ -362,7 +365,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
         if (createdbill.ismeterPay) {
             createdbill.electricCost = createdbill.getMeteredElectricityCost();
             Log.d("billentry", String.valueOf(createdbill.electricCost));
-            Log.d("billEntry", String.valueOf(createdbill.metersData.lastMeterReading));
+            Log.d("billEntry", String.valueOf(createdbill.metersData.getLastMeterReading()));
         }
         createdbill.setTotalAmt();
         viewModal.insertNewBill(createdbill);

@@ -9,6 +9,7 @@ import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
+import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
@@ -32,6 +33,16 @@ public class HouseViewModal extends AndroidViewModel {
     private Repository mRepository;
     private LiveData<List<HouseForHomeFragment>> mAllHouse;
     private int houseIdForRoomEntry;
+
+    private MetersListObj metersListObj;
+
+    public MetersListObj getMetersListObj() {
+        return metersListObj;
+    }
+
+    public void setMetersListObj(MetersListObj metersListObj) {
+        this.metersListObj = metersListObj;
+    }
 
     public HouseViewModal(@NonNull Application application) {
         super(application);
@@ -169,6 +180,11 @@ public class HouseViewModal extends AndroidViewModel {
 
     public LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean withRoomAlloted) {
         return mRepository.getAllTenantNHR(withRoomAlloted);
+    }
+
+    /* Get all the reading of the meter.*/
+    public LiveData<List<AllMetersData>> getAllMeterReadings(long meterId) {
+        return mRepository.getAllMetersReading(meterId);
     }
 
     /* Bill entery fragment*/

@@ -332,7 +332,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
             @Override
             public void afterTextChanged(Editable s) {
                 tenantsPersonal.allMetersData.setLastMeterReadingFromString(s.toString());
-                if (tenantsPersonal.allMetersData.lastMeterReading <= lastMeterReading) {
+                if (tenantsPersonal.allMetersData.getLastMeterReading() <= lastMeterReading) {
                     tenantEntryBinding.textInputEditTextLayoutOutlinedInitialMeterReading.
                             setError(getString(R.string.invalid_entry_meter_reading_is_less_than_last_entered_reading));
 
@@ -508,7 +508,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                 } else {
                     /* enter the meter informations in the tenant personal table this is used to
                      * Meters table if meter pay is selected.*/
-                    tenantsPersonal.allMetersData.lastMeterReading = Integer.parseInt(initialMeterReading);
+                    tenantsPersonal.allMetersData.setLastMeterReading(Integer.parseInt(initialMeterReading));
                     tenantsPersonal.allMetersData.setMeterId(choosenRoom.meterId);
                     return true;
                 }

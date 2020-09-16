@@ -12,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.TableHouse;
+import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.databinding.FragmentHouseRoomsListItemBinding;
@@ -54,9 +55,7 @@ public class SpecificHouseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         viewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
 
-        /*
-         * Get the House the user selected
-         */
+        /* Get the House the user selected */
         house = viewModal.getmShowHouse();
     }
 
@@ -103,43 +102,40 @@ public class SpecificHouseFragment extends Fragment {
             @Override
             public void onChanged(TableHouse tableHouse) {
                 selectedHouse = tableHouse;
-                /*
-                 * Set the address on the address layout
-                 */
-                if (tableHouse.address != null) {
-                    String houseno = String.valueOf(tableHouse.address.houseNo);
+                /* Set the address on the address layout.*/
+                if (tableHouse.getAddress() != null) {
+                    String houseno = String.valueOf(tableHouse.getAddress().houseNo);
                     binding.specificHouseTextviewHouseno.setText(houseno.length() == 0 ? getString(R.string.not_provided) : houseno);
 
 
                     binding.specificHouseLocality.setText(
-                            tableHouse.address.locality == null ? getString(R.string.not_provided)
-                                    : tableHouse.address.locality);
+                            tableHouse.getAddress().locality == null ? getString(R.string.not_provided)
+                                    : tableHouse.getAddress().locality);
 
 
-                    binding.specificHousePostalcode.setText(tableHouse.address.postalcode == null ?
-                            getString(R.string.not_provided) : tableHouse.address.postalcode);
+                    binding.specificHousePostalcode.setText(tableHouse.getAddress().postalcode == null ?
+                            getString(R.string.not_provided) : tableHouse.getAddress().postalcode);
 
-                    binding.specificHouseCity.setText(tableHouse.address.city == null ?
-                            getString(R.string.not_provided) : tableHouse.address.city);
+                    binding.specificHouseCity.setText(tableHouse.getAddress().city == null ?
+                            getString(R.string.not_provided) : tableHouse.getAddress().city);
 
                     binding.specificHouseCountry.setText(
-                            tableHouse.address.country == null ? getString(R.string.not_provided)
-                                    : tableHouse.address.country);
+                            tableHouse.getAddress().country == null ? getString(R.string.not_provided)
+                                    : tableHouse.getAddress().country);
                 }
 
-                /*
-                 * Setting the metter id on the layout.
-                 */
-                binding.specificHouseMeterNo.setText(
-                        tableHouse.meterid == 0 ? getString(R.string.not_provided) : String.valueOf(tableHouse.meterid));
+                /*Setting the metter id on the layout.*/
+                if (tableHouse.getIsMeterIncluded()) {
+                    binding.specificHouseMeterNo.setText(String.valueOf(tableHouse.getMeterid()));
+                } else {
+                    binding.specificHouseMeterNo.setText(getText(R.string.not_provided));
+                    binding.specificViewButtonMeter.setEnabled(false);
+                }
 
             }
         });
 
-
-        /*
-         * Add the listener to "view All" rooms button which transefers the user to the room fragment
-         */
+        /*Add the listener to "view All" rooms button which transefers the user to the room fragment*/
         binding.specificViewButtonRooms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,9 +143,17 @@ public class SpecificHouseFragment extends Fragment {
             }
         });
 
-        /*
-         * On gettign the three rooms update its value in setting up those three list items of the rooms.
-         */
+        /* Add the listener to "view All" meters button which transfers the user to the specific meter fragment or the mter history*/
+        binding.specificViewButtonMeter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedHouse != null) {
+                    viewModal.setMetersListObj(new MetersListObj(selectedHouse.getMeterid(), selectedHouse.getHouseName(), null, true));
+                    Navigation.findNavController(v).navigate(R.id.action_global_metersFragment);
+                }
+            }
+        });
+        /* On getting the three rooms update its value in setting up those three list items of the rooms. */
         viewModal.getThreeRooms(house.houseId).observe(getViewLifecycleOwner(), new Observer<List<RoomForRoomList>>() {
             @Override
             public void onChanged(List<RoomForRoomList> roomForRoomLists) {
