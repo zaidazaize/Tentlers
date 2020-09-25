@@ -5,6 +5,7 @@ import com.tentlers.mngapp.data.tables.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
+import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
@@ -16,6 +17,7 @@ import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
+import java.sql.Date;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -81,14 +83,14 @@ public interface HouseDao {
     void deleteRoom(TableRooms rooms);
 
     /*gets all the rooms of a house for room list*/
-    @Query("SELECT tablerooms.roomId,roomNo,roomName,isOcupied,tenantName" +
-            " FROM TableRooms" +
+    @Query("SELECT tablerooms.roomId,tablerooms.roomNo,tablerooms.roomName,tablerooms.ocupiedStatus,tablerooms.tenantName" +
+            " FROM tableRooms" +
             " WHERE tablerooms.houseId = :givenhouseId " +
             "ORDER BY date")
     LiveData<List<RoomForRoomList>> getAllRoomsOfHouse(int givenhouseId);
 
     /*gets three rooms of the house for specific house list*/
-    @Query("SELECT tablerooms.roomId,roomNo,roomName,isOcupied,tenantName" +
+    @Query("SELECT tablerooms.roomId,tablerooms.roomNo,tablerooms.roomName,tablerooms.ocupiedStatus,tablerooms.tenantName" +
             " FROM TableRooms " +
             "WHERE tablerooms.houseId = :houseidgot" +
             " ORDER BY date LIMIT 3 ")
@@ -116,6 +118,10 @@ public interface HouseDao {
     @Query("SELECT roomNo,roomName FROM tablerooms WHERE houseId = :houseid ORDER BY roomNo DESC")
     LiveData<List<RoomNoName>> getroomNoName(long houseid);
 
+    /*Get all the room data for specific room fragment.*/
+    @Query("SELECT * FROM tablerooms WHERE roomId = :gotRoomId")
+    LiveData<TableRooms> getRoomFromRoomId(int gotRoomId);
+
     /*
      * For Tenants Personal Table
      */
@@ -140,7 +146,7 @@ public interface HouseDao {
     /*
      * for showing the empty rooms in the spinner of tenant entry fragment
      */
-    @Query("SELECT roomId,roomName,isMeterEnabled, meterId FROM tablerooms WHERE houseId = :thehouseId AND isOcupied = :gotOccupied")
+    @Query("SELECT roomId,roomName,isMeterEnabled, meterId FROM tablerooms WHERE houseId = :thehouseId AND ocupiedStatus = :gotOccupied")
     LiveData<List<RoomNoNameId>> getroomNoNameId(int thehouseId, boolean gotOccupied);
 
     /*
@@ -152,8 +158,12 @@ public interface HouseDao {
     /*
      * update the room status to occupied
      */
-    @Query("UPDATE tablerooms SET isOcupied = :gotIsOccupied WHERE roomId = :gotRoomid")
-    void updatetheRoomOccupiedStatus(boolean gotIsOccupied, int gotRoomid);
+    @Query("UPDATE tablerooms SET ocupiedStatus = :gotIsOccupied,tenantName = :gotTenantName,tenantEntryDate = :gotEntryDate WHERE roomId = :gotRoomid")
+    void updatetheRoomOccupiedStatusAndName(boolean gotIsOccupied, int gotRoomid, String gotTenantName, Date gotEntryDate);
+
+//    /*udate the tenant name in the rooms table.*/
+//    @Query("UPDATE tablerooms SET tenantName = :gotTenantName AND tenantEntryDate = :gotEntrydate WHERE roomId = :gotroomId")
+//    void updateTenantNameInRoom(int gotroomId, String gotTenantName, Date gotEntrydate);
 
 
     /* Tenant fragment.
@@ -205,6 +215,17 @@ public interface HouseDao {
             "AND bills.isBillPaid = :gotBillPaid ORDER BY bills.createDate DESC")
     LiveData<List<BillItemForCard>> getAllBillForCard(boolean gotBillPaid);
 
+    /*get three bills for card.*/
+    @Transaction
+    @Query("SELECT billId, bills.createDate, bills.monthlycharge, bills.additionalcharge, bills.totalAmt, " +
+            "bills.electricCost, bills.isBillPaid, tenantspersonal.tenantName, tablehouse.houseName, tablerooms.roomName " +
+            "FROM bills,tenantspersonal,tablehouse,tablerooms " +
+            "WHERE bills.tenantId =  tenantspersonal.tenantId  " +
+            "AND TenantsPersonal.roomId = tablerooms.roomId " +
+            "AND TenantsPersonal.houseId = tableHouse.houseId " +
+            " AND tenantspersonal.roomId = :gotRoomId ORDER BY bills.createDate DESC LIMIT 3")
+    LiveData<List<BillItemForCard>> getThreeBillForRoom(int gotRoomId);
+
     /* For meters*/
     /* For entering meter reading.*/
     @Insert()
@@ -214,21 +235,25 @@ public interface HouseDao {
      * logic of handling which querry to call is handled in repository.*/
     /* new date will be larger than the previous date.*/
 
-    @Query("SELECT lastMeterReading FROM allmetersdata WHERE meterId = :givenMeterId ORDER BY date DESC LIMIT :noOfReadings ")
-    LiveData<Long[]> getLastMeterEntry(long givenMeterId, int noOfReadings);
+    @Query("SELECT lastMeterReading,allmetersdata.date FROM allmetersdata WHERE meterId = :givenMeterId ORDER BY date DESC LIMIT :noOfReadings ")
+    LiveData<LastReadingWithDate> getLastMeterEntry(long givenMeterId, int noOfReadings);
 
-    @Query("SELECT allmetersdata.lastMeterReading "
+    @Query("SELECT allmetersdata.lastMeterReading,allmetersdata.date "
             + "FROM allmetersdata , tablehouse" +
             " WHERE  tablehouse.meterid = allmetersdata.meterId AND tablehouse.houseId = :gotHouseid " +
             "ORDER BY allmetersdata.date DESC LIMIT :noOfreadings ")
-    LiveData<Long[]> getLastMeterReadingForHouse(long gotHouseid, int noOfreadings);
+    LiveData<LastReadingWithDate> getLastMeterReadingForHouse(long gotHouseid, int noOfreadings);
 
-    @Query("SELECT allmetersdata.lastMeterReading "
+    @Query("SELECT allmetersdata.lastMeterReading,allmetersdata.date "
             + "FROM allmetersdata , tablerooms" +
             " WHERE tablerooms.meterId = allmetersdata.meterId" +
             " AND tablerooms.roomId = :gotRoomid " +
             "ORDER BY allmetersdata.date DESC LIMIT :noOfReadings ")
-    LiveData<Long[]> getLastMeterReadingForRoom(int gotRoomid, int noOfReadings);
+    LiveData<LastReadingWithDate> getLastMeterReadingForRoom(int gotRoomid, int noOfReadings);
+
+    /*get create date of meter.It returns the date on which meter was added to the room/house*/
+    @Query("SELECT date FROM allmetersdata where meterId = :gotMeterId and readingState = :gotreadingState LIMIT 1")
+    LiveData<Date> getMeterCreateDate(long gotMeterId, int gotreadingState);
 
     /* get Meter no from room id*/
     @Query("SELECT meterid FROM tablerooms WHERE roomId = :gotRoomId")

@@ -123,10 +123,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_specificHouseFragment:
                     case R.id.nav_tenantEntryFragment:
                     case R.id.nav_billEntryFragment:
-                        hideAllNavigation(false);
+                    case R.id.nav_metersFragment:
+                        hideAllNavigation(true);
                         break;
                     default:
-                        hideAllNavigation(true);
+                        hideAllNavigation(false);
                 }
             }
         });
@@ -139,9 +140,9 @@ public class MainActivity extends AppCompatActivity {
      * Generally used in entry screens.
      */
     private void hideAllNavigation(boolean ishide) {
-        setBottomNavigationVisibility(ishide);
-        setAppbarVisibility(ishide);
-        setDraderVisibility(ishide);
+        setBottomNavigationVisibility(!ishide);
+        setAppbarVisibility(!ishide);
+        setDraderVisibility(!ishide);
     }
 
     @Override

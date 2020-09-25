@@ -81,4 +81,5 @@
     <string name="no_active_tenant_found">No Active Tenant Found</string>
     <string name="no_of_rooms_must_be_less_than_100">! Number of rooms must be less than 100</string>
     <string name="LastEnteredHouseId">LastEnteredHouseId</string>
+    <string name="remove_tenant">Remove Tenant</string>
 </resources>

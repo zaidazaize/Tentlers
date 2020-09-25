@@ -50,7 +50,7 @@ public class MetersFragment extends Fragment {
             meterListBinding.meterRoomName.setText(chossenMeter.roomName);
         }
         /*set the title of the toolbar.*/
-
+        meterListBinding.meterToolbar.setTitle(String.valueOf(chossenMeter.meterId));
         final MetersRecyclerViewAdapter metersRecyclerViewAdapter = new MetersRecyclerViewAdapter();
 
         meterListBinding.meterRecycleView.setAdapter(metersRecyclerViewAdapter);

@@ -170,7 +170,8 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         return true;
     }
 
-    /*These both handles the item selection of the listener.*/
+    /* This handles the when the house name is selected in the spinner
+    and it handles to querry all the rooms to shown in the recycle view.*/
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -179,7 +180,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
          * And no of rooms to the global variable for checking the entry permission.
          */
         viewModal.setHouseIdForRoomEntry(nameIdNoofRoomsList.get(position).houseId);
-        noOfRoomsForChosenHouse = nameIdNoofRoomsList.get(position).noOfRooms;
+        noOfRoomsForChosenHouse = nameIdNoofRoomsList.get(position).noOfRooms;/* It ensures total rooms is less than 100*/
         viewModal.getAllRooms(nameIdNoofRoomsList.get(position).houseId)
                 .observe(getViewLifecycleOwner(), new Observer<List<RoomForRoomList>>() {
                     @Override
@@ -218,13 +219,16 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
 
     @Override
     public void onRoomItemClickListener(View v, int position) {
-        //TODO: set the navigation to specific room fragment:
+        viewModal.setRoomIdForSpecificRoom(recyclerViewAdapter.getRoomAtPosition(position).roomId);/*set the room id to view it in specific room fragment*/
+        Navigation.findNavController(bindingRoom.getRoot()).navigate(R.id.action_nav_rooms_to_specificRoomFragment);
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.room_popup_add_tenant:
+                return true;
+
             case R.id.room_popup_remove_tenant:
                 Toast.makeText(getContext(), "addtenant", Toast.LENGTH_SHORT).show();
                 return true;

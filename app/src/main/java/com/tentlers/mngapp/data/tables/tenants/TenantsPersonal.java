@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class TenantsPersonal {
     @ColumnInfo(name = "tenantName")
-    public String tenantName;
+    private String tenantName;
     @Ignore
     public static final int NOGENDER = 0;
     @Ignore
@@ -164,4 +164,11 @@ public class TenantsPersonal {
         return this.tenantPhoto;
     }
 
+    public String getTenantName() {
+        return tenantName;
+    }
+
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
+    }
 }

@@ -15,7 +15,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 @Database(entities = {TableHouse.class, TableRooms.class, TenantsPersonal.class, AllMetersData.class, Bills.class},
-        version = 3, exportSchema = false)
+        version = 1, exportSchema = false)
 
 @TypeConverters({Converters.class})
 public abstract class DatabaseHouse extends RoomDatabase {

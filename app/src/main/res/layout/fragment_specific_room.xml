@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/specific_room_linear_layout_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="30sp"
+                    android:layout_marginBottom="30sp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/specific_room_name"
+                        style="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/circle_house_number"
+                        android:gravity="center"
+                        android:textColor="@color/color_house_name"
+                        tools:text="Room1" />
+
+                    <TextView
+                        android:id="@+id/specific_room_create_date"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        tools:text="12/33/2020" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/specific_room_linear_layout_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_room_linear_layout_name"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="30sp"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/specific_room_fab_add_tenant"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:srcCompat="@drawable/ic_add_tenant" />
+
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_tenant" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/specific_room_fab_create_bill"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:srcCompat="@drawable/ic_bill_pay_24" />
+
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Create Bill" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/specific_room_fab_delete_house"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:srcCompat="@drawable/ic_baseline_delete_outline_24" />
+
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delete Room" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/specific_room_show_tenant_name"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_room_linear_layout_buttons"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:text="Tenant Name" />
+
+                <TextView
+                    android:id="@+id/specific_room_tenant_name"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_room_show_tenant_name"
+                    android:layout_alignStart="@id/specific_room_show_tenant_name"
+                    android:layout_toStartOf="@+id/specific_room_tenant_entry_date" />
+
+                <TextView
+                    android:id="@+id/specific_room_tenant_entry_date"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/specific_room_tenant_name"
+                    android:layout_toStartOf="@id/specific_room_image_popup_menu"
+                    tools:text="12/34/5699" />
+
+                <ImageView
+                    android:id="@+id/specific_room_image_popup_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/specific_room_tenant_name"
+                    android:layout_alignParentEnd="true"
+                    android:paddingStart="5sp"
+                    android:paddingEnd="5sp"
+                    android:src="@drawable/ic_baseline_more_vert_24" />
+
+                <RelativeLayout
+                    android:id="@+id/specific_room_relative_layout_meter_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_room_tenant_name"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="15sp">
+
+
+                    <TextView
+                        android:id="@+id/specific_room_show_meter_number"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignWithParentIfMissing="true"
+                        android:layout_alignParentStart="true"
+                        android:text="Meter Number" />
+
+                    <TextView
+                        android:id="@+id/specific_room_meter_number"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/specific_room_show_meter_number"
+                        android:layout_alignStart="@id/specific_room_show_meter_number"
+                        android:layout_toStartOf="@+id/specific_room_meter_assign_date"
+                        tools:text="123344" />
+
+                    <TextView
+                        android:id="@+id/specific_room_meter_assign_date"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/specific_room_meter_number"
+                        android:layout_toStartOf="@+id/specific_room_image_view_all_meter_reading"
+                        tools:text="12/34/5699" />
+
+                    <ImageView
+                        android:id="@+id/specific_room_image_view_all_meter_reading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/specific_room_meter_number"
+                        android:layout_alignParentEnd="true"
+                        android:paddingStart="5sp"
+                        android:paddingEnd="5sp"
+                        app:srcCompat="@drawable/ic_baseline_arrow_forward_ios_24"
+                        app:tint="@color/colorPrimary" />
+
+                    <LinearLayout
+                        android:id="@+id/specific_room_linear_layout_lastmeter_reading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/specific_room_meter_number"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="10sp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/specific_room_show_last_reading"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Last Reading" />
+
+                        <TextView
+                            android:id="@+id/specific_room_last_reading"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15sp"
+                            tools:text="123344" />
+                        <!--TODO: add unit to meter reading-->
+
+                        <TextView
+                            android:id="@+id/specific_room_last_reading_date"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20sp"
+                            tools:text="123344" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/specific_room_show_bills"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_room_relative_layout_meter_info"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="20sp"
+                    android:text="Bills Info" />
+
+                <Button
+                    android:id="@+id/specific_view_button_rooms"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/specific_room_show_bills"
+                    android:layout_alignParentEnd="true"
+                    android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+                    android:drawableTint="@color/colorPrimary"
+                    android:text="View All"
+                    android:textAllCaps="false" />
+                <!--TODO:add empty view for no vill available-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_room_show_bills"
+                    android:layout_marginTop="10sp"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/specific_room_bill1"
+                        layout="@layout/fragment_bills_list_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10sp"
+                        android:layout_marginTop="20sp"
+                        android:visibility="gone" />
+
+                    <include
+                        android:id="@+id/specific_room_bill2"
+                        layout="@layout/fragment_bills_list_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10sp"
+                        android:layout_marginTop="20sp"
+                        android:visibility="gone" />
+
+                    <include
+                        android:id="@+id/specific_room_bill3"
+                        layout="@layout/fragment_bills_list_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10sp"
+                        android:layout_marginTop="20sp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

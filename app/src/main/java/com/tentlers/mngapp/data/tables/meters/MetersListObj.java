@@ -1,6 +1,6 @@
 package com.tentlers.mngapp.data.tables.meters;
 
-
+/*this is used to pass the choosen meter's data via a viewmodal to the specific meter fragment.*/
 public class MetersListObj {
 
     public long meterId;

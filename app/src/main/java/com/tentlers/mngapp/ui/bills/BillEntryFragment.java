@@ -20,6 +20,7 @@ import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
+import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
 import com.tentlers.mngapp.databinding.FragmentBillEntryBinding;
@@ -273,11 +274,11 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
 
                         if (tenantBillEntry.meterPay) {
                             viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(tenantBillEntry.roomId))
-                                    .observe(getViewLifecycleOwner(), new Observer<Long[]>() {
+                                    .observe(getViewLifecycleOwner(), new Observer<LastReadingWithDate>() {
                                         @Override
-                                        public void onChanged(Long[] longs) {
-                                            billEntryBinding.billEntryStartMeterReading.setText(String.valueOf(longs[0]));
-                                            createdbill.initialMeterR = longs[0];
+                                        public void onChanged(LastReadingWithDate lastReadingWithDate) {
+                                            billEntryBinding.billEntryStartMeterReading.setText(String.valueOf(lastReadingWithDate.getLastMeterReading()));
+                                            createdbill.initialMeterR = lastReadingWithDate.getLastMeterReading();
                                         }
                                     });
                         }

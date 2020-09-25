@@ -1,275 +1,278 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="8sp"
-    android:layout_marginTop="4sp"
-    android:layout_marginEnd="8sp"
-    android:layout_marginBottom="4sp"
-    app:cardCornerRadius="5dp"
-    app:cardPreventCornerOverlap="true">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8sp"
+        android:layout_marginTop="4sp"
+        android:layout_marginEnd="8sp"
+        android:layout_marginBottom="4sp"
+        app:cardCornerRadius="5dp"
+        app:cardPreventCornerOverlap="true">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8sp"
-            android:layout_marginTop="8sp"
-            android:layout_marginEnd="8sp"
-            android:layout_marginBottom="0sp">
-
-            <TextView
-                android:id="@+id/bill_show_order_date"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@id/bill_show_order_date"
-                android:text="Billing Date" />
-
-            <TextView
-                android:id="@+id/bill_textview_time_and_date"
-                style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bill_show_order_date"
-                tools:text="12:30 AM  12 Dec 2020" />
-
-            <ImageView
-                android:id="@+id/bill_imageview_payment_status_icon"
-                android:layout_width="24sp"
-                android:layout_height="24sp"
-                android:layout_above="@id/bill_textview_payment_status"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10sp"
-                tools:src="@drawable/ic_baseline_info_24" />
-
-            <TextView
-                android:id="@+id/bill_textview_payment_status"
-                style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bill_textview_payment_status"
-                android:layout_alignBaseline="@id/bill_textview_time_and_date"
-                android:layout_alignParentEnd="true"
-                tools:text="Pending" />
-
-            <View
-                android:id="@+id/bill_card_line_below_billingdate"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/bill_textview_time_and_date"
-                android:layout_marginTop="5sp"
-                android:background="@color/cardview_dark_background" />
-
-            <TextView
-                android:id="@+id/bill_card_show_totalAmount"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bill_card_line_below_billingdate"
-                android:layout_marginTop="15sp"
-                android:text="Total Amount" />
-
-            <ImageView
-                android:layout_marginTop="2sp"
-                android:layout_marginBottom="2sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/bill_total_amt"
-                android:layout_alignBottom="@id/bill_total_amt"
-                android:layout_toStartOf="@id/bill_total_amt"
-                android:src="@drawable/ic_bill_pay_24"
-                app:tint="?attr/colorControlNormal" />
-
-            <TextView
-                android:id="@+id/bill_total_amt"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/bill_card_show_totalAmount"
-                android:layout_marginEnd="5sp"
-                android:layout_toStartOf="@id/bill_imageview_amt_desc"
-                tools:text="39204.34" />
-
-            <ImageView
-                android:id="@+id/bill_imageview_amt_desc"
-                android:layout_width="34sp"
-                android:layout_height="34sp"
-                android:layout_alignBottom="@id/bill_total_amt"
-                android:layout_alignParentEnd="true"
-                android:contentDescription="Show amount Discription"
-                android:src="@drawable/ic_baseline_expand_more_24" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/bill_card_relative_view_amt_desc"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8sp"
-            android:layout_marginTop="8sp"
-            android:layout_marginEnd="8sp"
-            android:visibility="gone">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/bill_card_show_monthly_charge"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="10sp"
-                android:layout_marginEnd="30sp"
-                android:text="Monthly Charges" />
+                android:layout_marginStart="8sp"
+                android:layout_marginTop="8sp"
+                android:layout_marginEnd="8sp"
+                android:layout_marginBottom="0sp">
 
-            <ImageView
-                android:layout_marginTop="2sp"
-                android:id="@+id/ImageView_monthly_charge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/bill_card_show_monthly_charge"
-                android:layout_alignBottom="@id/bill_card_show_monthly_charge"
-                android:layout_toEndOf="@id/bill_card_show_monthly_charge"
-                android:src="@drawable/ic_bill_pay_24"
-                app:tint="?attr/colorControlNormal" />
+                <TextView
+                    android:id="@+id/bill_show_order_date"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/bill_show_order_date"
+                    android:text="Billing Date" />
 
-            <TextView
-                android:id="@+id/bill_card_monthly_charges"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/ImageView_monthly_charge"
-                tools:text="35803" />
+                <TextView
+                    android:id="@+id/bill_textview_time_and_date"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bill_show_order_date"
+                    tools:text="12:30 AM  12 Dec 2020" />
 
-            <TextView
-                android:id="@+id/bill_card_show_aditional_charge"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bill_card_show_monthly_charge"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="15sp"
-                android:text="Additional Charge" />
+                <ImageView
+                    android:id="@+id/bill_imageview_payment_status_icon"
+                    android:layout_width="24sp"
+                    android:layout_height="24sp"
+                    android:layout_above="@id/bill_textview_payment_status"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10sp"
+                    tools:src="@drawable/ic_baseline_info_24" />
 
-            <ImageView
-                android:layout_marginTop="2sp"
-                android:id="@+id/ImageView_additional_charge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ImageView_monthly_charge"
-                android:layout_alignStart="@id/ImageView_monthly_charge"
-                android:layout_alignTop="@id/bill_card_show_aditional_charge"
-                android:layout_alignBottom="@id/bill_card_show_aditional_charge"
-                android:src="@drawable/ic_bill_pay_24"
-                app:tint="?attr/colorControlNormal" />
+                <TextView
+                    android:id="@+id/bill_textview_payment_status"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bill_textview_payment_status"
+                    android:layout_alignBaseline="@id/bill_textview_time_and_date"
+                    android:layout_alignParentEnd="true"
+                    tools:text="Pending" />
 
-            <TextView
-                android:id="@+id/bill_card_additional_charges"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/bill_card_show_aditional_charge"
-                android:layout_toEndOf="@id/ImageView_additional_charge"
-                tools:text="35803" />
+                <View
+                    android:id="@+id/bill_card_line_below_billingdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/bill_textview_time_and_date"
+                    android:layout_marginTop="5sp"
+                    android:background="@color/cardview_dark_background" />
 
+                <TextView
+                    android:id="@+id/bill_card_show_totalAmount"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bill_card_line_below_billingdate"
+                    android:layout_marginTop="15sp"
+                    android:text="Total Amount" />
 
-            <TextView
-                android:id="@+id/bill_card_show_electricity_charge"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bill_card_show_aditional_charge"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="15sp"
-                android:text="Electricity Charge" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/bill_total_amt"
+                    android:layout_alignBottom="@id/bill_total_amt"
+                    android:layout_marginTop="2sp"
+                    android:layout_marginBottom="2sp"
+                    android:layout_toStartOf="@id/bill_total_amt"
+                    android:src="@drawable/ic_bill_pay_24"
+                    app:tint="?attr/colorControlNormal" />
 
-            <ImageView
-                android:layout_marginTop="2sp"
-                android:id="@+id/ImageView_electricity_charge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ImageView_additional_charge"
-                android:layout_alignStart="@id/ImageView_monthly_charge"
-                android:layout_alignTop="@id/bill_card_show_electricity_charge"
-                android:layout_alignBottom="@id/bill_card_show_electricity_charge"
-                android:src="@drawable/ic_bill_pay_24"
-                app:tint="?attr/colorControlNormal" />
+                <TextView
+                    android:id="@+id/bill_total_amt"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/bill_card_show_totalAmount"
+                    android:layout_marginEnd="5sp"
+                    android:layout_toStartOf="@id/bill_imageview_amt_desc"
+                    tools:text="39204.34" />
 
-            <TextView
-                android:id="@+id/bill_card_electricty_charges"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/bill_card_show_electricity_charge"
-                android:layout_toEndOf="@id/ImageView_additional_charge"
-                tools:text="35803" />
+                <ImageView
+                    android:id="@+id/bill_imageview_amt_desc"
+                    android:layout_width="34sp"
+                    android:layout_height="34sp"
+                    android:layout_alignBottom="@id/bill_total_amt"
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="Show amount Discription"
+                    android:src="@drawable/ic_baseline_expand_more_24" />
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8sp"
-            android:layout_marginEnd="8sp"
-            android:layout_marginBottom="8sp">
-
-            <View
-                android:id="@+id/bill_card_line_below_total_amt"
+            <RelativeLayout
+                android:id="@+id/bill_card_relative_view_amt_desc"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="15sp"
-                android:background="@color/cardview_dark_background" />
-
-            <TextView
-                android:id="@+id/bill_card_show_tenant_name"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/bill_card_line_below_total_amt"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="5sp"
-                android:text="To" />
+                android:layout_marginStart="8sp"
+                android:layout_marginTop="8sp"
+                android:layout_marginEnd="8sp"
+                android:visibility="gone">
 
-            <TextView
-                android:id="@+id/bill_card_tenant_name"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/bill_card_show_monthly_charge"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="30sp"
+                    android:text="Monthly Charges" />
+
+                <ImageView
+                    android:id="@+id/ImageView_monthly_charge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/bill_card_show_monthly_charge"
+                    android:layout_alignBottom="@id/bill_card_show_monthly_charge"
+                    android:layout_marginTop="2sp"
+                    android:layout_toEndOf="@id/bill_card_show_monthly_charge"
+                    android:src="@drawable/ic_bill_pay_24"
+                    app:tint="?attr/colorControlNormal" />
+
+                <TextView
+                    android:id="@+id/bill_card_monthly_charges"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/ImageView_monthly_charge"
+                    tools:text="35803" />
+
+                <TextView
+                    android:id="@+id/bill_card_show_aditional_charge"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bill_card_show_monthly_charge"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="15sp"
+                    android:text="Additional Charge" />
+
+                <ImageView
+                    android:id="@+id/ImageView_additional_charge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ImageView_monthly_charge"
+                    android:layout_alignStart="@id/ImageView_monthly_charge"
+                    android:layout_alignTop="@id/bill_card_show_aditional_charge"
+                    android:layout_alignBottom="@id/bill_card_show_aditional_charge"
+                    android:layout_marginTop="2sp"
+                    android:src="@drawable/ic_bill_pay_24"
+                    app:tint="?attr/colorControlNormal" />
+
+                <TextView
+                    android:id="@+id/bill_card_additional_charges"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/bill_card_show_aditional_charge"
+                    android:layout_toEndOf="@id/ImageView_additional_charge"
+                    tools:text="35803" />
+
+
+                <TextView
+                    android:id="@+id/bill_card_show_electricity_charge"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bill_card_show_aditional_charge"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="15sp"
+                    android:text="Electricity Charge" />
+
+                <ImageView
+                    android:id="@+id/ImageView_electricity_charge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ImageView_additional_charge"
+                    android:layout_alignStart="@id/ImageView_monthly_charge"
+                    android:layout_alignTop="@id/bill_card_show_electricity_charge"
+                    android:layout_alignBottom="@id/bill_card_show_electricity_charge"
+                    android:layout_marginTop="2sp"
+                    android:src="@drawable/ic_bill_pay_24"
+                    app:tint="?attr/colorControlNormal" />
+
+                <TextView
+                    android:id="@+id/bill_card_electricty_charges"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/bill_card_show_electricity_charge"
+                    android:layout_toEndOf="@id/ImageView_additional_charge"
+                    tools:text="35803" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/bill_card_show_tenant_name"
-                android:layout_alignParentEnd="true"
-                tools:text="Tenant Name" />
+                android:layout_marginStart="8sp"
+                android:layout_marginEnd="8sp"
+                android:layout_marginBottom="8sp">
 
-            <TextView
-                android:id="@+id/bill_card_house_name"
-                style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/bill_card_room_name"
-                android:layout_marginTop="3sp"
-                android:layout_toStartOf="@id/bill_card_room_name"
-                tools:text="House1" />
+                <View
+                    android:id="@+id/bill_card_line_below_total_amt"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="15sp"
+                    android:background="@color/cardview_dark_background" />
 
-            <TextView
-                android:id="@+id/bill_card_room_name"
-                style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bill_card_tenant_name"
-                android:layout_alignEnd="@id/bill_card_tenant_name"
-                android:layout_marginStart="10sp"
-                tools:text="Room1" />
+                <TextView
+                    android:id="@+id/bill_card_show_tenant_name"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bill_card_line_below_total_amt"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="5sp"
+                    android:text="To" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/bill_card_tenant_name"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/bill_card_show_tenant_name"
+                    android:layout_alignParentEnd="true"
+                    tools:text="Tenant Name" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/bill_card_house_name"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/bill_card_room_name"
+                    android:layout_marginTop="3sp"
+                    android:layout_toStartOf="@id/bill_card_room_name"
+                    tools:text="House1" />
 
-</com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/bill_card_room_name"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bill_card_tenant_name"
+                    android:layout_alignEnd="@id/bill_card_tenant_name"
+                    android:layout_marginStart="10sp"
+                    tools:text="Room1" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

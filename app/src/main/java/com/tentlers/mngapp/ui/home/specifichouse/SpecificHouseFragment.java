@@ -2,6 +2,7 @@ package com.tentlers.mngapp.ui.home.specifichouse;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -169,32 +170,32 @@ public class SpecificHouseFragment extends Fragment {
      */
     public void setThreeRooms(List<RoomForRoomList> threeRooms) {
         /* threeRooms : This list object holds the information about the the three rooms of the house*/
-        if (threeRooms != null) {
-            int listsize = threeRooms.size();
-            /*
-             * array of the binding objects for the three rooms
-             * The all three list items are from the room fragment list item they are invisible their visibility is on the basis of the room
-             * room data availabel . if mare than three of three rooms are present then all three are shown
-             * else as per the data .ie two for 2 rooms and 1 for one rooms.
-             */
-            FragmentHouseRoomsListItemBinding[] list = new FragmentHouseRoomsListItemBinding[]{binding.roomItemFirst, binding.roomItemSecond, binding.roomItemThird};
+        int listsize = threeRooms.size();
+        Log.d("specificHOuse", String.valueOf(listsize));
+        /*
+         * array of the binding objects for the three rooms
+         * The all three list items are from the room fragment list item they are invisible their visibility is on the basis of the room
+         * room data availabel . if mare than three of three rooms are present then all three are shown
+         * else as per the data .ie two for 2 rooms and 1 for one rooms.
+         */
+        FragmentHouseRoomsListItemBinding[] list = new FragmentHouseRoomsListItemBinding[]{binding.roomItemFirst, binding.roomItemSecond, binding.roomItemThird};
 
-            if (listsize != 0) {
-                for (int i = 0; i < listsize; i++) {
-                    setfirstRoom(true, list[i], threeRooms.get(i));
-                }
+        if (listsize != 0) {
+            for (int i = 0; i < listsize; i++) {
+                setfirstRoom(true, list[i], threeRooms.get(i));
             }
         }
+
 
     }
 
     /* This meathod one by one sets the room visibility and the text.*/
     public void setfirstRoom(boolean isSet, FragmentHouseRoomsListItemBinding v, RoomForRoomList rooms) {
-        if (isSet) {
-            v.roomListItemContainer.setVisibility(View.VISIBLE);
+        v.getRoot().setVisibility(View.VISIBLE);
             /* Get a refference to all the values in the room object use that in lambda expressions to
              * handle the empty value.*/
             String roomTenant = rooms.tenantName;
+        v.houseRoomIstitemImagePopupMenu.setVisibility(View.INVISIBLE);/*make the popup icon invisible*/
 
             v.houseRoomListitemRoomNo.setText(String.valueOf(rooms.roomNo));
 
@@ -203,8 +204,7 @@ public class SpecificHouseFragment extends Fragment {
             v.houseRoomListitemRoomTenant.setText(roomTenant == null ?
                     getString(R.string.no_tenant_added) : roomTenant);
 
-            v.houseRoomListitemRoomsTenantStatus.setVisibility(rooms.isOcupied ? View.VISIBLE : View.GONE);
-        } else v.roomListItemContainer.setVisibility(View.GONE);
+        v.houseRoomListitemRoomsTenantStatus.setVisibility(rooms.ocupiedStatus ? View.VISIBLE : View.GONE);
     }
 
     /* Dialog for confirming the delete of the house.*/

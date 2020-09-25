@@ -123,7 +123,7 @@ public class HouseEntryFragment extends Fragment {
                 .getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
 
         lastEnteredHouseId = sharedPreferences.getInt(getString(R.string.LastEnteredHouseId), 0);
-        houseEntryBinding.textInputEditTextOutlinedHousename.setText(String.format("House%d", (lastEnteredHouseId + 1)));
+        houseEntryBinding.textInputEditTextOutlinedHousename.setText(getString(R.string.house) + (lastEnteredHouseId + 1));//TODO: use resource string with place holders.
         /*
          * Assing the hangler to the cances sign .
          * It is responsible for showing the exit dialogue.
@@ -144,7 +144,7 @@ public class HouseEntryFragment extends Fragment {
         houseEntryBinding.toolbarHouseEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.meuitem_house_save) {
+                if (item.getItemId() == R.id.menutem_house_save) {
                     if (checkForDataValidity()) {
                         getSaveDialoge().show();
                     }

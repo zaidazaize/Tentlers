@@ -30,7 +30,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.MyAuthorities;
+import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
+import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
@@ -224,15 +226,13 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                 setAutoGenerateSwitchAndInput();
                 if (choosenRoom.isMeterEnabled) {//fetch for reading only if the meter is enabled;
                     viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(choosenRoom.roomId)).observe(getViewLifecycleOwner(),
-                            new Observer<Long[]>() {
+                            new Observer<LastReadingWithDate>() {
                                 @Override
-                                public void onChanged(Long[] longs) {
-                                    if (longs.length != 0) {
-                                        lastMeterReading = longs[0];
-                                        tenantEntryBinding.tenantEntryStartMeterReading.setText(String.valueOf(lastMeterReading));
-                                    } else {
-                                        tenantEntryBinding.tenantEntryStartMeterReading.setText(String.valueOf(0));
-                                    }
+                                public void onChanged(LastReadingWithDate lastReadingWithDate) {
+                                    lastMeterReading = lastReadingWithDate.getLastMeterReading();
+                                    tenantEntryBinding.tenantEntryStartMeterReading.setText(String.valueOf(lastMeterReading));
+
+
                                 }
                             });
                 }
@@ -444,7 +444,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
      */
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.meuitem_house_save) {
+        if (item.getItemId() == R.id.menutem_house_save) {
             if (isTenantValid()) {
                 getSaveDialoge().show();
             }
@@ -466,13 +466,14 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         /*
          * name entered in the name entry field should not be null.
          */
-        String tenantName = Objects.requireNonNull(tenantEntryBinding.textInputEditTextOutlinedTenantName.getText()).toString();
+        String tenantName = tenantEntryBinding.textInputEditTextOutlinedTenantName.getText().toString();
         if (tenantName.length() == 0) {
             tenantEntryBinding.textInputLayoutOutlinedTenantName.setError(getString(R.string.error_field_recquired));
             tenantEntryBinding.textInputLayoutOutlinedTenantName.requestFocus();
             return false;
         } else {
-            tenantsPersonal.tenantName = tenantName;
+            tenantsPersonal.setTenantName(tenantName);
+            Log.d("tenantName", tenantsPersonal.getTenantName());
             tenantEntryBinding.textInputLayoutOutlinedTenantName.setError("");
         }
 
@@ -510,6 +511,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                      * Meters table if meter pay is selected.*/
                     tenantsPersonal.allMetersData.setLastMeterReading(Integer.parseInt(initialMeterReading));
                     tenantsPersonal.allMetersData.setMeterId(choosenRoom.meterId);
+                    tenantsPersonal.getAllMetersData().setOnlyReadingState(AllMetersData.TENANT_ENTRY);
                     return true;
                 }
             }

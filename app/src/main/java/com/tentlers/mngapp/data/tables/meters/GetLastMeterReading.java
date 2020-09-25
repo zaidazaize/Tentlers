@@ -1,5 +1,6 @@
 package com.tentlers.mngapp.data.tables.meters;
 
+/*this object is used to generate the querry and fetch the meter reading.*/
 public class GetLastMeterReading {
     public boolean isHouseIdForhouseMeter;
     public boolean isRoomId;

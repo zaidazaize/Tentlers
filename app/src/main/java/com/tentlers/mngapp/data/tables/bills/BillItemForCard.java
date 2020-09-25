@@ -4,6 +4,7 @@ package com.tentlers.mngapp.data.tables.bills;
 import java.sql.Date;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
 
 /* this is used to handle all the date used in the each card of bill.*/
 public class BillItemForCard {
@@ -19,6 +20,7 @@ public class BillItemForCard {
 
     @ColumnInfo(name = "electricCost")
     public float electricCost;
+    /*TODO: change electric cost to electric charges.*/
 
     @ColumnInfo(name = "monthlycharge")
     public float monthlycharge;
@@ -37,4 +39,10 @@ public class BillItemForCard {
 
     @ColumnInfo(name = "roomName")
     public String roomName;
+
+    public static final boolean VIEW_MORE = true;
+    public static final boolean VIEW_LESS = false;
+    @Ignore
+    public boolean amtDescState;
+
 }

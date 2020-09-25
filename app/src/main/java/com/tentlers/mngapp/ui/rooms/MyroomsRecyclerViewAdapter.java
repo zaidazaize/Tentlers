@@ -1,5 +1,6 @@
 package com.tentlers.mngapp.ui.rooms;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,21 +35,21 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        if (getItemCount() != 0) {
+
             RoomForRoomList room = mRoomList.get(position);
             holder.mRoomno.setText(String.valueOf(room.roomNo));
 
-            if (room.isOcupied) {
-                holder.isOccupied.setVisibility(View.VISIBLE);
-                holder.mTenantName.setText(room.tenantName);
-            } else {
-                holder.isOccupied.setVisibility(View.INVISIBLE);
-                holder.mTenantName.setText(holder.itemView.getContext().getString(R.string.no_tenant_added));
-            }
-            holder.setPopupMenuImageListener(room.isOcupied);
-            holder.mRoomName.setText(room.roomName);
-
+        if (room.ocupiedStatus) {
+            holder.isOccupied.setVisibility(View.VISIBLE);
+            holder.mTenantName.setText(room.tenantName);
+            Log.d("tenantName", room.tenantName);
+        } else {
+            holder.isOccupied.setVisibility(View.INVISIBLE);
+            holder.mTenantName.setText(holder.itemView.getContext().getString(R.string.no_tenant_added));
         }
+        holder.setPopupMenuImageListener(room.ocupiedStatus);
+        holder.mRoomName.setText(room.roomName);
+
     }
 
     public RoomForRoomList getRoomAtPosition(int position) {
@@ -68,9 +69,9 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
     }
 
     public interface OnRoomItemClickedListener {
-        public void onPopUpMenuImageClickListener(View v, int position, boolean isOcupied);
+        void onPopUpMenuImageClickListener(View v, int position, boolean isOcupied);
 
-        public void onRoomItemClickListener(View v, int position);
+        void onRoomItemClickListener(View v, int position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

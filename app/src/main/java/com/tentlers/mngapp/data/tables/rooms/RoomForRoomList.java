@@ -12,8 +12,8 @@ public class RoomForRoomList {
     @ColumnInfo(name = "roomName")
     public String roomName;
 
-    @ColumnInfo(name = "isOcupied")
-    public boolean isOcupied;
+    @ColumnInfo(name = "ocupiedStatus")
+    public boolean ocupiedStatus;
 
     @ColumnInfo(name = "tenantName")
     public String tenantName;

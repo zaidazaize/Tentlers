@@ -7,12 +7,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/meter_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <RelativeLayout
                 android:id="@+id/meter_relativelayout_house_room_info"
+                android:layout_below="@id/meter_toolbar"
+                android:background="@color/colorAccent"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -42,17 +49,18 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_below="@id/meter_relativelayout_house_room_info"
                 android:id="@+id/meter_recycle_view"
                 android:name="com.tentlers.mngapp.ui.meters.MetersFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="?actionBarSize"
                 app:layoutManager="LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/meter_recycle_view"
                 tools:context=".ui.meters.MetersFragment"
                 tools:listitem="@layout/fragment_meter_listitem" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

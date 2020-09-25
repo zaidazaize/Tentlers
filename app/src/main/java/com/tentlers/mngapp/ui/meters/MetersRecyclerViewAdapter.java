@@ -78,6 +78,7 @@ public class MetersRecyclerViewAdapter extends RecyclerView.Adapter<MetersRecycl
             meterReadingState = view.findViewById(R.id.meter_reading_state);
             orientationChanger = view.findViewById(R.id.meter_gravity_decider);
 
+
         }
 
         public AllMetersData getChosenReading() {

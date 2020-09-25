@@ -9,6 +9,7 @@ import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
+import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
@@ -21,6 +22,7 @@ import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
+import java.sql.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,7 @@ public class HouseViewModal extends AndroidViewModel {
     private int houseIdForRoomEntry;
 
     private MetersListObj metersListObj;
+    private int roomIdForSpecificRoom;
 
     public MetersListObj getMetersListObj() {
         return metersListObj;
@@ -127,11 +130,23 @@ public class HouseViewModal extends AndroidViewModel {
         return mRepository.getRoomNoName(parentid);
     }
 
+    /*get the room data for specific room fragment*/
+    public LiveData<TableRooms> getRoomFromRoomId(int roomId) {
+        return mRepository.getRoomFromRoomId(roomId);
+    }
+
+    public int getRoomIdForSpecificRoom() {
+        return roomIdForSpecificRoom;
+    }
+
+    public void setRoomIdForSpecificRoom(int roomIdForSpecificRoom) {
+        this.roomIdForSpecificRoom = roomIdForSpecificRoom;
+    }
+
     /*
      * Manupulating the Room Table for the room entry modification adition and deletion of room data.
      */
     public void insertNewRoom(TableRooms rooms) {
-
         mRepository.insetNewRoom(rooms);
     }
 
@@ -174,8 +189,12 @@ public class HouseViewModal extends AndroidViewModel {
         mRepository.insertNewMeterReading(metersData);
     }
 
-    public LiveData<Long[]> getLastEnteredMeterEntry(GetLastMeterReading lastMeterReading) {
+    public LiveData<LastReadingWithDate> getLastEnteredMeterEntry(GetLastMeterReading lastMeterReading) {
         return mRepository.getLastEnteredMeterReading(lastMeterReading);
+    }
+
+    public LiveData<Date> getMeterCreateDate(long meterId) {
+        return mRepository.getMeterCreateDate(meterId);
     }
 
     public LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean withRoomAlloted) {
@@ -202,5 +221,9 @@ public class HouseViewModal extends AndroidViewModel {
 
     public LiveData<List<BillItemForCard>> getAllBillForCard(boolean isBillActive) {
         return mRepository.getAllBillForCard(isBillActive);
+    }
+
+    public LiveData<List<BillItemForCard>> getThreeBillForCard(int roomId) {
+        return mRepository.getThreeBillForCard(roomId);
     }
 }

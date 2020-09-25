@@ -9,6 +9,7 @@ import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
+import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
@@ -57,7 +58,7 @@ public class Repository {
     // Meathod to insert new house in database
     /* Also created new rooms in the rooms table*/
     public void insertNewHouse(TableHouse dataTable) {
-        new AsyncNewInsertDatabase(mdao).execute(dataTable);
+        new AsyncInsertNewHouse(mdao).execute(dataTable);
     }
 
     public void deleteHouse(TableHouse tableHouse) {
@@ -114,6 +115,11 @@ public class Repository {
 
     public LiveData<List<RoomNoName>> getRoomNoName(long parentid) {
         return mdao.getroomNoName(parentid);
+    }
+
+    /* Get the specific room selected.*/
+    public LiveData<TableRooms> getRoomFromRoomId(int roomId) {
+        return mdao.getRoomFromRoomId(roomId);
     }
 
     /*
@@ -185,15 +191,20 @@ public class Repository {
     }
 
     /* Based on the data given repository will call the respective dao function to fetch the last meter reading.*/
-    public LiveData<Long[]> getLastEnteredMeterReading(GetLastMeterReading meterDataObj) {
+    public LiveData<LastReadingWithDate> getLastEnteredMeterReading(GetLastMeterReading meterDataObj) {
         if (meterDataObj.isMeterid) {
             return mdao.getLastMeterEntry(meterDataObj.meterId, meterDataObj.noOfReadings);
         } else if (meterDataObj.isRoomId) {
             return mdao.getLastMeterReadingForRoom(meterDataObj.roomId, meterDataObj.noOfReadings);
         } else if (meterDataObj.isHouseIdForhouseMeter) {
-            return mdao.getLastMeterReadingForRoom(meterDataObj.houseId, meterDataObj.noOfReadings);
+            return mdao.getLastMeterReadingForHouse(meterDataObj.houseId, meterDataObj.noOfReadings);
         }
         return null;
+    }
+
+    /* Get the date on which meter was created From all meters table.*/
+    public LiveData<Date> getMeterCreateDate(long meterid) {
+        return mdao.getMeterCreateDate(meterid, AllMetersData.CREATE);
     }
 
     /* Get all tenant list for tenant fragment*/
@@ -222,6 +233,10 @@ public class Repository {
     /* gets data for card in bills*/
     public LiveData<List<BillItemForCard>> getAllBillForCard(boolean isBillPaid) {
         return mdao.getAllBillForCard(isBillPaid);
+    }
+
+    public LiveData<List<BillItemForCard>> getThreeBillForCard(int roomId) {
+        return mdao.getThreeBillForRoom(roomId);
     }
 
     private static class AsyncDeleteHouse extends AsyncTask<TableHouse, Void, Void> {
@@ -256,9 +271,13 @@ public class Repository {
         protected Void doInBackground(TableRooms... tableRooms) {
             tableRooms[0].setDate(new Date(System.currentTimeMillis()));
             mAsyncRoomDao.insetNewRoomRecord(tableRooms[0]);
-            mAsyncRoomDao.updateNoOfRoomsInTableHosue(+1, tableRooms[0].houseId);
-            if (tableRooms[0].isMeterEnabled) {
+            mAsyncRoomDao.updateNoOfRoomsInTableHosue(+1, tableRooms[0].getHouseId());
+
+            /*add first meter reading if meter is enabled*/
+            if (tableRooms[0].isMeterEnabled()) {
                 mAsyncRoomDao.insertMeterReading(tableRooms[0].getAllMetersData());
+
+                /*updates all meters table with new meters data*/
             }
             return null;
         }
@@ -274,7 +293,7 @@ public class Repository {
         @Override
         protected Void doInBackground(TableRooms... tableRooms) {
             mAsyncDeleteRoomDao.deleteRoom(tableRooms[0]);
-            mAsyncDeleteRoomDao.updateNoOfRoomsInTableHosue(-1, tableRooms[0].houseId);
+            mAsyncDeleteRoomDao.updateNoOfRoomsInTableHosue(-1, tableRooms[0].getHouseId());
             return null;
         }
     }
@@ -302,18 +321,19 @@ public class Repository {
 
         @Override
         protected Void doInBackground(TenantsPersonal... tenantsPersonals) {
-            /*
-             * This will insert the current date
-             */
-            tenantsPersonals[0].setCreateDate();
-            mAsyncCreateTenantDao.insertNewTenant(tenantsPersonals[0]);
+            /*This will insert the current date*/
+            TenantsPersonal tenantsPersonals1 = tenantsPersonals[0];
+            tenantsPersonals1.setCreateDate();
+            mAsyncCreateTenantDao.insertNewTenant(tenantsPersonals1);
 
-            if (tenantsPersonals[0].isRoomAlloted) {
-                mAsyncCreateTenantDao.updateNoOfEmptyRoomsInTable(1, tenantsPersonals[0].houseId);
-                mAsyncCreateTenantDao.updatetheRoomOccupiedStatus(true, tenantsPersonals[0].roomId);
+            if (tenantsPersonals1.isRoomAlloted) {
+                mAsyncCreateTenantDao.updateNoOfEmptyRoomsInTable(1, tenantsPersonals1.houseId);
+                mAsyncCreateTenantDao.updatetheRoomOccupiedStatusAndName(true, tenantsPersonals1.roomId,
+                        tenantsPersonals1.getTenantName(), tenantsPersonals1.getCreateDate());
             }
-            if (tenantsPersonals[0].meterPay) {
-                mAsyncCreateTenantDao.insertMeterReading(tenantsPersonals[0].getAllMetersData());
+            if (tenantsPersonals1.meterPay) {
+                mAsyncCreateTenantDao.insertMeterReading(tenantsPersonals1.getAllMetersData());
+
             }
             return null;
         }
@@ -346,7 +366,6 @@ public class Repository {
             return null;
         }
     }
-    //TODO:add meathod to update for paid bills;
 
     private static class AsyncInsertNewMeterReading extends AsyncTask<AllMetersData, Void, Void> {
         private final HouseDao asyncInsertNewMeterReadingDao;
@@ -363,10 +382,10 @@ public class Repository {
     }
 
     //private parallel thread for inserting
-    private static class AsyncNewInsertDatabase extends AsyncTask<TableHouse, Void, Void> {
+    private static class AsyncInsertNewHouse extends AsyncTask<TableHouse, Void, Void> {
         private final HouseDao asyncDao;
 
-        public AsyncNewInsertDatabase(HouseDao mdao) {
+        public AsyncInsertNewHouse(HouseDao mdao) {
             asyncDao = mdao;
         }
 
@@ -380,9 +399,9 @@ public class Repository {
             if (house.isRoomAutoGenerated()) {
                 for (int i = 1; i <= house.getNoOfRooms(); i++) {
                     TableRooms rooms1 = new TableRooms();
-                    rooms1.roomName = "Room" + i;
-                    rooms1.roomNo = i;
-                    rooms1.houseId = house.getHouseIdForAutoRoom();
+                    rooms1.setRoomName("Room" + i);
+                    rooms1.setRoomNo(i);
+                    rooms1.setHouseId(house.getHouseIdForAutoRoom());
                     rooms1.setDate(date);
                     asyncDao.insetNewRoomRecord(rooms1);
                 }
@@ -390,11 +409,13 @@ public class Repository {
 
             if (house.getIsMeterIncluded()) {/*Insert meter reading in the meters table*/
                 asyncDao.insertMeterReading(house.getAllMetersData());
+
             }
             return null;
         }
     }
 
+    //TODO:add meathod to update the no of paid bills;
     private static class AsyncInsertNewBill extends AsyncTask<Bills, Void, Void> {
         private final HouseDao asyncinsertnewbilldao;
 

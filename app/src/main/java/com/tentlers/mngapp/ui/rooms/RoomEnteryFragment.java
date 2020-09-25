@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,7 +82,7 @@ public class RoomEnteryFragment extends Fragment {
         /*
          *  Assing the house id from the view modal tho tableroom object.
          */
-        tableRooms.houseId = viewModal.getHouseIdForRoomEntry();
+        tableRooms.setHouseId(viewModal.getHouseIdForRoomEntry());
 
         /*assign the observer to the all house meter ids  and all room meter ids.*/
         viewModal.getAllHousemeterids().observe(this, new Observer<List<Long>>() {
@@ -138,7 +139,7 @@ public class RoomEnteryFragment extends Fragment {
         enteyBinding.toolbarRoomEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.meuitem_house_save) {
+                if (item.getItemId() == R.id.menutem_house_save) {
                     if (checkforDataValidity()) {
                         getSaveDialoge().show();
                     }
@@ -154,7 +155,6 @@ public class RoomEnteryFragment extends Fragment {
         enteyBinding.switchRoomElectricMeterPermission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                tableRooms.isMeterEnabled = isChecked;
                 enteyBinding.layoutRoomMeterNumber.setVisibility(isChecked ? View.VISIBLE : View.GONE);
 
             }
@@ -164,7 +164,6 @@ public class RoomEnteryFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                tableRooms.isSystemDeside = !isChecked; /*  This is use for auto generating meter number*/
                 enteyBinding.textInputLayoutRoomMeterNo.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                 enteyBinding.switchRoomElectricMeterNumberSystemDecide.setChecked(!isChecked);
             }
@@ -184,7 +183,7 @@ public class RoomEnteryFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                tableRooms.allMetersData.setLastMeterReadingFromString(s.toString());
+                tableRooms.getAllMetersData().setLastMeterReadingFromString(s.toString());
             }
         });
 
@@ -207,9 +206,13 @@ public class RoomEnteryFragment extends Fragment {
      */
     private boolean isMeterValid() {
         if (enteyBinding.switchRoomElectricMeterPermission.isChecked()) {
+            tableRooms.setMeterEnabled(true);/*Set meter enabled state*/
+            tableRooms.getAllMetersData().setOnlyReadingState(AllMetersData.CREATE);/* Set the reading state to create*/
             if (enteyBinding.switchRoomElectricMeterNumberSystemDecide.isChecked()) {/*system generated meter number will be unique*/
+                tableRooms.setSystemDeside(true);/*Set system decide state*/
                 return true;
-            }
+            } else tableRooms.setSystemDeside(false);
+
             if (enteyBinding.switchRoomElectricMeterNumberManual.isChecked()) {
                 String meterNumber = Objects.requireNonNull(enteyBinding.textInputEditTextRoomElectricMeterNo.getText()).toString();
                 if (meterNumber.length() != 0) { /*Check for uniqueness*/
@@ -217,7 +220,7 @@ public class RoomEnteryFragment extends Fragment {
                     long meterNumberLong = Long.parseLong(meterNumber);
                     if (isMeterNoUnique(meterNumberLong)) {/*set the error to null and add the meter no in the Tableroom object*/
                         tableRooms.setMeterId(meterNumberLong);
-                        tableRooms.getAllMetersData().setOnlyReadingState(AllMetersData.CREATE);/* Set the reading state to create*/
+
                         enteyBinding.textInputLayoutRoomMeterNo.setError("");
                         return true;
                     } else {/*set the error that meter is not unique*/
@@ -230,6 +233,8 @@ public class RoomEnteryFragment extends Fragment {
                     return false;
                 }
             }
+        } else {
+            tableRooms.setMeterEnabled(false);
         }
 
         return true;
@@ -239,6 +244,7 @@ public class RoomEnteryFragment extends Fragment {
      * This meathod is responsible for checking the uniquenes of the meter number inserted
      */
     private boolean isMeterNoUnique(long getmeterno) {
+        /*TODO: fetch meter nos from all meters data where reding state is create*/
         /*
          * Check for uniqueness in room ids
          */
@@ -282,7 +288,7 @@ public class RoomEnteryFragment extends Fragment {
              * Add the room name in the table room object
              */
             enteyBinding.textInputLayoutOutlinedRoomName.setError("");
-            tableRooms.roomName = roomName;
+            tableRooms.setRoomName(roomName);
             return true;
         } else {
             enteyBinding.textInputLayoutOutlinedRoomName.setError(getString(R.string.room_name_already_exists));
@@ -326,7 +332,7 @@ public class RoomEnteryFragment extends Fragment {
                  * Set error to null and add the value to the tableroom object
                  */
                 enteyBinding.textInputLayoutOutlinedRoomNo.setError("");
-                tableRooms.roomNo = roomNoInt;
+                tableRooms.setRoomNo(roomNoInt);
                 return true;
             } else {
                 enteyBinding.textInputLayoutOutlinedRoomNo.setError(getString(R.string.room_no_already_used));
@@ -359,12 +365,14 @@ public class RoomEnteryFragment extends Fragment {
      * meter id if user has enabled the system generated meter id.
      */
     private void saveRoomData() {
-        if (tableRooms.isSystemDeside) {
-            tableRooms.getAllMetersData().setReadingState(AllMetersData.CREATE);
+        Log.d("isSystemDecide", String.valueOf(tableRooms.isSystemDeside()));
+        if (tableRooms.isSystemDeside()) {
             SharedPreferences sh = requireActivity().getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
-            tableRooms.setMeterId(sh.getLong(getString(R.string.system_generated_meterid_last_entry), 100000) + 1);
-            sh.edit().putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.meterId)
+
+            tableRooms.setMeterId((sh.getLong(getString(R.string.system_generated_meterid_last_entry), 100000)) + 1);
+            sh.edit().putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.getMeterId())
                     .apply();
+            Log.d("shardPrefferences", String.valueOf(tableRooms.getMeterId()));
         }
         viewModal.insertNewRoom(tableRooms);
     }
