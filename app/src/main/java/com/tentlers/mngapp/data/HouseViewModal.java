@@ -39,6 +39,8 @@ public class HouseViewModal extends AndroidViewModel {
     private MetersListObj metersListObj;
     private int roomIdForSpecificRoom;
 
+    private int tenantIdForSpecificTenant;
+
     public MetersListObj getMetersListObj() {
         return metersListObj;
     }
@@ -173,6 +175,15 @@ public class HouseViewModal extends AndroidViewModel {
         mRepository.updateTenant(tenantsPersonal);
     }
 
+    /*For specific tenant Frogment*/
+    public int getTenantIdForSpecificTenant() {
+        return tenantIdForSpecificTenant;
+    }
+
+    public void setTenantIdForSpecificTenant(int gotid) {
+        this.tenantIdForSpecificTenant = gotid;
+    }
+
     /*Tenant entry table */
     /*Getting the values of House name and id which meet the condition.*/
     public LiveData<List<HouseNameAndId>> getHouseNameIdTEspinner() {
@@ -201,14 +212,29 @@ public class HouseViewModal extends AndroidViewModel {
         return mRepository.getAllTenantNHR(withRoomAlloted);
     }
 
+    /*get all of selected tenant*/
+    public LiveData<TenantsPersonal> getTenantFromId(int tenantIdForSpecificTenant) {
+        return mRepository.getTenantFromId(tenantIdForSpecificTenant);
+    }
+
+    /*Get room name and house name for the specific tenant fragment*/
+    public LiveData<MetersListObj> getHouseRoomNameFromRoomId(int roomid) {
+        return mRepository.getHouseRoomNameFromRoomId(roomid);
+    }
+
     /* Get all the reading of the meter.*/
     public LiveData<List<AllMetersData>> getAllMeterReadings(long meterId) {
         return mRepository.getAllMetersReading(meterId);
     }
 
+    /* Get house name from house id*/
+    public LiveData<String> getHouseNameFromHouseId(int houseid) {
+        return mRepository.getHouseNameFromHouseId(houseid);
+    }
+
     /* Bill entery fragment*/
-    public LiveData<TenantBillEntry> getSelectedTenant(int tenantId) {
-        return mRepository.getSelectedTenant(tenantId);
+    public LiveData<TenantBillEntry> getSelectedTenantForBill(int tenantId) {
+        return mRepository.getSelectedTenantForBill(tenantId);
     }
 
     public void insertNewBill(Bills bills) {

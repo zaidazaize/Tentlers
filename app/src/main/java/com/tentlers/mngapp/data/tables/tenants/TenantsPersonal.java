@@ -111,8 +111,8 @@ public class TenantsPersonal {
         }
     }
 
-    public String getGender(int gender) {
-        switch (gender) {
+    public String getGender() {
+        switch (this.gender) {
             case TenantsPersonal.MALE:
                 return "Male";
 
@@ -122,7 +122,7 @@ public class TenantsPersonal {
             case TenantsPersonal.OTHER:
                 return "Other";
             default:
-                return "0";
+                return "Not Specified";
         }
     }
 
@@ -171,4 +171,9 @@ public class TenantsPersonal {
     public void setTenantName(String tenantName) {
         this.tenantName = tenantName;
     }
+
+    public boolean isElectricChageEnabled() {
+        return meterPay || nonMeterPay;
+    }
 }
+

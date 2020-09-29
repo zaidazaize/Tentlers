@@ -44,10 +44,17 @@
         android:id="@+id/nav_tenants"
         android:name="com.tentlers.mngapp.ui.tenants.TenantsFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_tenants_list" >
+        tools:layout="@layout/fragment_tenants_list">
         <action
             android:id="@+id/action_nav_tenants_to_tenantEntryFragment"
             app:destination="@id/nav_tenantEntryFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_nav_tenants_to_specificTenantFragment"
+            app:destination="@id/nav_specificTenantFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
@@ -72,7 +79,7 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_nav_rooms_to_specificRoomFragment"
-            app:destination="@id/specificRoomFragment"
+            app:destination="@id/nav_specificRoomFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
@@ -93,6 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_roomEnteyFragment"
+        tools:layout="@layout/fragment_room_entey"
         android:name="com.tentlers.mngapp.ui.rooms.RoomEnteryFragment"
         android:label="RoomEnteyFragment" />
     <action
@@ -132,8 +140,13 @@
         app:popEnterAnim="@android:anim/slide_in_left"
         app:popExitAnim="@android:anim/slide_out_right" />
     <fragment
-        android:id="@+id/specificRoomFragment"
+        android:id="@+id/nav_specificRoomFragment"
         android:name="com.tentlers.mngapp.ui.rooms.specificroom.SpecificRoomFragment"
-        android:label="SpecificRoomFragment" />
+        android:label="SpecificRoomFragment"
+        tools:layout="@layout/fragment_specific_tenant" />
+    <fragment
+        android:id="@+id/nav_specificTenantFragment"
+        android:name="com.tentlers.mngapp.ui.tenants.specifictenant.SpecificTenantFragment"
+        android:label="SpecificTenantFragment" />
 
 </navigation>

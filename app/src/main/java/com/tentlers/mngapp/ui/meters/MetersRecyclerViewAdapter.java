@@ -1,6 +1,5 @@
 package com.tentlers.mngapp.ui.meters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,13 +34,12 @@ public class MetersRecyclerViewAdapter extends RecyclerView.Adapter<MetersRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.setChosenReading(allMetersList.get(position));
-        Log.d("meterreading", String.valueOf(holder.chosenReading.getReadingState()));
         if (currentReadingState != holder.chosenReading.getReadingState()) {
             holder.meterReadingState.setVisibility(View.VISIBLE);
             holder.meterReadingState.setText(holder.chosenReading.getReadingState() == AllMetersData.BILLED ?
                     AllMetersData.BILLING_STATUS : holder.chosenReading.getHeadingText());
             currentReadingState = holder.chosenReading.getReadingState();
-        }
+        } else holder.meterReadingState.setVisibility(View.GONE);
 
     }
 

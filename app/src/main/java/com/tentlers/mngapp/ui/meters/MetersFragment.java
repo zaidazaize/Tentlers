@@ -45,10 +45,19 @@ public class MetersFragment extends Fragment {
                              Bundle savedInstanceState) {
         meterListBinding = FragmentMeterListBinding.inflate(getLayoutInflater(), container, false);
 
-        meterListBinding.meterHouseName.setText(chossenMeter.houseName);
+        /*set room name if meter is attached to room else set only house name*/
         if (!chossenMeter.isOnlyHouse) {
             meterListBinding.meterRoomName.setText(chossenMeter.roomName);
-        }
+
+            /*set the house name after fetching it from the table*/
+            houseViewModal.getHouseNameFromHouseId(chossenMeter.houseId).observe(getViewLifecycleOwner(), new Observer<String>() {
+                @Override
+                public void onChanged(String s) {
+                    meterListBinding.meterHouseName.setText(s);
+                }
+            });
+        } else meterListBinding.meterHouseName.setText(chossenMeter.houseName);
+
         /*set the title of the toolbar.*/
         meterListBinding.meterToolbar.setTitle(String.valueOf(chossenMeter.meterId));
         final MetersRecyclerViewAdapter metersRecyclerViewAdapter = new MetersRecyclerViewAdapter();

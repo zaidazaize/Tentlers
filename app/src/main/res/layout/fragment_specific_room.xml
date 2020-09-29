@@ -127,17 +127,28 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <View
+                    android:id="@+id/specific_room_line_below_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/specific_room_linear_layout_buttons"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:background="@color/dividing_line_color" />
+
                 <TextView
+                    android:layout_below="@id/specific_room_line_below_buttons"
                     android:id="@+id/specific_room_show_tenant_name"
                     style="@style/TextAppearance.MaterialComponents.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/specific_room_linear_layout_buttons"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="10sp"
                     android:text="Tenant Name" />
 
                 <TextView
+                    tools:text="@string/tenant_name"
                     android:id="@+id/specific_room_tenant_name"
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="wrap_content"
@@ -199,19 +210,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@id/specific_room_meter_number"
-                        android:layout_toStartOf="@+id/specific_room_image_view_all_meter_reading"
+                        android:layout_toStartOf="@+id/specific_room_button_view_all_meter_reading"
                         tools:text="12/34/5699" />
 
-                    <ImageView
-                        android:id="@+id/specific_room_image_view_all_meter_reading"
+                    <Button
+                        android:id="@+id/specific_room_button_view_all_meter_reading"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/specific_room_meter_number"
+                        android:layout_alignBaseline="@id/specific_room_meter_number"
                         android:layout_alignParentEnd="true"
-                        android:paddingStart="5sp"
-                        android:paddingEnd="5sp"
-                        app:srcCompat="@drawable/ic_baseline_arrow_forward_ios_24"
-                        app:tint="@color/colorPrimary" />
+                        android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+                        android:drawableTint="@color/colorPrimary"
+                        android:text="View All"
+                        android:textAllCaps="false" />
 
                     <LinearLayout
                         android:id="@+id/specific_room_linear_layout_lastmeter_reading"

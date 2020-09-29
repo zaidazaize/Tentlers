@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MyTenantsRecyclerViewAdapter extends RecyclerView.Adapter<MyTenantsRecyclerViewAdapter.ViewHolder> {
 
     private List<TenantNameHouseRoom> mTenantList;
+    OnTenantClickListener tenantClickListener;
 
-    public MyTenantsRecyclerViewAdapter() {
+    public MyTenantsRecyclerViewAdapter(OnTenantClickListener listener) {
+        tenantClickListener = listener;
     }
 
     @NonNull
@@ -25,7 +27,11 @@ public class MyTenantsRecyclerViewAdapter extends RecyclerView.Adapter<MyTenants
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_tenants_list_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, tenantClickListener);
+    }
+
+    public TenantNameHouseRoom getItemAtPosition(int position) {
+        return mTenantList.get(position);
     }
 
     @Override
@@ -44,20 +50,32 @@ public class MyTenantsRecyclerViewAdapter extends RecyclerView.Adapter<MyTenants
         return 0;
     }
 
+    public interface OnTenantClickListener {
+        public void onTenantClicked(View v, int position);
+    }
+
     public void setTenantList(List<TenantNameHouseRoom> tenantList) {
         mTenantList = tenantList;
         notifyDataSetChanged();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mTenantName, mHouseName, mRoomName;
         public TenantNameHouseRoom chossenTenant;
+        OnTenantClickListener onTenantClickListener;
 
-        public ViewHolder(View itemview) {
+        public ViewHolder(View itemview, OnTenantClickListener listener) {
             super(itemview);
+            onTenantClickListener = listener;
             mTenantName = itemview.findViewById(R.id.tenant_listitem_tenant_name);
             mHouseName = itemview.findViewById(R.id.tenant_listitem_tenant_house_name);
             mRoomName = itemview.findViewById(R.id.tenant_listitem_tenant_room_name);
+            itemview.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onTenantClickListener.onTenantClicked(v, getAdapterPosition());
         }
     }
 }

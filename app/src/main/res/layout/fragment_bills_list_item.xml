@@ -65,7 +65,7 @@
                 <View
                     android:id="@+id/bill_card_line_below_billingdate"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_below="@id/bill_textview_time_and_date"
                     android:layout_marginTop="5sp"
                     android:background="@color/cardview_dark_background" />
@@ -226,7 +226,7 @@
                 <View
                     android:id="@+id/bill_card_line_below_total_amt"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="0.5dp"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="15sp"
                     android:background="@color/cardview_dark_background" />

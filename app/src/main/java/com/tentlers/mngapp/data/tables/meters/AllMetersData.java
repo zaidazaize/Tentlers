@@ -161,7 +161,6 @@ public class AllMetersData {
         return billId;
     }
 
-    //TODO:also include the bill id in all meters data.
     public void setBillId(long billId) {
         this.billId = billId;
     }

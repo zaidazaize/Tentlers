@@ -12,6 +12,7 @@ import com.tentlers.mngapp.data.tables.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
+import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.databinding.FragmentBillsListItemBinding;
 import com.tentlers.mngapp.databinding.FragmentSpecificRoomBinding;
 
@@ -23,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 public class SpecificRoomFragment extends Fragment {
     HouseViewModal viewModal;
@@ -61,7 +63,8 @@ public class SpecificRoomFragment extends Fragment {
                 setDataInFields();
                 if (!tableRooms.isMeterEnabled()) {
                     /*don't fetch the last reading if no meter is alloted
-                     * or the object is null*/
+                   also disalble the meters button*/
+                    roomBinding.specificRoomButtonViewAllMeterReading.setEnabled(false);
                     return;
                 }
                 /*update the last reading and reading date in the textviews.*/
@@ -148,6 +151,20 @@ public class SpecificRoomFragment extends Fragment {
                         }
                     }
                 });
+
+        /*Add button on click listeners*/
+
+        /*For viewing meter*/
+        /*if no meter is handled then the button state is disabled.*/
+        roomBinding.specificRoomButtonViewAllMeterReading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*set the Meters list obj data recquired to fetch the meters reading.*/
+                viewModal.setMetersListObj(new MetersListObj().setMetersDataFromRoom(choosenRoom));
+                Navigation.findNavController(roomBinding.getRoot()).navigate(R.id.action_global_metersFragment);
+
+            }
+        });
 
         return roomBinding.getRoot();
     }

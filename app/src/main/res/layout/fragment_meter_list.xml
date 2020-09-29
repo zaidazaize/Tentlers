@@ -13,6 +13,10 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/meter_toolbar"
+                android:background="@color/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:titleTextColor="@color/reading_state_BILLED"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

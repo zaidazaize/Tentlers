@@ -135,16 +135,8 @@ public class SpecificHouseFragment extends Fragment {
 
             }
         });
-
-        /*Add the listener to "view All" rooms button which transefers the user to the room fragment*/
-        binding.specificViewButtonRooms.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.nav_rooms);
-            }
-        });
-
-        /* Add the listener to "view All" meters button which transfers the user to the specific meter fragment or the mter history*/
+        /* Add the listener to "view All" meters button which transfers the user to the specific meter fragment or the mter history
+         * if no meter is added then button is made unclickable*/
         binding.specificViewButtonMeter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +146,16 @@ public class SpecificHouseFragment extends Fragment {
                 }
             }
         });
+
+        /*Add the listener to "view All" rooms button which transefers the user to the room fragment*/
+        binding.specificViewButtonRooms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.nav_rooms);
+            }
+        });
+
+
         /* On getting the three rooms update its value in setting up those three list items of the rooms. */
         viewModal.getThreeRooms(house.houseId).observe(getViewLifecycleOwner(), new Observer<List<RoomForRoomList>>() {
             @Override

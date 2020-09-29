@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -7,18 +8,496 @@
         android:layout_height="match_parent"
         tools:context=".ui.tenants.specifictenant.SpecificTenantFragment">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/specific_tenant_constraintlayout_tenant_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginBottom="15sp">
+
+                    <!-- TODO: make view circular and make the add photo button functionable -->
+
+                    <ImageView
+                        android:id="@+id/specific_tenant_imageView_tenant_photo"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_baseline_person_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/specific_tenant_tenant_entry_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/specific_tenant_imageView_tenant_photo"
+                        tools:text="12/12/2002" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/specific_tenant_fab_addphoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:fabSize="mini"
+                        app:layout_constraintBottom_toBottomOf="@+id/specific_tenant_imageView_tenant_photo"
+                        app:layout_constraintEnd_toEndOf="@+id/specific_tenant_imageView_tenant_photo"
+                        app:srcCompat="@drawable/ic_menu_camera" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/specific_tenant_linear_layout_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_tenant_constraintlayout_tenant_photo"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="10sp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/specific_tenant_fab_edit_tenant"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Edit" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/specific_tenant_fab_delete_tenant"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:srcCompat="@drawable/ic_baseline_delete_outline_24" />
+
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delete Tenant" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/specific_tenant_line_below_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/specific_tenant_linear_layout_buttons"
+                    android:background="@color/dividing_line_color" />
+
+                <TextView
+                    android:id="@+id/specific_tenant_show_tenant_name"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/specific_tenant_line_below_buttons"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:text="@string/tenant_name" />
+
+                <LinearLayout
+                    android:id="@+id/specific_tenant_linear_layout_tenant_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/specific_tenant_show_tenant_name"
+                    android:layout_alignStart="@id/specific_tenant_show_tenant_name"
+                    android:layout_marginBottom="@dimen/margin_top_bottom"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/specific_tenant_show_image_tenant_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        app:srcCompat="@drawable/ic_baseline_tenant_name" />
+
+                    <TextView
+                        android:id="@+id/specific_tenant_textview_tenant_name"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5sp"
+                        tools:text="Mohammad Zaid Aziz" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/specific_tenant_line_below_linear_layout_tenant_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/specific_tenant_linear_layout_tenant_name"
+                    android:background="@color/dividing_line_color" />
+
+                <!--All the personal info including headind-->
+                <RelativeLayout
+                    android:id="@+id/specific_tenant_relative_layout_personal_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_tenant_line_below_linear_layout_tenant_name"
+                    android:layout_marginTop="@dimen/margin_top_bottom">
+
+                    <ImageView
+                        android:id="@+id/specific_tenant_show_image_personal_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="10dp"
+                        app:srcCompat="@drawable/ic_tenant_profile_24px" />
+
+                    <TextView
+                        android:id="@+id/specific_tenant_show_textview_personal_info"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/specific_tenant_show_image_personal_info"
+                        android:layout_marginStart="5sp"
+                        android:layout_toEndOf="@id/specific_tenant_show_image_personal_info"
+                        android:text="Personal Information" />
+                    <!--TODO: animate the transition between show more and less icons-->
+
+                    <ImageView
+                        android:id="@+id/specific_tenant_show_image_personal_info_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/specific_tenant_show_textview_personal_info"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp"
+                        android:paddingStart="10sp"
+                        android:paddingEnd="5sp"
+                        app:srcCompat="@drawable/ic_baseline_expand_more_24" />
+
+                    <!--Personal info excluding heading-->
+                    <RelativeLayout
+                        android:id="@+id/specific_tenant_relative_layout_personal_info_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/specific_tenant_show_textview_personal_info"
+                        android:layout_marginTop="12sp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/specific_tenant_show_age"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="@dimen/margin_top_bottom"
+                            android:text="@string/age" />
+
+                        <TextView
+                            android:id="@+id/specific_tenant_textview_age"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/specific_tenant_show_age"
+                            android:layout_alignStart="@id/specific_tenant_textview_family_members"
+                            android:layout_toEndOf="@id/specific_tenant_show_age"
+                            tools:text="16" />
+
+
+                        <TextView
+                            android:id="@+id/specific_tenant_show_age_unit"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/specific_tenant_show_age"
+                            android:layout_marginStart="5sp"
+                            android:layout_toEndOf="@id/specific_tenant_textview_age"
+                            android:text="years" />
+
+                        <TextView
+                            android:id="@+id/specific_tenant_show_gender"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/specific_tenant_show_age"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="@dimen/margin_top_bottom"
+                            android:layout_marginTop="12sp"
+                            android:text="@string/gender" />
+
+                        <TextView
+                            android:id="@+id/specific_tenant_textview_gender"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/specific_tenant_show_gender"
+                            android:layout_alignStart="@id/specific_tenant_textview_family_members"
+                            android:layout_toEndOf="@id/specific_tenant_show_gender"
+                            tools:text="Male" />
+
+                        <TextView
+                            android:id="@+id/specific_tenant_show_family_members"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/specific_tenant_show_gender"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="@dimen/margin_top_bottom"
+                            android:layout_marginTop="12sp"
+                            android:text="@string/total_family_members" />
+
+                        <TextView
+                            android:id="@+id/specific_tenant_textview_family_members"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/specific_tenant_show_family_members"
+                            android:layout_marginStart="@dimen/margin_top_bottom"
+                            android:layout_toEndOf="@id/specific_tenant_show_family_members"
+                            tools:text="66" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <!--Phone number-->
+                <TextView
+                    android:id="@+id/specific_tenant_show_phone_no"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/specific_tenant_relative_layout_personal_info"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="12sp"
+                    android:text="@string/phone_number" />
+
+                <LinearLayout
+                    android:id="@+id/specific_tenant_linear_layout_phone_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/specific_tenant_show_phone_no"
+                    android:layout_alignStart="@id/specific_tenant_show_phone_no"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/specific_tenant_show_image_phone_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        app:srcCompat="@drawable/ic_call_24px" />
+
+                    <TextView
+                        android:id="@+id/specific_tenant_textview_phone_no"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5sp"
+                        tools:text="999834637" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/specific_tenant_line_below_linear_layout_phone_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/specific_tenant_linear_layout_phone_no"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:background="@color/dividing_line_color" />
+
+                <TextView
+                    android:id="@+id/specific_tenant_show_house_room"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_tenant_line_below_linear_layout_phone_no"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:text="Hosue and Room Info" />
+
+                <LinearLayout
+                    android:id="@+id/specific_tenant_linear_layout_alloted_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_tenant_show_house_room"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/specific_tenant_show_image_house"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="10sp"
+                            app:srcCompat="@drawable/ic_baseline_house_24" />
+
+                        <TextView
+                            android:id="@+id/specific_tenant_textview_hosue_name"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/specific_tenant_show_image_house"
+                            android:layout_marginStart="5sp"
+                            android:layout_toEndOf="@id/specific_tenant_show_image_house"
+                            tools:text="hosue1" />
+
+                        <ImageView
+                            android:id="@+id/specific_tenant_show_image_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/specific_tenant_show_image_house"
+                            android:layout_marginStart="10sp"
+                            android:layout_marginTop="12sp"
+                            app:srcCompat="@drawable/ic_emty_rooms_24" />
+
+                        <TextView
+                            android:id="@+id/specific_tenant_textview_room_name"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/specific_tenant_show_image_room"
+                            android:layout_marginStart="5sp"
+                            android:layout_toEndOf="@id/specific_tenant_show_image_room"
+                            tools:text="hosue1" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/specific_tenant_show_room_not_alloted"
+                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/room_not_alloted"
+                        android:textColor="@color/material_on_surface_disabled"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/specific_tenant_line_below_room_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@id/specific_tenant_linear_layout_alloted_room"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:layout_marginEnd="10sp"
+                    android:background="@color/dividing_line_color" />
+
+                <TextView
+                    android:id="@+id/specific_tenant_show_payment_scheme"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_tenant_line_below_room_name"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:text="Payment Scheme" />
+
+                <TextView
+                    android:id="@+id/specific_tenant_show_monthly_charge"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_tenant_show_payment_scheme"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="12sp"
+                    android:text="Monthly Charge" />
+
+                <ImageView
+                    android:id="@+id/specific_tenant_show_image_mothly_charge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_tenant_show_monthly_charge"
+                    android:layout_marginStart="10sp"
+                    app:srcCompat="@drawable/ic_bill_pay_24" />
+
+                <TextView
+                    android:id="@+id/specific_tenant_textview_monthly_charge"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/specific_tenant_show_image_mothly_charge"
+                    android:layout_marginStart="5sp"
+                    android:layout_toEndOf="@id/specific_tenant_show_image_mothly_charge"
+                    tools:text="hosue1" />
+
+                <TextView
+                    android:id="@+id/specific_tenant_show_electric_charge"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_tenant_show_image_mothly_charge"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="12sp"
+                    android:text="Mode of Electricity Charges" />
+
+                <ImageView
+                    android:id="@+id/specific_tenant_show_image_electicity_charge_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/specific_tenant_show_electric_charge"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginBottom="@dimen/margin_top_bottom"
+                    app:srcCompat="@drawable/ic_system_decide_24px" />
+
+                <TextView
+                    android:id="@+id/specific_tenant_textview_electric_charge_mode"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/specific_tenant_show_image_electicity_charge_mode"
+                    android:layout_marginStart="5sp"
+                    android:layout_toEndOf="@id/specific_tenant_show_image_electicity_charge_mode"
+                    tools:text="System Generated" />
 
             </RelativeLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

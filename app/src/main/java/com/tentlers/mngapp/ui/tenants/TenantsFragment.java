@@ -1,6 +1,7 @@
 package com.tentlers.mngapp.ui.tenants;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +23,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 /**
  * A fragment representing a list of Items.
  */
-public class TenantsFragment extends Fragment {
+public class TenantsFragment extends Fragment implements MyTenantsRecyclerViewAdapter.OnTenantClickListener {
     /* Binding object for layout.*/
     FragmentTenantsListBinding listBinding;
     HouseViewModal viewModal;
+    MyTenantsRecyclerViewAdapter adapter;
 
     public TenantsFragment() {
     }
@@ -34,7 +36,7 @@ public class TenantsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         listBinding = FragmentTenantsListBinding.inflate(getLayoutInflater(), container, false);
-        viewModal = new ViewModelProvider(this).get(HouseViewModal.class);
+        viewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
 
         listBinding.floatingActionButtonAddTenant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +45,8 @@ public class TenantsFragment extends Fragment {
             }
         });
 
-        final MyTenantsRecyclerViewAdapter adapter = new MyTenantsRecyclerViewAdapter();
+
+        adapter = new MyTenantsRecyclerViewAdapter(this);
         listBinding.recycleViewTenants.setLayoutManager(new LinearLayoutManager(getContext()));
         listBinding.recycleViewTenants.setAdapter(adapter);
 
@@ -55,5 +58,12 @@ public class TenantsFragment extends Fragment {
         });
 
         return listBinding.getRoot();
+    }
+
+    @Override
+    public void onTenantClicked(View v, int position) {
+        viewModal.setTenantIdForSpecificTenant((adapter.getItemAtPosition(position)).tenantId);
+        Log.d("selectedTenant", String.valueOf(viewModal.getTenantIdForSpecificTenant()));
+        Navigation.findNavController(listBinding.getRoot()).navigate(R.id.action_nav_tenants_to_specificTenantFragment);
     }
 }

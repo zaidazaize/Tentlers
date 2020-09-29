@@ -10,6 +10,7 @@ import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
+import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
@@ -68,6 +69,11 @@ public class Repository {
     /* Get all the readings of a meter.*/
     public LiveData<List<AllMetersData>> getAllMetersReading(long meterId) {
         return mdao.getAllMeterReading(meterId);
+    }
+
+    /*Get house name from house id */
+    public LiveData<String> getHouseNameFromHouseId(int houseId) {
+        return mdao.getHouseNameFromHosueId(houseId);
     }
 
     /*
@@ -212,10 +218,20 @@ public class Repository {
         return mdao.getAllTenantNHR(withRoomAlloted);
     }
 
+    /* Get all data of tenant for specific tenant fragment*/
+    public LiveData<TenantsPersonal> getTenantFromId(int teanantId) {
+        return mdao.getTenantFromId(teanantId);
+    }
+
+    /*Get room name and house name for the specific tenant fragment*/
+    public LiveData<MetersListObj> getHouseRoomNameFromRoomId(int roomid) {
+        return mdao.getHouseRoomNameFromRoomId(roomid);
+    }
+
     /* for bill entry fragment.*/
     /* Get the selected tenant's object.*/
-    public LiveData<TenantBillEntry> getSelectedTenant(int tenantid) {
-        return mdao.getSelectedTenant(tenantid);
+    public LiveData<TenantBillEntry> getSelectedTenantForBill(int tenantid) {
+        return mdao.getSelectedTenantForBill(tenantid);
     }
 
     /* Creating new bills*/
@@ -415,7 +431,7 @@ public class Repository {
         }
     }
 
-    //TODO:add meathod to update the no of paid bills;
+    //TODO:add meathod to update the no of paid bills in tenantPersonal;
     private static class AsyncInsertNewBill extends AsyncTask<Bills, Void, Void> {
         private final HouseDao asyncinsertnewbilldao;
 

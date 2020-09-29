@@ -6,6 +6,7 @@ import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
+import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
@@ -178,12 +179,22 @@ public interface HouseDao {
             "AND tenantspersonal.isRoomAlloted = :gotisRoomAlloted")
     LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean gotisRoomAlloted);
 
+    /*Specific tenant Fragment*/
+    /*get all tenants data for specifec tenant fragment*/
+    @Query("SELECT * FROM tenantspersonal WHERE tenantId = :gotTenantId")
+    LiveData<TenantsPersonal> getTenantFromId(int gotTenantId);
+
+    /*Get room name and house name for the specific tenant fragment*/
+    @Query("SELECT houseName,roomName,tablerooms.meterId " +
+            "From TableHouse,TableRooms where tablerooms.roomId = :gotRoomId LIMIT 1")
+    LiveData<MetersListObj> getHouseRoomNameFromRoomId(int gotRoomId);
+
     /* Bills Fragment*/
 
     /* Bill entry fragment.
      * returns the selected tenant's :  tenantsPersonal object */
     @Query("SELECT roomId, meterPay, nonMeterPay, mFixedCharges FROM TenantsPersonal WHERE tenantId = :gotTenantId")
-    LiveData<TenantBillEntry> getSelectedTenant(int gotTenantId);
+    LiveData<TenantBillEntry> getSelectedTenantForBill(int gotTenantId);
 
     /* For creating new bill.*/
     @Insert
@@ -263,5 +274,8 @@ public interface HouseDao {
     @Query("SELECT * FROM AllMetersData WHERE meterId = :gotMeterid")
     LiveData<List<AllMetersData>> getAllMeterReading(long gotMeterid);
 
+    /*get house name from house id*/
+    @Query("SELECT houseName FROM tablehouse WHERE houseId = :gothouseId")
+    LiveData<String> getHouseNameFromHosueId(int gothouseId);
 }
 

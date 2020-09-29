@@ -237,7 +237,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
         billEntryBinding.billEntryHouseName.setText(tenantNHR.houseName);
         billEntryBinding.billEntryRoomName.setText(tenantNHR.roomName);
         createdbill.tenantId = tenantNHR.tenantId;
-        viewModal.getSelectedTenant(tenantNHR.tenantId).observe(getViewLifecycleOwner(),
+        viewModal.getSelectedTenantForBill(tenantNHR.tenantId).observe(getViewLifecycleOwner(),
                 new Observer<TenantBillEntry>() {
                     @Override
                     public void onChanged(TenantBillEntry tenantBillEntry) {

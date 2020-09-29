@@ -124,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_tenantEntryFragment:
                     case R.id.nav_billEntryFragment:
                     case R.id.nav_metersFragment:
+                    case R.id.nav_specificTenantFragment:
+                    case R.id.nav_specificRoomFragment:
                         hideAllNavigation(true);
                         break;
                     default:
