@@ -43,15 +43,8 @@ public class RoomEnteryFragment extends Fragment {
      */
     private List<Long> gotAllroomMeterids;
 
-    /*
-     * This object holds  all the meter ids of houses in the database.
-     */
-    private List<Long> gotAllHouseMeterIds;
-
-    /*
-     * This object holds all the room names in the given house
-     */
-    private List<RoomNoName> gotAllRoomNoName;
+    /* This object holds all the room names in the given house*/
+    private List<RoomNoName> allMeterIds;
 
     /*
      * This object holds all the valid data entered in for the room creation.
@@ -79,19 +72,11 @@ public class RoomEnteryFragment extends Fragment {
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
-        /*
-         *  Assing the house id from the view modal tho tableroom object.
-         */
+        /* Assing the house id from the view modal tho tableroom object.*/
         tableRooms.setHouseId(viewModal.getHouseIdForRoomEntry());
 
-        /*assign the observer to the all house meter ids  and all room meter ids.*/
-        viewModal.getAllHousemeterids().observe(this, new Observer<List<Long>>() {
-            @Override
-            public void onChanged(List<Long> longs) {
-                gotAllHouseMeterIds = longs;
-            }
-        });
-        viewModal.getAllroomhouseids().observe(this, new Observer<List<Long>>() {
+        /*get and assing all the meter ids*/
+        viewModal.getAllMeterIdOfState(AllMetersData.CREATE).observe(this, new Observer<List<Long>>() {
             @Override
             public void onChanged(List<Long> longs) {
                 gotAllroomMeterids = longs;
@@ -114,7 +99,7 @@ public class RoomEnteryFragment extends Fragment {
         viewModal.getRoomNoName(viewModal.getHouseIdForRoomEntry()).observe(getViewLifecycleOwner(), new Observer<List<RoomNoName>>() {
             @Override
             public void onChanged(List<RoomNoName> roomNoNames) {
-                gotAllRoomNoName = roomNoNames;
+                allMeterIds = roomNoNames;
 
                 /*if list of rooms is empty set the room number to 1 */
                 generatedroomNOName.roomNo = roomNoNames.size() == 0 ? generatedroomNOName.roomNo = 1 : roomNoNames.get(0).roomNo + 1;
@@ -240,26 +225,11 @@ public class RoomEnteryFragment extends Fragment {
         return true;
     }
 
-    /*
-     * This meathod is responsible for checking the uniquenes of the meter number inserted
-     */
+    /*This meathod is responsible for checking the uniquenes of the meter number inserted*/
     private boolean isMeterNoUnique(long getmeterno) {
-        /*TODO: fetch meter nos from all meters data where reding state is create*/
-        /*
-         * Check for uniqueness in room ids
-         */
-        if (gotAllroomMeterids != null) {
+
+        if (gotAllroomMeterids != null && gotAllroomMeterids.size() != 0) {
             for (long i : gotAllroomMeterids) {
-                if (i == getmeterno) {
-                    return false;
-                }
-            }
-        }
-        /*
-         *  Check for uniquenes in house meter ids
-         */
-        if (gotAllHouseMeterIds != null) {
-            for (long i : gotAllHouseMeterIds) {
                 if (i == getmeterno) {
                     return false;
                 }
@@ -311,8 +281,8 @@ public class RoomEnteryFragment extends Fragment {
             return true;
         }
 
-        if (gotAllRoomNoName != null && gotAllRoomNoName.size() != 0) {
-            for (RoomNoName n : gotAllRoomNoName) {   // Here it loops to check for uniqueness
+        if (allMeterIds != null && allMeterIds.size() != 0) {
+            for (RoomNoName n : allMeterIds) {   // Here it loops to check for uniqueness
                 if (n.roomName.equals(roomnaeminputed)) {
                     return false;
                 }
@@ -350,8 +320,8 @@ public class RoomEnteryFragment extends Fragment {
         if (roomNo == generatedroomNOName.roomNo) {
             return true;
         }
-        if (gotAllRoomNoName != null) {
-            for (RoomNoName n : gotAllRoomNoName) {   // Here it loops to check for uniqueness
+        if (allMeterIds != null) {
+            for (RoomNoName n : allMeterIds) {   // Here it loops to check for uniqueness
                 if (n.roomNo == roomNo) {
                     return false;
                 }

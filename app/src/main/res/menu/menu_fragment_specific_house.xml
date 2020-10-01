@@ -1,21 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_item_specific_house_addtenant"
-        android:icon="@drawable/ic_add_tenant"
-        android:title="@string/add_tenant"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menu_item_specific_house_addroom"
-        android:title="@string/add_room" />
-       <item
-           android:id="@+id/menu_item_specific_house_edit"
-           android:title="@string/edit_house"/>
-       <item
-           android:id="@+id/menu_item_specific_house_delete_room"
-           android:title="@string/delete_house"
-           app:showAsAction="ifRoom"
-           android:icon="@drawable/ic_baseline_delete_outline_24"/>
+        android:id="@+id/menu_item_specific_house_edit"
+        android:title="@string/edit_house" />
+
 </menu>

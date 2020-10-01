@@ -10,7 +10,6 @@ import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
-import com.tentlers.mngapp.data.tables.queryobjects.HouseNameMeterId;
 import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
@@ -60,10 +59,12 @@ public interface HouseDao {
 
     /*for displaying specific house.*/
     @Query("SELECT * FROM TableHouse WHERE houseId = :gotHouseid")
-    LiveData<TableHouse> getHouseForSpecificHouse(int gotHouseid);
+    LiveData<TableHouse> getHouseFromHouseId(int gotHouseid);
 
-    @Query("SELECT houseName,meterid FROM TABLEHOUSE ORDER BY houseId DESC")
-    LiveData<HouseNameMeterId[]> gethouseNameMeterId();
+    /*for house entry fragment*/
+    /*selects all the house names for comparison*/
+    @Query("SELECT houseName FROM TABLEHOUSE ")
+    LiveData<List<String>> gethouseNameMeterId();
 
     /*
      * for updating no of rooms of the house
@@ -103,15 +104,9 @@ public interface HouseDao {
     @Query("SELECT houseName , houseId, noOfRooms FROM TableHouse")
     LiveData<List<HouseNameIdNoRooms>> getHouseNameId();
 
-    /*
-     * For extracting all meter ids used for comparison while entering meterno for rooms.
-     */
-    @Query("SELECT meterid FROM tablerooms")
-    LiveData<List<Long>> getRoomMeter();
-
-    @Query("SELECT meterId FROM tablehouse")
-    LiveData<List<Long>> getHouseMeterid();
-
+    /* For extracting all meter ids used for comparison while entering meterno for rooms.*/
+    @Query("SELECT meterid FROM allmetersdata WHERE readingState = :gotReadingState")
+    LiveData<List<Long>> getAllMeterIdOfState(int gotReadingState);
 
     /*
      *For managing uniquness of room name in room entry fragment for a specific house.

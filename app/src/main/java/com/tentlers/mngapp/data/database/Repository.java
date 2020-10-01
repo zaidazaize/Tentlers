@@ -14,7 +14,6 @@ import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
-import com.tentlers.mngapp.data.tables.queryobjects.HouseNameMeterId;
 import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
@@ -52,8 +51,8 @@ public class Repository {
     }
 
     /*return the selected house data object*/
-    public LiveData<TableHouse> getHosueForSpecificHouse(int houseid) {
-        return mdao.getHouseForSpecificHouse(houseid);
+    public LiveData<TableHouse> getHosueFromHouseId(int houseid) {
+        return mdao.getHouseFromHouseId(houseid);
     }
 
     // Meathod to insert new house in database
@@ -79,7 +78,7 @@ public class Repository {
     /*
      * This is used  for checking the uniqueness of house name and meter id in house Entry fragment
      */
-    public LiveData<HouseNameMeterId[]> mgetHousenameMeterId() {
+    public LiveData<List<String>> mgetHousenameMeterId() {
         return mdao.gethouseNameMeterId();
     }
 
@@ -106,17 +105,9 @@ public class Repository {
 
     /* Quarries for room tables*/
 
-    /*
-     * All the data recquired to check the uniquenes of the room
-     * meterid and room name for a specific house
-     * in room  entry fragment.
-     */
-    public LiveData<List<Long>> getallHosueMeterids() {
-        return mdao.getHouseMeterid();
-    }
-
-    public LiveData<List<Long>> getAllroomids() {
-        return mdao.getRoomMeter();
+    /*getting all the meter ids for comparison while creating new room*/
+    public LiveData<List<Long>> getAllMeterIdOfState(int state) {
+        return mdao.getAllMeterIdOfState(state);
     }
 
     public LiveData<List<RoomNoName>> getRoomNoName(long parentid) {

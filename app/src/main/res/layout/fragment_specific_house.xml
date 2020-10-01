@@ -3,302 +3,614 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/specific_house_coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_specific_hosue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorSecondary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:logo="@drawable/ic_baseline_house_24"
-            app:menu="@menu/menu_fragment_specific_house"
-            app:title="Hosue Manager" />
-
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:orientation="vertical">
 
-            <LinearLayout
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_specific_hosue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="?attr/colorSecondary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:logo="@drawable/ic_baseline_house_24"
+                app:menu="@menu/menu_fragment_specific_house"
+                app:title="House Manager" />
 
-                <TextView
-                    android:id="@+id/specific_house_name"
-                    android:layout_width="100sp"
-                    android:layout_height="100sp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="40sp"
-                    android:background="@drawable/circle_house_number"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    tools:text="House1" />
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
-                <TextView
-                    android:id="@+id/specific_house_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="3sp"
-                    android:fontFamily="sans-serif-condensed-light"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    tools:text="12/34/3333" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginTop="20sp"
-                    style="@style/TextAppearance.MaterialComponents.Caption"
-                    android:text="Address" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10sp"
-                    android:background="@color/specific_house_background_distintion"
-                    android:layout_marginTop="5sp"
-                    android:layout_marginEnd="10sp"
-                    android:layout_marginBottom="15sp">
-
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/specific_house_no_desc"
+                        android:id="@+id/specific_house_name"
+                        android:layout_width="100sp"
+                        android:layout_height="100sp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="40sp"
+                        android:background="@drawable/circle_house_number"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:textColor="@android:color/white"
+                        tools:text="House1" />
+
+                    <TextView
+                        android:id="@+id/specific_house_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginStart="20sp"
-                        android:layout_marginTop="10sp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="sans-serif-condensed-light"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                        tools:text="12/34/3333" />
+
+                    <LinearLayout
+                        android:id="@+id/specific_house_linear_layout_buttons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40sp"
+                        android:layout_marginBottom="30sp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/specific_house_fab_add_room"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:srcCompat="@drawable/ic_emty_rooms_24" />
+
+                            <TextView
+                                style="@style/TextAppearance.MaterialComponents.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/add_room" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/specific_house_fab_add_tenant"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:srcCompat="@drawable/ic_add_tenant" />
+
+                            <TextView
+                                style="@style/TextAppearance.MaterialComponents.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/add_tenant" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/specific_house_fab_delete_house"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:srcCompat="@drawable/ic_baseline_delete_outline_24" />
+
+                            <TextView
+                                style="@style/TextAppearance.MaterialComponents.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/delete_house" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/specific_house_line_below_linear_layout_buttons"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_layout_line_width"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:background="@color/dividing_line_color" />
+
+                    <RelativeLayout
+                        android:id="@+id/specific_house_relative_layout_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:layout_marginEnd="10sp">
+
+                        <ImageView
+                            android:id="@+id/specific_house_show_image_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            app:srcCompat="@drawable/ic_place_24px" />
+
+                        <TextView
+                            android:id="@+id/specific_house_show_textview_address"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/specific_house_show_image_address"
+                            android:layout_marginStart="5sp"
+                            android:layout_toStartOf="@id/specific_house_show_image_address_desc"
+                            android:layout_toEndOf="@id/specific_house_show_image_address"
+                            android:text="@string/address"
+                            android:textAllCaps="false" />
+                        <!--TODO: animate the transition between show more and less icons-->
+
+                        <ImageView
+                            android:id="@+id/specific_house_show_image_address_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/specific_house_show_textview_address"
+                            android:layout_alignParentEnd="true"
+                            app:srcCompat="@drawable/ic_baseline_expand_more_24" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/specific_house_relative_layout_address_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12sp"
+                        android:visibility="gone">
+
+
+                        <TextView
+                            android:id="@+id/specific_house_no_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="20sp"
+                            android:layout_marginTop="10sp"
+                            android:layout_marginEnd="10sp"
+                            android:text="@string/house_number_colon"
+                            android:textAppearance="@style/TextAppearance.DescriptionTextStyle" />
+
+                        <TextView
+                            android:id="@+id/specific_house_textview_houseno"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/specific_house_no_desc"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="20sp"
+                            android:layout_marginEnd="20sp"
+                            android:layout_toEndOf="@+id/specific_house_no_desc"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            tools:text="93842" />
+
+                        <TextView
+                            android:id="@+id/specific_house_textview_locality"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/specific_house_locality"
+                            android:layout_alignEnd="@+id/specific_house_no_desc"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20sp"
+                            android:text="@string/locality_area_colon"
+                            android:textAppearance="@style/TextAppearance.DescriptionTextStyle" />
+
+                        <TextView
+                            android:id="@+id/specific_house_locality"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/specific_house_textview_houseno"
+                            android:layout_alignStart="@+id/specific_house_textview_houseno"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="20sp"
+                            android:layout_marginEnd="20sp"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            tools:text="locality" />
+
+                        <TextView
+                            android:id="@+id/specific_house_textview_postalcode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/specific_house_postalcode"
+                            android:layout_alignEnd="@+id/specific_house_textview_locality"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20sp"
+                            android:text="@string/postal_code_colon"
+                            android:textAppearance="@style/TextAppearance.DescriptionTextStyle" />
+
+                        <TextView
+                            android:id="@+id/specific_house_postalcode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/specific_house_locality"
+                            android:layout_alignStart="@+id/specific_house_locality"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="20sp"
+                            android:layout_marginEnd="20sp"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            tools:text="439857" />
+
+                        <TextView
+                            android:id="@+id/specific_house_textview_city"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/specific_house_city"
+                            android:layout_alignEnd="@+id/specific_house_textview_locality"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20sp"
+                            android:text="@string/city_colon"
+                            android:textAppearance="@style/TextAppearance.DescriptionTextStyle" />
+
+                        <TextView
+                            android:id="@+id/specific_house_city"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/specific_house_postalcode"
+                            android:layout_alignStart="@+id/specific_house_locality"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="20sp"
+                            android:layout_marginEnd="20sp"
+                            android:textAllCaps="true"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            tools:text="Gorakhpur" />
+
+                        <TextView
+                            android:id="@+id/specific_house_textview_country"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/specific_house_country"
+                            android:layout_alignEnd="@+id/specific_house_textview_locality"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="20sp"
+                            android:text="@string/country_colon"
+                            android:textAppearance="@style/TextAppearance.DescriptionTextStyle" />
+
+                        <TextView
+                            android:id="@+id/specific_house_country"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/specific_house_city"
+                            android:layout_alignStart="@+id/specific_house_city"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="20sp"
+                            android:layout_marginEnd="20sp"
+                            android:textAllCaps="true"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            tools:text="india" />
+
+                    </RelativeLayout>
+
+                    <!--No addresss available-->
+                    <TextView
+                        android:id="@+id/specific_house_textview_no_address"
+                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:text="Opps! No Address Found"
+                        android:textColor="@android:color/secondary_text_dark"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/specific_house_line_below_address_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_layout_line_width"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:background="@color/dividing_line_color" />
+
+                    <RelativeLayout
+                        android:id="@+id/specific_house_relative_layout_show_meter_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:layout_marginEnd="10sp">
+
+                        <ImageView
+                            android:id="@+id/specific_house_show_image_meter_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            app:srcCompat="@drawable/ic_meter_reading_24px" />
+
+                        <TextView
+                            android:id="@+id/specific_house_show_textview_meter_details"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/specific_house_show_image_meter_details"
+                            android:layout_marginStart="5sp"
+                            android:layout_toStartOf="@id/specific_house_show_image_meter_details_desc"
+                            android:layout_toEndOf="@id/specific_house_show_image_meter_details"
+                            android:text="@string/electricity_energy_meter"
+                            android:textAllCaps="false" />
+                        <!--TODO: animate the transition between show more and less icons-->
+
+                        <ImageView
+                            android:id="@+id/specific_house_show_image_meter_details_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/specific_house_show_textview_meter_details"
+                            android:layout_alignParentEnd="true"
+                            app:srcCompat="@drawable/ic_baseline_expand_less_24" />
+
+                    </RelativeLayout>
+
+                    <!--TODO: if no meter is added then make the meter number view invisible and add a view that shows "no meter found" with a button to add a meter-->
+
+                    <RelativeLayout
+                        android:id="@+id/specific_house_relative_layout_meter_details_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp">
+
+                        <View
+                            android:id="@+id/specific_house_line_above_meter_no"
+                            android:layout_width="150dp"
+                            android:layout_height="@dimen/height_layout_line_width"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginTop="12sp"
+                            android:background="@color/dividing_line_color" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/specific_house_line_above_meter_no"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="12sp"
+                            android:text="@string/meter_number_colon"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+
+                        <TextView
+                            android:id="@+id/specific_house_meter_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textView5"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@+id/specific_view_button_meter"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            tools:text="29039456" />
+
+                        <Button
+                            android:id="@+id/specific_view_button_meter"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/specific_house_meter_no"
+                            android:layout_alignParentEnd="true"
+                            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+                            android:text="@string/readings"
+                            android:textAllCaps="false" />
+
+                        <RelativeLayout
+                            android:id="@+id/specific_hosue_relative_layout_lastmeter_reading"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/specific_house_meter_no"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentEnd="true"
+                            android:visibility="gone">
+
+                            <View
+                                android:id="@+id/specific_house_line_above_meter_reading"
+                                android:layout_width="150dp"
+                                android:layout_height="@dimen/height_layout_line_width"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginTop="12sp"
+                                android:background="@color/dividing_line_color" />
+
+                            <TextView
+                                android:id="@+id/specific_house_show_last_reading"
+                                style="@style/TextAppearance.MaterialComponents.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/specific_house_line_above_meter_reading"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginTop="12sp"
+                                android:text="@string/last_reading" />
+
+                            <TextView
+                                android:id="@+id/specific_house_last_reading"
+                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/specific_house_show_last_reading"
+                                android:layout_alignParentStart="true"
+                                tools:text="123344" />
+                            <!--TODO: add unit to meter reading-->
+                            <TextView
+                                style="@style/TextAppearance.MaterialComponents.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBaseline="@id/specific_house_last_reading"
+                                android:layout_marginStart="10sp"
+                                android:layout_toStartOf="@+id/specific_house_last_reading_date"
+                                android:layout_toEndOf="@id/specific_house_last_reading"
+                                android:text="@string/kwh_units" />
+
+                            <TextView
+                                android:id="@+id/specific_house_last_reading_date"
+                                style="@style/TextAppearance.MaterialComponents.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBaseline="@id/specific_house_last_reading"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginStart="20sp"
+                                android:layout_marginEnd="20sp"
+                                tools:text="123344" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                    <View
+                        android:id="@+id/specific_house_line_below_meter_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_layout_line_width"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:background="@color/dividing_line_color" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginBottom="12sp">
+
+                        <ImageView
+                            android:id="@+id/specific_house_show_image_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginTop="@dimen/margin_top_bottom"
+                            app:srcCompat="@drawable/ic_place_24px" />
+
+                        <TextView
+                            android:id="@+id/textview6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/specific_house_show_image_room"
+                            android:layout_marginStart="5sp"
+                            android:layout_toStartOf="@+id/specific_view_button_rooms"
+                            android:layout_toEndOf="@id/specific_house_show_image_room"
+                            android:fontFamily="monospace"
+                            android:text="@string/rooms_units"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+                        <Button
+                            android:id="@+id/specific_view_button_rooms"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/textview6"
+                            android:layout_alignParentEnd="true"
+                            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+                            android:text="@string/view_all"
+                            android:textAllCaps="false" />
+
+                        <TextView
+                            android:id="@+id/specific_house_show_no_of_rooms"
+                            style="@style/TextAppearance.DescriptionTextStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textview6"
+                            android:layout_marginStart="@dimen/margin_top_bottom"
+                            android:layout_marginTop="10sp"
+                            android:text="@string/total_rooms" />
+
+                        <TextView
+                            android:id="@+id/specific_house_totalrooms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/specific_house_show_no_of_rooms"
+                            android:layout_marginStart="20sp"
+                            android:layout_toEndOf="@id/specific_house_show_no_of_rooms"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            tools:text="35" />
+
+                        <TextView
+                            android:id="@+id/specific_house_show_no_of_rooms_occupied"
+                            style="@style/TextAppearance.DescriptionTextStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/specific_house_show_no_of_rooms"
+                            android:layout_alignStart="@id/specific_house_show_no_of_rooms"
+                            android:layout_marginTop="10sp"
+                            android:text="@string/filled_rooms" />
+
+                        <TextView
+                            android:id="@+id/specific_house_occupiedrooms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/specific_house_totalrooms"
+                            android:layout_alignBaseline="@id/specific_house_show_no_of_rooms_occupied"
+                            android:layout_alignStart="@id/specific_house_totalrooms"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            tools:text="12" />
+
+                    </RelativeLayout>
+
+                    <include
+                        android:id="@+id/room_item_first"
+                        layout="@layout/fragment_house_rooms_list_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
                         android:layout_marginEnd="10sp"
-                        android:text="House Number :"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                    <TextView
-                        android:id="@+id/specific_house_textview_houseno"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/specific_house_no_desc"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginStart="20sp"
-                        android:layout_toEndOf="@+id/specific_house_no_desc"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        tools:text="93842" />
-
-                    <TextView
-                        android:id="@+id/specific_house_textview_locality"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/specific_house_locality"
-                        android:layout_alignEnd="@+id/specific_house_no_desc"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="20sp"
-                        android:text="Locality/Area :"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                    <TextView
-                        android:id="@+id/specific_house_locality"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/specific_house_textview_houseno"
-                        android:layout_alignStart="@+id/specific_house_textview_houseno"
-                        android:layout_marginTop="20sp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        tools:text="locality" />
-
-                    <TextView
-                        android:id="@+id/specific_house_textview_postalcode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/specific_house_postalcode"
-                        android:layout_alignEnd="@+id/specific_house_textview_locality"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="20sp"
-                        android:text="Postal Code :"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                    <TextView
-                        android:id="@+id/specific_house_postalcode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/specific_house_locality"
-                        android:layout_alignStart="@+id/specific_house_locality"
-                        android:layout_marginTop="20sp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        tools:text="439857" />
-
-                    <TextView
-                        android:id="@+id/specific_house_textview_city"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/specific_house_city"
-                        android:layout_alignEnd="@+id/specific_house_textview_locality"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="20sp"
-                        android:text="City :"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                    <TextView
-                        android:id="@+id/specific_house_city"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/specific_house_postalcode"
-                        android:layout_alignStart="@+id/specific_house_locality"
-                        android:layout_marginTop="20sp"
-                        android:textAllCaps="true"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        tools:text="Gorakhpur" />
-
-                    <TextView
-                        android:id="@+id/specific_house_textview_country"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_marginBottom="10sp"
-                        android:layout_alignBaseline="@id/specific_house_country"
-                        android:layout_alignEnd="@+id/specific_house_textview_locality"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="20sp"
-                        android:text="Country :"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                        android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/specific_house_country"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/specific_house_city"
-                        android:layout_alignStart="@+id/specific_house_city"
-                        android:layout_marginTop="20sp"
-                        android:textAllCaps="true"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        tools:text="india" />
-
-
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginTop="5sp"
-                    android:layout_marginBottom="5sp"
-                    android:fontFamily="sans-serif-thin"
-                    android:text="Electricity/Energy Meter"
-                    style="@style/TextAppearance.MaterialComponents.Caption" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginEnd="10sp"
-                    android:layout_marginBottom="20sp"
-                    android:background="@color/specific_house_background_distintion">
-
-
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginStart="10sp"
-                        android:layout_marginTop="15sp"
-                        android:text="Meter Number :"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                    <TextView
-                        android:id="@+id/specific_house_meter_no"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/textView5"
-                        android:layout_marginStart="5sp"
-                        android:layout_marginBottom="20sp"
-                        android:layout_toEndOf="@+id/textView5"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        tools:text="29039456" />
-
-                    <Button
-                        android:id="@+id/specific_view_button_meter"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/specific_house_meter_no"
-                        android:layout_alignParentEnd="true"
-                        android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
-                        android:text="Details"
-                        android:textAllCaps="false" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginEnd="10sp"
-                    android:layout_marginBottom="10sp">
-
-                    <TextView
-                        android:id="@+id/textview6"
-                        android:layout_width="wrap_content"
+                    <include
+                        android:id="@+id/room_item_second"
+                        layout="@layout/fragment_house_rooms_list_item"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10sp"
-                        android:fontFamily="monospace"
-                        android:text="Rooms/Units"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:visibility="gone" />
 
-                    <Button
-                        android:id="@+id/specific_view_button_rooms"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
+                    <include
+                        android:id="@+id/room_item_third"
+                        layout="@layout/fragment_house_rooms_list_item"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/textview6"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="1sp"
-                        android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
-                        android:text="View All"
-                        android:textAllCaps="false" />
-                </RelativeLayout>
+                        android:layout_marginStart="10sp"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="10sp"
+                        android:visibility="gone" />
 
-                <include
-                    android:visibility="gone"
-                    android:id="@+id/room_item_first"
-                    layout="@layout/fragment_house_rooms_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginEnd="10sp"
-                    android:layout_marginBottom="5sp" />
+                    <View
+                        android:id="@+id/specific_house_line_below_room_items"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_layout_line_width"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:layout_marginBottom="@dimen/margin_top_bottom"
+                        android:background="@color/dividing_line_color" />
 
-                <include
-                    android:visibility="gone"
-                    android:id="@+id/room_item_second"
-                    layout="@layout/fragment_house_rooms_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginTop="5sp"
-                    android:layout_marginEnd="10sp"
-                    android:layout_marginBottom="5sp" />
-
-                <include
-                    android:visibility="gone"
-                    android:id="@+id/room_item_third"
-                    layout="@layout/fragment_house_rooms_list_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10sp"
-                    android:layout_marginTop="5sp"
-                    android:layout_marginEnd="10sp"
-                    android:layout_marginBottom="20sp" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
 
-    </LinearLayout>
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </layout>

@@ -16,4 +16,9 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!--for text items that describe a specific entry-->
+    <style name="TextAppearance.DescriptionTextStyle" parent="TextAppearance.MaterialComponents.Subtitle2">
+
+    </style>
+
 </resources>

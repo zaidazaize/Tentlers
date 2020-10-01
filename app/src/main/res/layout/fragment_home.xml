@@ -1,50 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<RelativeLayout
-    android:layout_marginBottom="?actionBarSize"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:background="@color/color_background_house_list_item"
-        android:id="@+id/recycle_view_home"
-        android:name="com.example.easelife.ui.bills.BillsFragment"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="4dp"
-        tools:listitem="@layout/fragment_home_list_item"
-        android:scrollbars="vertical"/>
+        android:layout_marginBottom="?actionBarSize">
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="end"
-        android:layout_marginEnd="@dimen/margin_left_right"
-        android:layout_marginBottom="@dimen/fab_margin"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_baseline_home_24" />
+        <!--TODO: add image in the background-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_view_home"
+            android:name="com.example.easelife.ui.bills.BillsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_background_house_list_item"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/fragment_home_list_item" />
 
 
-    <TextView
-        android:id="@+id/fragment_home_emptylistitem"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="50sp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:text="kuch nahi hai"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@+id/recycle_view_home" />
-</RelativeLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/margin_left_right"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_baseline_house_24" />
+
+
+        <!--TODO: add empty list view-->
+    </RelativeLayout>
 </layout>

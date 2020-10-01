@@ -306,6 +306,52 @@
                         </LinearLayout>
                     </LinearLayout>
 
+                    <RelativeLayout
+                        android:visibility="gone"
+                        android:layout_marginBottom="@dimen/margin_top_bottom"
+                        android:id="@+id/tenant_entry_relative_layout_allot_rooms"
+                        android:layout_marginStart="@dimen/margin_left_right"
+                        android:layout_marginEnd="@dimen/margin_left_right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/tenant_entry_show_image_house"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            app:srcCompat="@drawable/ic_baseline_house_24" />
+
+                        <TextView
+                            android:id="@+id/tenant_entry_textview_hosue_name"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/tenant_entry_show_image_house"
+                            android:layout_marginStart="5sp"
+                            android:layout_toEndOf="@id/tenant_entry_show_image_house"
+                            tools:text="hosue1" />
+
+                        <ImageView
+                            android:id="@+id/tenant_entry_show_image_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tenant_entry_show_image_house"
+                            android:layout_marginTop="14sp"
+                            app:srcCompat="@drawable/ic_emty_rooms_24" />
+
+                        <TextView
+                            android:id="@+id/tenant_enatry_textview_room_name"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/tenant_entry_show_image_room"
+                            android:layout_marginStart="5sp"
+                            android:layout_toEndOf="@id/tenant_entry_show_image_room"
+                            tools:text="hosue1" />
+                    </RelativeLayout>
+
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_tenant_payment_sheme"
                         android:layout_width="match_parent"

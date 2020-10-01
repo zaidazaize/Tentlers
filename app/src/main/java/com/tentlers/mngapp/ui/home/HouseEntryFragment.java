@@ -19,9 +19,9 @@ import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.Address;
 import com.tentlers.mngapp.data.tables.TableHouse;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
-import com.tentlers.mngapp.data.tables.queryobjects.HouseNameMeterId;
 import com.tentlers.mngapp.databinding.FragmentHouseEntryBinding;
 
+import java.util.List;
 import java.util.Objects;
 
 import androidx.activity.OnBackPressedCallback;
@@ -52,7 +52,8 @@ public class HouseEntryFragment extends Fragment {
      * It is used for enshuring the uniqueness of the inserted house name and the
      * meter ids.
      **/
-    HouseNameMeterId[] houseNameMeterIdList;
+    List<String> allHouseName;
+    List<Long> allMeterId;
     int lastEnteredHouseId;
 
     /*
@@ -74,13 +75,19 @@ public class HouseEntryFragment extends Fragment {
          */
         houseViewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
 
-        /*
-         * Getting the list of all the house Names and meterids from the database
+        /*Getting the list of all the house Names  from the database
          * these are specific to the users and can be null.*/
-        houseViewModal.getHouseNameMeterId().observe(this, new Observer<HouseNameMeterId[]>() {
+        houseViewModal.getHouseNameMeterId().observe(this, new Observer<List<String>>() {
             @Override
-            public void onChanged(HouseNameMeterId[] houseNameMeterIds) {
-                houseNameMeterIdList = houseNameMeterIds;
+            public void onChanged(List<String> houseNames) {
+                allHouseName = houseNames;
+            }
+        });
+        /*update all meter ids in the field*/
+        houseViewModal.getAllMeterIdOfState(AllMetersData.CREATE).observe(this, new Observer<List<Long>>() {
+            @Override
+            public void onChanged(List<Long> longs) {
+                allMeterId = longs;
             }
         });
 
@@ -100,9 +107,7 @@ public class HouseEntryFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        /*
-         * detaching the binding  for avoiding the memory leak.
-         **/
+        /* detaching the binding  for avoiding the memory leak.*/
         houseEntryBinding = null;
     }
 
@@ -115,19 +120,16 @@ public class HouseEntryFragment extends Fragment {
          */
         houseEntryBinding = FragmentHouseEntryBinding.inflate(inflater, container, false);
 
-        /*
-         * Set the house name based on the last entered house id stored in the SharedPreferences.
-         * Incrementing 1 in the layout of the list
-         */
+        /* Set the house name based on the last entered house id stored in the SharedPreferences.
+         * Incrementing 1 in the layout of the list*/
         SharedPreferences sharedPreferences = requireActivity()
                 .getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
 
         lastEnteredHouseId = sharedPreferences.getInt(getString(R.string.LastEnteredHouseId), 0);
-        houseEntryBinding.textInputEditTextOutlinedHousename.setText(getString(R.string.house) + (lastEnteredHouseId + 1));//TODO: use resource string with place holders.
-        /*
-         * Assing the hangler to the cances sign .
-         * It is responsible for showing the exit dialogue.
-         */
+        houseEntryBinding.textInputEditTextOutlinedHousename.setText(String.format(getString(R.string.updateHouseName), (lastEnteredHouseId + 1)));
+
+        /*Assining the handler tho the cross sign .
+         * It is responsible for showing the exit dialogue.*/
         houseEntryBinding.toolbarHouseEnter.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,9 +154,6 @@ public class HouseEntryFragment extends Fragment {
                 return true;
             }
         });
-//        MainActivity mainActivity = (MainActivity)getActivity();-
-//        (mainActivity).setSupportActionBar(houseEntryBinding.toolbarHouseEnter);
-//        mainActivity.
 
         /*
          * Switch for handling the address layout visibility.
@@ -162,9 +161,8 @@ public class HouseEntryFragment extends Fragment {
         houseEntryBinding.switchAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    houseEntryBinding.linearLayoutAddressLayout.setVisibility(View.VISIBLE);
-                } else houseEntryBinding.linearLayoutAddressLayout.setVisibility(View.GONE);
+                houseEntryBinding.linearLayoutAddressLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+
             }
         });
 
@@ -175,9 +173,8 @@ public class HouseEntryFragment extends Fragment {
         houseEntryBinding.switchNoOfRooms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    houseEntryBinding.textInputLayoutHouseNoofRooms.setVisibility(View.VISIBLE);
-                } else houseEntryBinding.textInputLayoutHouseNoofRooms.setVisibility(View.GONE);
+                houseEntryBinding.textInputLayoutHouseNoofRooms.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+
             }
         });
 
@@ -195,42 +192,32 @@ public class HouseEntryFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (tableHouse.setNoOfRoomsFromString(s.toString()) > 99) {
-                    houseEntryBinding.textInputLayoutHouseNoofRooms.setError(getString(R.string.no_of_rooms_must_be_less_than_100));
-                } else {
-                    houseEntryBinding.textInputLayoutHouseNoofRooms.setError("");
-                }
+
+                houseEntryBinding.textInputLayoutHouseNoofRooms.setError(
+                        tableHouse.setNoOfRoomsFromString(s.toString()) > 99 ? getString(R.string.no_of_rooms_must_be_less_than_100) : "");
+
             }
         });
 
-        /*
-         * Switch for handlign the permission for assigning the meter.
-         */
+        /* Switch for handling the permission for assigning the meter.*/
         houseEntryBinding.switchElectricMeterPermission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    houseEntryBinding.layoutMeterNumber.setVisibility(View.VISIBLE);
-                } else houseEntryBinding.layoutMeterNumber.setVisibility(View.GONE);
+                houseEntryBinding.layoutMeterNumber.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             }
         });
 
-        /*
-         * Switch for either auto generate meter number or manually enter the meter number.
-         */
+        /*handle the auto generate or manually enter the meter no state it contrls the visibility of edittext(meter entry) and checked state of (auto generate meter no ) switch.*/
         houseEntryBinding.switchManualEnterElectricMeterNumber.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    houseEntryBinding.textInputLayoutManualEnterHouseMeterNo.setVisibility(View.VISIBLE);
-                    houseEntryBinding.switchElectricMeterNumberSystemDecide.setChecked(false);
-                } else {
-                    houseEntryBinding.textInputLayoutManualEnterHouseMeterNo.setVisibility(View.GONE);
-                    houseEntryBinding.switchElectricMeterNumberSystemDecide.setChecked(true);
-                }
+                houseEntryBinding.textInputLayoutManualEnterHouseMeterNo.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                houseEntryBinding.switchElectricMeterNumberSystemDecide.setChecked(!isChecked);
+
             }
         });
 
+        /*set the watcher on the reading entered by the user and reading all meters data is updated*/
         houseEntryBinding.textInputEditTextHouseInitialMeterReading.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -251,18 +238,15 @@ public class HouseEntryFragment extends Fragment {
         return houseEntryBinding.getRoot();
     }
 
-    /*
-     * This method checks for the validity for the data entered.
-     */
+    /* This method checks for the validity for the data entered.*/
+    /*TODO: move the comparison to background thread.*/
     private boolean checkForDataValidity() {
 
         return isHouseNamevalid() & isAdressValid() & isMeterNumberValid() & isHouseValid();
     }
 
-    /*
-     * Checks the validity and nullability hosue name
-     * it is also responsible for showing the error messages.
-     */
+    /*Checks the validity and nullability hosue name
+     * it is also responsible for showing the error messages.*/
     private boolean isHouseValid() {
         if (!houseEntryBinding.switchNoOfRooms.isChecked()) {/*if no of rooms are not enabled then set auto generate room to false and return true*/
             tableHouse.setRoomAutoGenerated(false);
@@ -325,7 +309,6 @@ public class HouseEntryFragment extends Fragment {
     private boolean isHouseNamevalid() {
         String housename = houseEntryBinding.textInputEditTextOutlinedHousename.getText().toString();
         if (housename.length() != 0) {
-            houseEntryBinding.textInputLayoutOutlinedHouseName.setError("");
             if (isHouseunique(housename)) {
                 houseEntryBinding.textInputLayoutOutlinedHouseName.setError("");
                 tableHouse.setHouseName(housename);
@@ -391,10 +374,11 @@ public class HouseEntryFragment extends Fragment {
         }
     }
 
+    /*check for unique house name*/
     private boolean isHouseunique(String gothousename) {
-        if (houseNameMeterIdList != null) {
-            for (HouseNameMeterId s : houseNameMeterIdList) {
-                if (gothousename.equals(s.housename)) {
+        if (allHouseName != null) {
+            for (String s : allHouseName) {
+                if (gothousename.equals(s)) {
                     return false;
                 }
             }
@@ -402,10 +386,11 @@ public class HouseEntryFragment extends Fragment {
         return true;
     }
 
+    /*check for unique meter number*/
     private boolean isHouseMeterunique(long gotmeterno) {
-        if (houseNameMeterIdList != null) {
-            for (HouseNameMeterId s : houseNameMeterIdList) {
-                if (gotmeterno == s.meterId) {
+        if (allMeterId != null) {
+            for (long s : allMeterId) {
+                if (gotmeterno == s) {
                     return false;
                 }
             }
@@ -416,10 +401,8 @@ public class HouseEntryFragment extends Fragment {
     // Save the House information
     private void saveHouseData() {
 
-        /*
-         * this will be generate new meter id based on the last id stored in the shared Prefferences.
-         * If the rooms are to be auto generated then it will be done in the repository.
-         */
+        /* this will be generate new meter id based on the last id stored in the shared Prefferences.
+         * If the rooms are to be auto generated then it will be done in the repository.*/
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
         if (tableHouse.isIsmetersystemgenerated()) {
             tableHouse.setMeterid(sharedPreferences.getLong(getString(R.string.system_generated_meterid_last_entry), 100000) + 1);

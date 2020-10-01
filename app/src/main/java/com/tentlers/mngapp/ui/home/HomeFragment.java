@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
 
     @Override
     public void onItemClicked(int position, View v) {
-        houseViewModal.setmShowHouse(homeRecycleViewAdapter.getHouseAtPosition(position));
+        houseViewModal.setHouseIdForSpecificHouse(homeRecycleViewAdapter.getHouseAtPosition(position).houseId);/*set house id to view it in specific house fragment*/
         Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_specificHouseFragment);
     }
 

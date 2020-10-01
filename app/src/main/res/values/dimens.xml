@@ -22,4 +22,6 @@
     <dimen name="inner_frame_layout_padding">5dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="margin_start_end_level2">26sp</dimen>
+    <dimen name="height_layout_line_width">0.5dp</dimen>
+    <dimen name="height_listitem_line_width">0.2dp</dimen>
 </resources>

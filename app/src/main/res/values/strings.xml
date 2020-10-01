@@ -14,7 +14,7 @@
     <string name="about_us">About us</string>
     <string name="help">Help</string>
     <string name="home">Home</string>
-    <string name="add_tenant">Add Tenant</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--  String resource for drawer layout-->
@@ -44,15 +44,45 @@
     <string name="room_name_already_exists">!Room Name Already Exists.</string>
     <string name="room_name_cannot_be_empty">!Room Name Can\'t be Empty</string>
     <string name="room_no_already_used">!Room Number Already Used.</string>
-    <string name="add_room">Add Room</string>
+
+    <!-- house Entry Fragment-->
     <string name="house">House</string>
+    <string name="updateHouseName">House%d</string>
+
+    <!--House List Item -->
+    <string name="tenant_name">Tenant Name</string>
+
+    <!--Specific House Fragment-->
+    <string name="add_room">Add Room</string>
+    <string name="add_tenant">Add Tenant</string>
+    <string name="delete_house">Delete House</string>
+    <string name="address">Address</string>
+    <string name="house_number_colon">House Number :</string>
+    <string name="locality_area_colon">Locality/Area :</string>
+    <string name="postal_code_colon">Postal Code :</string>
+    <string name="city_colon">City :</string>
+    <string name="country_colon">Country :</string>
+    <string name="electricity_energy_meter">Electricity/Energy Meter</string>
+    <string name="meter_number_colon">Meter Number :</string>
+    <string name="readings">Readings</string>
+    <string name="last_reading">Last Reading</string>
+    <string name="reading">Reading</string>
+    <string name="kwh_units">Kwh \\ Units</string>
+    <string name="rooms_units">Rooms/Units</string>
+    <string name="view_all">View All</string>
+    <string name="total_rooms">Total Rooms</string>
+    <string name="filled_rooms">Filled Rooms</string>
+    <string name="max_room_limit_reached">Max room limit reached.</string>
+
+    <string name="personal_information">Personal Information</string>
+
+
     <string name="first_launch_shared_prefferences">com.tentlers.first.launch</string>
     <string name="is_app_first_launch">is_app_first_launch</string>
     <string name="house_name">House Name</string>
-    <string name="tenant_name">Tenant Name</string>
+
     <string name="optional">!Optional</string>
     <string name="add_tenant_personal_information">Add Tenant Personal Information</string>
-    <string name="personal_information">Personal Information</string>
     <string name="age">Age</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
@@ -69,7 +99,7 @@
     <string name="additional_charges">Additional Charges</string>
     <string name="enter_meter_reading">Enter Meter Reading</string>
     <string name="edit_house">Edit House</string>
-    <string name="delete_house">Delete House</string>
+
     <string name="room_not_alloted">Room not alloted</string>
     <string name="meter_is_missing_add_meter_to_the_selected_room">Meter is missing. Add Meter to the selected rooms</string>
     <string name="invalid_entry_meter_reading_is_less_than_last_entered_reading">Invalid Entry! Meter Reading is less than the last meter reading.</string>
@@ -81,4 +111,6 @@
     <string name="no_of_rooms_must_be_less_than_100">! Number of rooms must be less than 100</string>
     <string name="LastEnteredHouseId">LastEnteredHouseId</string>
     <string name="remove_tenant">Remove Tenant</string>
+
+
 </resources>

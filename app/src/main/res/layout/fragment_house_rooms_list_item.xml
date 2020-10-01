@@ -41,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/house_room_listitem_room_no"
                 android:layout_marginStart="10sp"
-
                 android:layout_toEndOf="@id/house_room_listitem_room_no"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 tools:text="Room Name" />
@@ -84,7 +83,7 @@
                 android:layout_below="@id/house_room_listitem_line_below_room_name"
                 android:layout_alignStart="@id/house_room_listitem_room_name"
                 android:layout_marginTop="5sp"
-                android:text="Tenant Name"
+                android:text="@string/tenant_name"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
             <TextView

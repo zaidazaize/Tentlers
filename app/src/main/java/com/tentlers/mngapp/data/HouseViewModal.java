@@ -14,7 +14,6 @@ import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
-import com.tentlers.mngapp.data.tables.queryobjects.HouseNameMeterId;
 import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
@@ -31,7 +30,7 @@ import androidx.lifecycle.LiveData;
 
 public class HouseViewModal extends AndroidViewModel {
 
-    private HouseForHomeFragment mShowHouse;
+    private int houseIdForSpecificHouse;
     private Repository mRepository;
     private LiveData<List<HouseForHomeFragment>> mAllHouse;
     private int houseIdForRoomEntry;
@@ -59,8 +58,8 @@ public class HouseViewModal extends AndroidViewModel {
         return mAllHouse;
     }
 
-    public LiveData<TableHouse> getHouseForSpecificHouse(int houseId) {
-        return mRepository.getHosueForSpecificHouse(houseId);
+    public LiveData<TableHouse> getHouseFromHouseId(int houseId) {
+        return mRepository.getHosueFromHouseId(houseId);
     }
 
     public void insertHouse(TableHouse tableHouse) {
@@ -71,18 +70,18 @@ public class HouseViewModal extends AndroidViewModel {
         mRepository.deleteHouse(tableHouse);
     }
 
-    public LiveData<HouseNameMeterId[]> getHouseNameMeterId() {
+    public LiveData<List<String>> getHouseNameMeterId() {
         return mRepository.mgetHousenameMeterId();
 
     }
 
     /* For displaying specific House details. */
-    public HouseForHomeFragment getmShowHouse() {
-        return mShowHouse;
+    public int getHouseIdForSpecificHouse() {
+        return houseIdForSpecificHouse;
     }
 
-    public void setmShowHouse(HouseForHomeFragment mShowHouse) {
-        this.mShowHouse = mShowHouse;
+    public void setHouseIdForSpecificHouse(int houseid) {
+        this.houseIdForSpecificHouse = houseid;
     }
 
 
@@ -117,15 +116,8 @@ public class HouseViewModal extends AndroidViewModel {
         this.houseIdForRoomEntry = houseIdForRoomEntry;
     }
 
-    /*
-     *Data for inserting new room in room Entry Fragment
-     */
-    public LiveData<List<Long>> getAllHousemeterids() {
-        return mRepository.getallHosueMeterids();
-    }
-
-    public LiveData<List<Long>> getAllroomhouseids() {
-        return mRepository.getAllroomids();
+    public LiveData<List<Long>> getAllMeterIdOfState(int readingState) {
+        return mRepository.getAllMeterIdOfState(readingState);
     }
 
     public LiveData<List<RoomNoName>> getRoomNoName(long parentid) {

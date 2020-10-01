@@ -88,10 +88,10 @@
     <action
         android:id="@+id/action_global_houseRooms"
         app:destination="@id/nav_rooms"
-        app:enterAnim="@anim/nav_default_enter_anim"
-        app:exitAnim="@anim/nav_default_exit_anim"
-        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        app:enterAnim="@android:anim/slide_in_left"
+        app:exitAnim="@android:anim/slide_out_right"
+        app:popEnterAnim="@android:anim/slide_in_left"
+        app:popExitAnim="@android:anim/slide_out_right" />
     <fragment
         android:id="@+id/nav_specificHouseFragment"
         android:name="com.tentlers.mngapp.ui.home.specifichouse.SpecificHouseFragment"
@@ -143,10 +143,18 @@
         android:id="@+id/nav_specificRoomFragment"
         android:name="com.tentlers.mngapp.ui.rooms.specificroom.SpecificRoomFragment"
         android:label="SpecificRoomFragment"
-        tools:layout="@layout/fragment_specific_tenant" />
+        tools:layout="@layout/fragment_specific_room" />
     <fragment
         android:id="@+id/nav_specificTenantFragment"
+        tools:layout="@layout/fragment_specific_tenant"
         android:name="com.tentlers.mngapp.ui.tenants.specifictenant.SpecificTenantFragment"
         android:label="SpecificTenantFragment" />
+    <action
+        android:id="@+id/action_global_nav_specificRoomFragment"
+        app:destination="@id/nav_specificRoomFragment"
+        app:enterAnim="@android:anim/slide_in_left"
+        app:exitAnim="@android:anim/slide_out_right"
+        app:popEnterAnim="@android:anim/slide_in_left"
+        app:popExitAnim="@android:anim/slide_out_right" />
 
 </navigation>

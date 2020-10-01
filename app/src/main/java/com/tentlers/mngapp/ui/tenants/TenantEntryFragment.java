@@ -114,25 +114,21 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        /*
-         * Instantiate the binding class object.
-         */
         tenantEntryBinding = FragmentTenantEntryBinding.inflate(getLayoutInflater(), container, false);
 
-        /*
-         * Setting the toolbar and navigation item click listener
-         * hide the app bar and bottom navigation via a callback in main activity
-         */
+
+        /* hide the app bar and bottom navigation via a callback in main activity */
+        /*show save dialog when save button is clicked.*/
         tenantEntryBinding.toolbarTenantEnter.setOnMenuItemClickListener(this);
-        /*
-         * Show the exit dialogue when the navigation icon is clicked.Means to cancel the task;
-         */
+
+        /*Show the exit dialogue when the navigation icon is clicked.Means to cancel the add tenant task.;*/
         tenantEntryBinding.toolbarTenantEnter.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getExitDialoge().show();
             }
         });
+
         /*
          * Switch checked change listeners.
          * switch for controlling the visibility of the personal info fields.
@@ -188,8 +184,9 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
             @Override
             public void onChanged(List<HouseNameAndId> houseNameAndIdList) {
                 //TODO: Show snack bar that there are no houses that can be added.
-                if (houseNameAndIdList.isEmpty()) {/*If there is no house available then allot meter will be set to false.*/
-                    isHosueAvailable = false;
+                if (houseNameAndIdList.isEmpty()) {/*If there is no house available then allot meter will be set to false.
+                 which is controlled via a variable isHouseAvailable*/
+                    isHosueAvailable = false;/*responsible for showing snackbar that no house is available.*/
                     tenantEntryBinding.switchTenantAllotRooms.setChecked(false);
                     tenantEntryBinding.switchTenantAllotRooms.setEnabled(false);
                 } else isHosueAvailable = true;
@@ -224,19 +221,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                 tenantsPersonal.setRoomId(mroomNoNameIds.get(position).roomId);
                 choosenRoom = mroomNoNameIds.get(position);
                 setAutoGenerateSwitchAndInput();
-                if (choosenRoom.isMeterEnabled) {//fetch for reading only if the meter is enabled;
-                    viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(choosenRoom.roomId)).observe(getViewLifecycleOwner(),
-                            new Observer<LastReadingWithDate>() {
-                                @Override
-                                public void onChanged(LastReadingWithDate lastReadingWithDate) {
-                                    lastMeterReading = lastReadingWithDate.getLastMeterReading();
-                                    tenantEntryBinding.tenantEntryStartMeterReading.setText(String.valueOf(lastMeterReading));
-
-
-                                }
-                            });
-                }
-
+                setLastMeterReaing();/*fetches the meter reading and sets it in text view*/
             }
 
             @Override
@@ -368,6 +353,21 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         return tenantEntryBinding.getRoot();
     }
 
+    private void setLastMeterReaing() {
+        if (choosenRoom.isMeterEnabled) {//fetch for reading only if the meter is enabled;
+            viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(choosenRoom.roomId)).observe(getViewLifecycleOwner(),
+                    new Observer<LastReadingWithDate>() {
+                        @Override
+                        public void onChanged(LastReadingWithDate lastReadingWithDate) {
+                            lastMeterReading = lastReadingWithDate.getLastMeterReading();
+                            tenantEntryBinding.tenantEntryStartMeterReading.setText(String.valueOf(lastMeterReading));
+
+
+                        }
+                    });
+        }
+    }
+
     /*send intent to capture the photo.*/
     public void dispatchPhoto() {
         Intent takeimage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -482,6 +482,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
 
     /* Meathods Checks and saves the payment information entered by the user in tenant object.*/
     private boolean isPaymentSchemeValid() {
+        /*check wheter paument scheme is available*/
         if (!tenantEntryBinding.switchTenantPaymentSheme.isChecked()) {
             tenantsPersonal.mFixedCharges = 0;
             tenantsPersonal.setDiscardAllMeterPay();
@@ -492,6 +493,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         if (monthlyCost.length() != 0) {
             tenantsPersonal.mFixedCharges = Float.parseFloat(monthlyCost);
         }
+        /*check if electric pay is enabled*/
         if (!tenantEntryBinding.switchTenantAddElectricityCharges.isChecked()) {
             return true;
         }
