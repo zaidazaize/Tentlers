@@ -21,7 +21,7 @@ import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -117,6 +117,11 @@ public class Repository {
     /* Get the specific room selected.*/
     public LiveData<TableRooms> getRoomFromRoomId(int roomId) {
         return mdao.getRoomFromRoomId(roomId);
+    }
+
+    /*update tenant ocuupied status*/
+    public void updateTenantOccupiedStatus(int houseid, int roomid, boolean isOccupied, int tenantId) {
+        mdao.upDateTenantOccupiedStatus(houseid, roomid, isOccupied, tenantId);
     }
 
     /*
@@ -299,8 +304,13 @@ public class Repository {
 
         @Override
         protected Void doInBackground(TableRooms... tableRooms) {
-            mAsyncDeleteRoomDao.deleteRoom(tableRooms[0]);
-            mAsyncDeleteRoomDao.updateNoOfRoomsInTableHosue(-1, tableRooms[0].getHouseId());
+
+            TableRooms rooms = tableRooms[0];
+            mAsyncDeleteRoomDao.deleteRoom(rooms);
+            mAsyncDeleteRoomDao.updateNoOfRoomsInTableHosue(-1, rooms.getHouseId());
+            if (rooms.isOcupiedStatus()) {
+                mAsyncDeleteRoomDao.upDateTenantOccupiedStatus(0, 0, false, rooms.getTenantId());
+            }
             return null;
         }
     }
@@ -340,7 +350,6 @@ public class Repository {
             }
             if (tenantsPersonals1.meterPay) {
                 mAsyncCreateTenantDao.insertMeterReading(tenantsPersonals1.getAllMetersData());
-
             }
             return null;
         }

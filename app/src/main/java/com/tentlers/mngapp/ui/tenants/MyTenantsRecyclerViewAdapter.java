@@ -51,7 +51,7 @@ public class MyTenantsRecyclerViewAdapter extends RecyclerView.Adapter<MyTenants
     }
 
     public interface OnTenantClickListener {
-        public void onTenantClicked(View v, int position);
+        void onTenantClicked(View v, int position);
     }
 
     public void setTenantList(List<TenantNameHouseRoom> tenantList) {

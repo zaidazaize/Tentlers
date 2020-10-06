@@ -15,7 +15,7 @@ import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.TableHouse;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.databinding.FragmentHomeBinding;
-import com.tentlers.mngapp.ui.home.specifichouse.GetDeleteRoomDialog;
+import com.tentlers.mngapp.ui.home.specifichouse.GetDeleteHouseDialog;
 
 import java.util.List;
 
@@ -110,7 +110,7 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
                 return true;
 
             case R.id.home_fragment_delete_House:
-                new GetDeleteRoomDialog().getdeleteRoomDilog(requireContext(),
+                new GetDeleteHouseDialog().getdeleteHouseDilog(requireContext(),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

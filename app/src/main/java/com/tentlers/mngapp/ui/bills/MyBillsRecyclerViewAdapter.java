@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
+import com.tentlers.mngapp.data.tables.bills.Bills;
 
 import java.util.List;
 
@@ -26,7 +27,6 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
         unpaidDrawable = unpaid;
         this.expandmore = expandmore;
         this.expandless = expandless;
-
 
     }
 
@@ -46,7 +46,7 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
         holder.chosenBill = billsList.get(position);
 
         /*set Date*/
-        holder.textViewdatetime.setText(holder.chosenBill.createDate.toString());
+        holder.textViewdatetime.setText(Bills.getBillDate(holder.chosenBill.createDate));
 
         /*Set payment status icon and text*/
         if (holder.chosenBill.isBillPaid) {

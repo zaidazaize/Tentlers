@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tentlers.mngapp.R;
+import com.tentlers.mngapp.data.tables.TableHouse;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
         HouseForHomeFragment tableHouse = mAllHouse.get(position);
         holder.houseid.setText(String.valueOf(position + 1));
         holder.houseName.setText(tableHouse.houseName);
-        holder.houseDate.setText(tableHouse.date.toString());
+        holder.houseDate.setText(TableHouse.getHouseDate(tableHouse.date));
         holder.totalRooms.setText(String.valueOf(tableHouse.noOfRooms));
         holder.occupiedRooms.setText(String.valueOf(tableHouse.occupiedRooms));
 

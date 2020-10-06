@@ -5,9 +5,9 @@ import android.content.DialogInterface;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class GetDeleteRoomDialog {
+public class GetDeleteHouseDialog {
 
-    public MaterialAlertDialogBuilder getdeleteRoomDilog(Context context, DialogInterface.OnClickListener listener) {
+    public MaterialAlertDialogBuilder getdeleteHouseDilog(Context context, DialogInterface.OnClickListener listener) {
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(context);
         dialogBuilder.setTitle("Delete House ?")
                 .setMessage("This will delete house and all its related data.")

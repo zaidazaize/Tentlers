@@ -1,6 +1,5 @@
 package com.tentlers.mngapp.ui.rooms;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,6 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
         if (room.ocupiedStatus) {
             holder.isOccupied.setVisibility(View.VISIBLE);
             holder.mTenantName.setText(room.tenantName);
-            Log.d("tenantName", room.tenantName);
         } else {
             holder.isOccupied.setVisibility(View.INVISIBLE);
             holder.mTenantName.setText(holder.itemView.getContext().getString(R.string.no_tenant_added));

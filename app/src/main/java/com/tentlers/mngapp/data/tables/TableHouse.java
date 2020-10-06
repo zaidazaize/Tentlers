@@ -2,7 +2,8 @@ package com.tentlers.mngapp.data.tables;
 
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.Formatter;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
@@ -23,7 +24,7 @@ public class TableHouse {
     private String houseName;
 
     @ColumnInfo()
-    private Date date;
+    private java.util.Date date;
 
     @ColumnInfo(defaultValue = "0")
     private int noOfRooms;
@@ -77,7 +78,7 @@ public class TableHouse {
         this.houseName = houseName;
     }
 
-    public Date getDate() {
+    public java.util.Date getDate() {
         return date;
     }
 
@@ -165,5 +166,11 @@ public class TableHouse {
 
     public void setAllMetersData(AllMetersData allMetersData) {
         this.allMetersData = allMetersData;
+    }
+
+    @Ignore
+    public static String getHouseDate(java.util.Date createDate) {
+        Formatter formatter = new Formatter();
+        return formatter.format("%td %th, %tY", createDate, createDate, createDate).toString();
     }
 }

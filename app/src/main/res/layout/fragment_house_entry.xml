@@ -16,7 +16,7 @@
             android:theme="?attr/actionBarTheme"
             app:menu="@menu/action_house_create_menu"
             app:navigationIcon="@drawable/ic_baseline_clear_24"
-            app:title="Create New House " />
+            app:title="@string/create_new_house" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                     app:counterEnabled="true"
                     app:counterMaxLength="20"
                     app:errorEnabled="true"
-                    app:helperText="Enter Your House Name"
+                    app:helperText="@string/enter_your_house_name"
                     app:startIconDrawable="@drawable/ic_baseline_home_24">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -55,7 +55,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/margin_top_bottom"
-                    android:layout_marginBottom="15sp"
+                    android:layout_marginBottom="@dimen/margin_top_bottom"
                     android:layout_height="@dimen/height_layout_line_width"
                     android:background="@color/dividing_line_color" />
 
@@ -67,7 +67,7 @@
                     android:layout_marginEnd="@dimen/margin_left_right"
                     android:checked="true"
                     android:drawableStart="@drawable/ic_place_24px"
-                    android:text="Add Address" />
+                    android:text="@string/add_address" />
 
                 <LinearLayout
                     android:id="@+id/linear_layout_address_layout"
@@ -92,13 +92,13 @@
                             android:layout_marginBottom="@dimen/margin_top_bottom"
                             android:layout_weight="1"
                             app:errorEnabled="true"
-                            app:helperText="!Recquered">
+                            app:helperText="@string/recquired">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/text_input_edit_text__house_city"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="City/Town"
+                                android:hint="@string/city_town"
                                 android:singleLine="true" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -120,7 +120,7 @@
                                 android:id="@+id/text_input_edit_text__house_country"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Country"
+                                android:hint="@string/country"
                                 android:inputType="textCapWords"
                                 android:singleLine="true" />
 
@@ -147,7 +147,7 @@
                                 android:id="@+id/text_input_edit_text_outlined_housenumber"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="House No."
+                                android:hint="@string/house_no"
                                 android:inputType="number" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -167,7 +167,7 @@
                                 android:id="@+id/text_input_edit_text_outlined_postal"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Postal Code"
+                                android:hint="@string/postal_code"
                                 android:inputType="textPostalAddress"
                                 android:singleLine="true" />
 
@@ -183,13 +183,13 @@
                             android:layout_marginEnd="@dimen/margin_left_right"
                             android:layout_marginBottom="@dimen/margin_top_bottom"
                             android:layout_weight="1"
-                            app:helperText="!Optional">
+                            app:helperText="@string/optional">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/text_input_edit_text_outlined_house_area"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Area/Locality"
+                                android:hint="@string/area_locality"
                                 android:inputType="textCapWords"
                                 android:singleLine="true" />
 
@@ -213,7 +213,7 @@
                     android:layout_marginStart="@dimen/margin_left_right"
                     android:layout_marginEnd="@dimen/margin_left_right"
                     android:checked="false"
-                    android:text="Add Number Of Rooms/Units" />
+                    android:text="@string/add_number_of_rooms_units" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_input_layout_house_Noof_rooms"
@@ -227,13 +227,13 @@
                     android:layout_weight="1"
                     android:visibility="gone"
                     app:errorEnabled="true"
-                    app:helperText="Auto creates the given number of rooms.">
+                    app:helperText="@string/auto_creates_the_given_no_of_room">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/text_input_edit_text_house_no_of_rooms"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Number of Rooms/Units"
+                        android:hint="@string/number_of_rooms_units"
                         android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -248,12 +248,12 @@
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/switch_electric_meter_permission"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginStart="@dimen/margin_left_right"
                     android:layout_marginEnd="@dimen/margin_left_right"
                     android:checked="false"
                     android:drawableStart="@drawable/ic_meter_reading_24px"
-                    android:text="Add Electric/Energy Meter" />
+                    android:text="@string/add_electric_energy_meter" />
 
                 <LinearLayout
                     android:id="@+id/layout_meter_number"
@@ -270,7 +270,7 @@
                         android:layout_marginEnd="@dimen/margin_left_right"
                         android:checked="false"
                         android:drawableStart="@drawable/ic_manually_enter_24px"
-                        android:text="Manually Enter Meter Number" />
+                        android:text="@string/manually_enter_meter_number" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_input_layout__manual_enter_house_MeterNo"
@@ -291,7 +291,7 @@
                             android:id="@+id/text_input_edit_text_manually_enter_house_electric_meter_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Meter Number"
+                            android:hint="@string/meter_number"
                             android:inputType="number" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -305,7 +305,7 @@
                         android:layout_marginEnd="@dimen/margin_left_right"
                         android:checked="true"
                         android:drawableStart="@drawable/ic_system_decide_24px"
-                        android:text="Use System Generated Number" />
+                        android:text="@string/use_system_generated_number" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_input_layout__house_initial_meter_reading"
@@ -323,7 +323,7 @@
                             android:id="@+id/text_input_edit_text_house_initial_meter_reading"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Start Meter Reading"
+                            android:hint="@string/start_meter_reading"
                             android:inputType="number" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -331,12 +331,12 @@
                 </LinearLayout>
 
                 <View
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="100dp"
-                    android:background="@color/dividing_line_color"
-                    android:layout_marginTop="30sp"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/height_layout_line_width"
-                    android:layout_marginBottom="10sp" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:layout_marginBottom="10sp"
+                    android:background="@color/dividing_line_color" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

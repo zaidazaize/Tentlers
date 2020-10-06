@@ -13,10 +13,13 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/meter_toolbar"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:background="@color/colorPrimary"
+                app:subtitle="@string/meter_number"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
-                app:titleTextColor="@color/reading_state_BILLED"
+                app:navigationIcon="@drawable/ic_meter_reading_24px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

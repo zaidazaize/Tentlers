@@ -1,6 +1,7 @@
 package com.tentlers.mngapp.data.tables.queryobjects;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import androidx.room.ColumnInfo;
 
@@ -11,4 +12,6 @@ public class HouseForHomeFragment extends HouseNameIdNoRooms {
 
     @ColumnInfo(name = "date")
     public Date date;
+
+
 }

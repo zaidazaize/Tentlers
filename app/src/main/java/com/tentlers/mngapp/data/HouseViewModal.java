@@ -21,7 +21,7 @@ import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -31,7 +31,7 @@ import androidx.lifecycle.LiveData;
 public class HouseViewModal extends AndroidViewModel {
 
     private int houseIdForSpecificHouse;
-    private Repository mRepository;
+    private final Repository mRepository;
     private LiveData<List<HouseForHomeFragment>> mAllHouse;
     private int houseIdForRoomEntry;
 

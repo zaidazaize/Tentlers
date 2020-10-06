@@ -41,7 +41,7 @@
                     app:counterEnabled="true"
                     app:counterMaxLength="20"
                     app:errorEnabled="true"
-                    app:helperText="Enter The Room Name"
+                    app:helperText="@string/enter_the_room_name"
                     app:startIconDrawable="@drawable/ic_emty_rooms_24">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -64,17 +64,25 @@
                     app:counterEnabled="true"
                     app:counterMaxLength="20"
                     app:errorEnabled="true"
-                    app:helperText="Enter The Room Number"
+                    app:helperText="@string/enter_the_room_no"
                     app:startIconDrawable="@drawable/ic_apartment_24px">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/text_input_edit_text_outlined_room_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Room Number"
+                        android:hint="@string/room_number"
                         android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:id="@+id/specific_house_line_below_linear_layout_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_layout_line_width"
+                    android:layout_marginBottom="@dimen/margin_top_bottom"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:background="@color/dividing_line_color" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/switch_room_electric_meter_permission"
@@ -83,13 +91,12 @@
                     android:layout_marginStart="@dimen/margin_left_right"
                     android:layout_marginEnd="@dimen/margin_left_right"
                     android:drawableStart="@drawable/ic_meter_reading_24px"
-                    android:text="Add Seperate Electric Meter" />
+                    android:text="@string/add_seperate_electric_meter" />
 
                 <LinearLayout
                     android:id="@+id/layout_room_meter_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:orientation="vertical"
                     android:visibility="gone">
 
@@ -101,7 +108,7 @@
                         android:layout_marginEnd="@dimen/margin_left_right"
                         android:checked="false"
                         android:drawableStart="@drawable/ic_manually_enter_24px"
-                        android:text="Manually Enter Meter Number" />
+                        android:text="@string/manually_enter_meter_number" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_input_layout__room_MeterNo"
@@ -115,7 +122,7 @@
                         android:layout_weight="1"
                         android:visibility="gone"
                         app:errorEnabled="true"
-                        app:helperText="Enter Only Numeral Part Of Meter id"
+                        app:helperText="@string/enter_only_numerical_part_of_meter_id"
                         app:startIconDrawable="@drawable/ic_meter_reading_24px">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -143,18 +150,18 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginStart="21dp"
+                        android:layout_marginStart="@dimen/margin_left_right"
                         android:layout_marginTop="5sp"
                         android:layout_marginEnd="@dimen/margin_left_right"
                         android:layout_marginBottom="@dimen/margin_left_right"
                         android:layout_weight="1"
-                        app:helperText="Initialise the meter with some reading">
+                        app:helperText="@string/enter_current_meter_reading">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/text_input_edit_text_room_initial_meter_reading"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Start Meter Reading"
+                            android:hint="@string/start_meter_reading"
                             android:inputType="number" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -162,6 +169,12 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_layout_line_width"
+                    android:layout_marginBottom="@dimen/margin_top_bottom"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:background="@color/dividing_line_color" />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

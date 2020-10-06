@@ -2,7 +2,7 @@
     <string name="app_name">Tentlers</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Ease Life</string>
+    <string name="nav_header_title">Tentlers</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -38,7 +38,7 @@
     <string name="system_generated_meterid_last_entry">systemGeneratedMeterId</string>
     <string name="room_name">Room Name</string>
     <string name="use_system_generated_number">Use System Generated Number</string>
-    <string name="meter_number">Meter Number</string>
+
     <string name="meter_no_already_exits">!Meter number already exits.</string>
     <string name="no_tenant_added">No Tenant Added</string>
     <string name="room_name_already_exists">!Room Name Already Exists.</string>
@@ -48,46 +48,85 @@
     <!-- house Entry Fragment-->
     <string name="house">House</string>
     <string name="updateHouseName">House%d</string>
+    <string name="enter_your_house_name">Enter Your House Name</string>
+    <string name="house_no">House No</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="area_locality">Area/Locality</string>
+    <string name="add_number_of_rooms_units">Add Number Of Rooms/Units</string>
+    <string name="add_seperate_electric_meter">Add Separate Electric Meter</string>
+    <string name="auto_creates_the_given_no_of_room">Auto creates the given number of rooms</string>
+    <string name="number_of_rooms_units">Number of Rooms/Units</string>
+    <string name="add_electric_energy_meter">Add Electric/Energy Meter</string>
+    <string name="manually_enter_meter_number">Manually Enter Meter Number</string>
+    <string name="start_meter_reading">Start Meter Reading</string>
+    <string name="no_of_rooms_must_be_less_than_100">! Number of rooms must be less than 100</string>
 
     <!--House List Item -->
     <string name="tenant_name">Tenant Name</string>
 
     <!--Specific House Fragment-->
+    <string name="create_new_house">Create New House</string>
+    <string name="house_name">House Name</string>
+    <string name="edit_house">Edit House</string>
+    <string name="add_address">Add Address</string>
     <string name="add_room">Add Room</string>
     <string name="add_tenant">Add Tenant</string>
     <string name="delete_house">Delete House</string>
     <string name="address">Address</string>
     <string name="house_number_colon">House Number :</string>
     <string name="locality_area_colon">Locality/Area :</string>
+    <string name="city_town">City/Town</string>
     <string name="postal_code_colon">Postal Code :</string>
     <string name="city_colon">City :</string>
     <string name="country_colon">Country :</string>
+    <string name="country">Country</string>
     <string name="electricity_energy_meter">Electricity/Energy Meter</string>
     <string name="meter_number_colon">Meter Number :</string>
     <string name="readings">Readings</string>
     <string name="last_reading">Last Reading</string>
     <string name="reading">Reading</string>
-    <string name="kwh_units">Kwh \\ Units</string>
+    <string name="kwh_units">Kwh // Units</string>
     <string name="rooms_units">Rooms/Units</string>
     <string name="view_all">View All</string>
     <string name="total_rooms">Total Rooms</string>
+    <string name="number_of_rooms">Number Of Rooms</string>
     <string name="filled_rooms">Filled Rooms</string>
     <string name="max_room_limit_reached">Max room limit reached.</string>
+    <string name="opps_no_address_found">Opps! No Address Found</string>
 
+    <!--Room Entry Fragment-->
+    <string name="enter_the_room_name">Enter The Room Name</string>
+    <string name="enter_the_room_no">Enter The Room Number</string>
+    <string name="room_number">Room Number</string>
+    <string name="enter_only_numerical_part_of_meter_id">Enter Only Numeral Part Of Meter id</string>
+    <string name="enter_current_meter_reading">Enter current meter reading</string>
+
+    <!--Room List-->
+    <string name="chose_house">Choose House</string>
+
+    <!--specific room fragment-->
+    <string name="remove_tenant">Remove Tenant</string>
+    <string name="oops_no_tenant_found">Oops! No Tenant Found</string>
+    <string name="create_bill">Create Bill</string>
+    <string name="delete_room">Delete Room</string>
+    <string name="bills_info">Bills Info</string>
+    <string name="oop_no_bills_found">Oop! No Bills Found</string>
+    <string name="meter_number">Meter Number</string>
+
+    <!--Tenant Entry Fragment-->
     <string name="personal_information">Personal Information</string>
-
-
-    <string name="first_launch_shared_prefferences">com.tentlers.first.launch</string>
-    <string name="is_app_first_launch">is_app_first_launch</string>
-    <string name="house_name">House Name</string>
-
-    <string name="optional">!Optional</string>
+    <string name="allot_room_and_payment_scheme">Allot Room And Payment Scheme</string>
+    <string name="allot_rooms">Allot Rooms</string>
+    <string name="add_electricity_charges">Add Electricity Charges</string>
+    <string name="last_meter_reading">Last Meter Reading</string>
+    <string name="add_manually_at_time_of_billing">Add Manually at Time of Billing</string>
     <string name="add_tenant_personal_information">Add Tenant Personal Information</string>
     <string name="age">Age</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
+    <string name="not_specified">Not Specified</string>
     <string name="total_family_members">Total Family Members</string>
     <string name="phone_number">Phone Number</string>
     <string name="choose_house">Choose House</string>
@@ -98,19 +137,53 @@
     <string name="enter_start_meter_reading">Enter Start Meter Reading</string>
     <string name="additional_charges">Additional Charges</string>
     <string name="enter_meter_reading">Enter Meter Reading</string>
-    <string name="edit_house">Edit House</string>
-
-    <string name="room_not_alloted">Room not alloted</string>
+    <string name="optional">!Optional</string>
+    <string name="enter_the_current_reading">Enter the current Reading of the meter</string>
     <string name="meter_is_missing_add_meter_to_the_selected_room">Meter is missing. Add Meter to the selected rooms</string>
-    <string name="invalid_entry_meter_reading_is_less_than_last_entered_reading">Invalid Entry! Meter Reading is less than the last meter reading.</string>
     <string name="no_house_available_to_add_tenant">No House available To Add Tenant.</string>
+    <string name="invalid_entry_meter_reading_is_less_than_last_entered_reading">Invalid Entry! Meter Reading is less than the last meter reading.</string>
+
+    <!--Specific Tenant Fragment-->
+    <string name="room_not_alloted">Oh! no room alloted</string>
+    <string name="monthly_charge">Monthly Charge</string>
+    <string name="mode_of_electricity_charges">Mode of Electricity Charges</string>
+    <string name="edit">Edit</string>
+    <string name="delete_tenant">Delete Tenant</string>
+    <string name="year_s">year/s</string>
+    <string name="hosue_and_room_info">Hosue and Room Info</string>
+    <string name="metered_charge">Metered Charge</string>
+    <string name="manually_charged">Manually Charged</string>
+
+    <!--Bill Home fragment-->
+    <string name="no_active_tenant_found">No Active Tenant Found</string>
+
+    <!--Bills list item-->
+    <string name="billing_date">Billing Date</string>
+    <string name="total_amount">Total Amount</string>
     <string name="monthly_charges">Monthly Charges</string>
+    <string name="additional_charge">Additional Charge</string>
+    <string name="electricity_charges">Electricity Charges</string>
+    <string name="to">To</string>
     <string name="paid">Paid</string>
     <string name="pending">Pending</string>
-    <string name="no_active_tenant_found">No Active Tenant Found</string>
-    <string name="no_of_rooms_must_be_less_than_100">! Number of rooms must be less than 100</string>
-    <string name="LastEnteredHouseId">LastEnteredHouseId</string>
-    <string name="remove_tenant">Remove Tenant</string>
+    <string name="show_amount_discription">Show amount Discription</string>
 
+
+    <string name="first_launch_shared_prefferences">com.tentlers.first.launch</string>
+    <string name="is_app_first_launch">is_app_first_launch</string>
+    <string name="LastEnteredHouseId">LastEnteredHouseId</string>
+
+    <!-- Bill entry fragment-->
+    <string name="choose_tenant">Choose Tenant</string>
+    <string name="colon">:</string>
+    <string name="manually_enter_electricity_charge">Manually Enter Electricity Charge</string>
+    <string name="enter_electricity_charges">Enter Electricity Charges</string>
+    <string name="enter_per_unit_electricity_charge">Enter Per Unit Electricity Charge</string>
+    <string name="auto_generate_electricity_cost">Auto Generate Electricity Cost</string>
+    <string name="new_tenant_added">New Tenant Added</string>
+    <string name="tenant_left">Tenant Left</string>
+    <string name="meter_created">Meter Created</string>
+    <string name="bill_id">Bill Id</string>
+    <string name="from_billing">From Billing</string>
 
 </resources>

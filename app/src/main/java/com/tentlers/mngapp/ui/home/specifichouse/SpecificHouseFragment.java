@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.TableHouse;
+import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
@@ -89,10 +90,10 @@ public class SpecificHouseFragment extends Fragment {
 
                 /* Set the house Name and Date on the textView */
                 binding.specificHouseName.setText(tableHouse.getHouseName());
-                binding.specificHouseDate.setText(tableHouse.getDate().toString());
+                binding.specificHouseDate.setText(TableHouse.getHouseDate(tableHouse.getDate()));
 
                 /* Set the address on the address layout.*/
-                if (tableHouse.getAddress() != null) {/*TODO:update the text stylw if address is not provided*/
+                if (tableHouse.getAddress() != null) {/*TODO:update the text style if address is not provided*/
                     String houseno = String.valueOf(tableHouse.getAddress().houseNo);
                     binding.specificHouseTextviewHouseno.setText(houseno.length() == 0 ? getString(R.string.not_provided) : houseno);
 
@@ -124,7 +125,7 @@ public class SpecificHouseFragment extends Fragment {
                                     binding.specificHouseLastReading.setText(String.valueOf(lastReadingWithDate.getLastMeterReading()));
 
                                     /*set last meter reading Date*/
-                                    binding.specificHouseLastReadingDate.setText(lastReadingWithDate.getDate().toString());
+                                    binding.specificHouseLastReadingDate.setText(AllMetersData.getMeterDate(lastReadingWithDate.getDate()));
 
                                     binding.specificHosueRelativeLayoutLastmeterReading.setVisibility(View.VISIBLE);
 
@@ -157,7 +158,7 @@ public class SpecificHouseFragment extends Fragment {
         binding.specificHouseFabAddRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (choosenHouse.getNoOfRooms() >= 99) {
+                if (choosenHouse.getNoOfRooms() > 99) {
                     /*show snack bar that max room limit is reached*/
                     Snackbar.make(binding.specificHouseCoordinatorLayout, getString(R.string.max_room_limit_reached), BaseTransientBottomBar.LENGTH_SHORT)
                             .show();
@@ -204,7 +205,6 @@ public class SpecificHouseFragment extends Fragment {
                 binding.specificHouseRelativeLayoutAddressDesc.setVisibility(/*initially address is not visible*/
                         isAddressVisible ? View.GONE : View.VISIBLE);
 
-
                 isAddressVisible = !isAddressVisible;
             }
         });
@@ -241,7 +241,7 @@ public class SpecificHouseFragment extends Fragment {
         binding.specificViewButtonRooms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.nav_rooms);
+                Navigation.findNavController(v).navigate(R.id.action_global_houseRooms);
             }
         });
 
@@ -311,7 +311,7 @@ public class SpecificHouseFragment extends Fragment {
     /* Dialog for confirming the delete of the house.*/
     public MaterialAlertDialogBuilder getDeleteAlertDialog() {
 
-        return new GetDeleteRoomDialog().getdeleteRoomDilog(requireContext(), new DialogInterface.OnClickListener() {
+        return new GetDeleteHouseDialog().getdeleteHouseDilog(requireContext(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (choosenHouse != null) {

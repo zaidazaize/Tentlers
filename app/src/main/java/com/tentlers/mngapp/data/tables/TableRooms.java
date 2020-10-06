@@ -2,7 +2,8 @@ package com.tentlers.mngapp.data.tables;
 
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.Formatter;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -163,5 +164,11 @@ public class TableRooms {
 
     public void setTenantEntryDate(Date tenantEntryDate) {
         this.tenantEntryDate = tenantEntryDate;
+    }
+
+    @Ignore
+    public static String getRoomDate(java.util.Date createDate) {
+        Formatter formatter = new Formatter();
+        return formatter.format("%td %th, %tY", createDate, createDate, createDate).toString();
     }
 }

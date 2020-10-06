@@ -33,9 +33,9 @@
     <color name="background_address">#A4E0E0E0</color>
     <color name="color_background_house_list_item">#EDF4F6</color>
     <color name="dividing_line_color">#F8131313</color>
-    <color name="reading_state_CREATE">#03DAC5</color>
+    <color name="reading_state_CREATE">@android:color/holo_green_light</color>
     <color name="reading_state_BILLED">@android:color/white</color>
-    <color name="reading_state_TENANT_ENTRY">@android:color/holo_green_dark</color>
-    <color name="reading_state_TENANT_EXIT">@android:color/holo_red_light</color>
+    <color name="reading_state_TENANT_ENTRY">@android:color/holo_green_light</color>
+    <color name="reading_state_TENANT_EXIT">#FFEB3B</color>
 
 </resources>

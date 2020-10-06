@@ -8,22 +8,33 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="?actionBarSize">
 
-        <androidx.appcompat.widget.Toolbar
+        <LinearLayout
+            android:orientation="horizontal"
             android:id="@+id/toolbar_rooms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorSecondary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:title="Chose The House">
+            android:background="@color/colorPrimaryLight"
+            android:minHeight="?attr/actionBarSize">
+
+            <TextView
+                android:layout_marginStart="@dimen/margin_left_right"
+                android:layout_gravity="center_vertical"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="wrap_content"
+                android:drawablePadding="5sp"
+                android:text="@string/choose_house"
+                android:layout_height="wrap_content"
+                app:drawableStartCompat="@drawable/ic_baseline_house_24" />
 
             <Spinner
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10sp"
                 android:id="@+id/spinner_toolbar_rooms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:dropDownWidth="wrap_content"
                 android:spinnerMode="dialog" />
-        </androidx.appcompat.widget.Toolbar>
+        </LinearLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView

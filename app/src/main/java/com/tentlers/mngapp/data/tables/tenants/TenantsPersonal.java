@@ -1,9 +1,13 @@
 package com.tentlers.mngapp.data.tables.tenants;
 
+import android.content.Context;
+
+import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 
 import java.io.File;
-import java.sql.Date;
+import java.util.Date;
+import java.util.Formatter;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -102,27 +106,23 @@ public class TenantsPersonal {
         return age;
     }
 
-    public boolean setAge(int age) {
-        if (age < 0) {
-            return false;
-        } else {
-            this.age = age;
-            return true;
-        }
+    public void setAge(int age) {
+        this.age = age;
+
     }
 
-    public String getGender() {
+    public String getGender(Context context) {
         switch (this.gender) {
             case TenantsPersonal.MALE:
-                return "Male";
+                return context.getString(R.string.male);
 
             case TenantsPersonal.FEMALE:
-                return "Female";
+                return context.getString(R.string.female);
 
             case TenantsPersonal.OTHER:
-                return "Other";
+                return context.getString(R.string.other);
             default:
-                return "Not Specified";
+                return context.getString(R.string.not_specified);
         }
     }
 
@@ -172,8 +172,14 @@ public class TenantsPersonal {
         this.tenantName = tenantName;
     }
 
-    public boolean isElectricChageEnabled() {
+    public boolean isElectricChargeEnabled() {
         return meterPay || nonMeterPay;
+    }
+
+    @Ignore
+    public static String getTenantDate(java.util.Date createDate) {
+        Formatter formatter = new Formatter();
+        return formatter.format("%td %th, %tY", createDate, createDate, createDate).toString();
     }
 }
 

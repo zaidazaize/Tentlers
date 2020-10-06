@@ -244,7 +244,8 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
                         choosenTenant = tenantBillEntry;
                         //TODO: Optional: change the helper string if the charge is fixed charge.
                         /*Set the fixed charge.*/
-                        billEntryBinding.textInputEditTextOutlinedMonthlyFixedCharge.setText(String.valueOf(tenantBillEntry.mFixedCharges));
+                        billEntryBinding.textInputEditTextOutlinedMonthlyFixedCharge.setText(
+                                tenantBillEntry.mFixedCharges == 0 ? "" : String.valueOf(tenantBillEntry.mFixedCharges));
                         createdbill.monthlycharge = tenantBillEntry.mFixedCharges;
 
                         /*Electricity charge entry, heading visibility*/

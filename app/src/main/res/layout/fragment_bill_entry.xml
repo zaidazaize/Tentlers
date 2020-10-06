@@ -47,48 +47,47 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5sp"
-                            android:text="Choose Tenant" />
+                            android:text="@string/choose_tenant" />
 
                         <Spinner
                             android:id="@+id/spinner_bills_tenants_name"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:spinnerMode="dialog" />
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+
+                    <TextView
+                        android:layout_marginTop="12sp"
+                        android:drawablePadding="5sp"
                         android:layout_marginStart="@dimen/margin_left_right"
-                        android:layout_marginEnd="@dimen/margin_left_right"
-                        android:layout_marginBottom="@dimen/margin_left_right"
-                        android:orientation="horizontal">
+                        android:id="@+id/bill_entry_house_name"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="House1"
+                        app:drawableStartCompat="@drawable/ic_baseline_house_24" />
 
-                        <TextView
-                            android:id="@+id/bill_entry_house_name"
-                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="House1" />
+                    <TextView
+                        android:drawablePadding="5sp"
+                        android:id="@+id/bill_entry_room_name"
+                        android:layout_marginStart="@dimen/margin_left_right"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12sp"
+                        android:layout_marginEnd="10sp"
+                        tools:text="Room1"
+                        app:drawableStartCompat="@drawable/ic_emty_rooms_24" />
 
-                        <TextView
-                            style="@style/TextAppearance.MaterialComponents.Headline6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_left_right"
-                            android:layout_marginEnd="@dimen/margin_left_right"
-                            android:text=":" />
 
-                        <TextView
-                            android:id="@+id/bill_entry_room_name"
-                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10sp"
-                            tools:text="Room1" />
-
-                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:layout_marginBottom="@dimen/margin_top_bottom"
+                        android:layout_height="@dimen/height_layout_line_width"
+                        android:background="@color/dividing_line_color" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_input_layout_outlined_monthly_fixed_charge"
@@ -130,15 +129,22 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:layout_marginBottom="@dimen/margin_top_bottom"
+                        android:layout_height="@dimen/height_layout_line_width"
+                        android:background="@color/dividing_line_color" />
+
+                    <!--TODO: add electricity symbol here-->
                     <TextView
                         android:id="@+id/bill_entry_textview_electricity_charges"
                         android:layout_width="match_parent"
+                        android:layout_marginBottom="@dimen/margin_top_bottom"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8sp"
-                        android:layout_marginTop="18sp"
                         android:layout_marginEnd="10sp"
-                        android:layout_marginBottom="10sp"
-                        android:text="Electricity Charges"
+                        android:text="@string/electricity_charges"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                     <TextView
@@ -147,8 +153,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12sp"
+                        android:drawablePadding="5sp"
                         android:layout_marginBottom="8sp"
-                        android:text="Manually Enter Electricity Charge" />
+                        android:text="@string/manually_enter_electricity_charge"
+                        app:drawableStartCompat="@drawable/ic_manually_enter_24px" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_input_layout_outlined_monthly_electric_charge"
@@ -157,7 +165,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_left_right"
                         android:layout_marginEnd="@dimen/margin_left_right"
-                        android:layout_marginBottom="@dimen/margin_top_bottom"
                         app:errorEnabled="true"
                         app:startIconDrawable="@drawable/ic_bill_pay_24">
 
@@ -166,7 +173,7 @@
                             android:id="@+id/text_input_edit_text_outlined_monthly_electric_charge"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter Electricity Charges"
+                            android:hint="@string/enter_electricity_charges"
                             android:inputType="numberDecimal" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -178,8 +185,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12sp"
+                        android:drawablePadding="5sp"
                         android:layout_marginBottom="8sp"
-                        android:text="Auto Generate Electricity Cost" />
+                        android:text="@string/auto_generate_electricity_cost"
+                        app:drawableStartCompat="@drawable/ic_system_decide_24px" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_input_layout_outlined_monthly_electric_per_unit_charge"
@@ -195,7 +204,7 @@
                             android:id="@+id/text_input_edit_text_outlined_monthly_electric_per_unit_charge"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter Per Unit Electricity Charge"
+                            android:hint="@string/enter_per_unit_electricity_charge"
                             android:inputType="numberDecimal" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -229,16 +238,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_left_right"
                         android:layout_marginEnd="@dimen/margin_left_right"
-                        android:layout_marginBottom="@dimen/margin_top_bottom"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20sp"
-                            android:text="Last Meter Reading"
+                            android:text="@string/last_meter_reading"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
+                        <!--TODO: Update the reading icon-->
                         <TextView
                             android:id="@+id/bill_entry_start_meter_reading"
                             style="@style/TextAppearance.MaterialComponents.Body1"
@@ -247,6 +256,12 @@
                             tools:text="2343244" />
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:layout_marginBottom="@dimen/margin_top_bottom"
+                        android:layout_height="@dimen/height_layout_line_width"
+                        android:background="@color/dividing_line_color" />
 
                     <RelativeLayout
                         android:id="@+id/bill_entry_liniarlayout_total_amt"
@@ -254,7 +269,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_left_right"
                         android:layout_marginEnd="@dimen/margin_left_right"
-                        android:layout_marginBottom="@dimen/margin_top_bottom"
                         android:orientation="horizontal">
 
                         <TextView
@@ -262,28 +276,31 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
-                            android:text="Total Amount"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_alignTop="@id/bill_entry_total_amt"
-                            android:layout_alignBottom="@id/bill_entry_total_amt"
+                            android:layout_marginEnd="20sp"
+                            android:layout_alignParentStart="true"
                             android:layout_toStartOf="@+id/bill_entry_total_amt"
-                            android:src="@drawable/ic_bill_pay_24"
-                            app:tint="?attr/colorControlNormal" />
+                            android:text="@string/total_amount"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
                         <TextView
                             android:id="@+id/bill_entry_total_amt"
+                            app:tint="?attr/colorControlNormal"
                             style="@style/TextAppearance.MaterialComponents.Headline5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:drawablePadding="5sp"
                             android:layout_alignBaseline="@id/bill_entry_show_total_amt"
                             android:layout_alignParentEnd="true"
-                            tools:text="2343244" />
+                            tools:text="2343244"
+                            app:drawableStartCompat="@drawable/ic_bill_pay_24" />
                     </RelativeLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:layout_marginBottom="@dimen/margin_top_bottom"
+                        android:layout_height="@dimen/height_layout_line_width"
+                        android:background="@color/dividing_line_color" />
 
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

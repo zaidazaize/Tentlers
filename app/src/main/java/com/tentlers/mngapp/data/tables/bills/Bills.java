@@ -3,6 +3,7 @@ package com.tentlers.mngapp.data.tables.bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 
 import java.sql.Date;
+import java.util.Formatter;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -12,7 +13,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Bills {
     @Ignore
-    public AllMetersData metersData;
+    public final AllMetersData metersData;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo()
@@ -26,7 +27,7 @@ public class Bills {
     @ColumnInfo
     public long endMeterR;
     @ColumnInfo
-    public Date createDate;
+    public java.util.Date createDate;
     @ColumnInfo
     public Date billpaymentDate;
     @ColumnInfo
@@ -83,6 +84,12 @@ public class Bills {
     @Ignore
     public float getMeteredElectricityCost() {
         return (endMeterR - initialMeterR) * perUnitcoat;
+    }
+
+    @Ignore
+    public static String getBillDate(java.util.Date createDate) {
+        Formatter formatter = new Formatter();
+        return formatter.format("%tr , %ta, %td %tb, %tY", createDate, createDate, createDate, createDate, createDate).toString();
     }
 
 

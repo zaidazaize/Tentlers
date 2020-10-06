@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 
@@ -36,10 +37,13 @@ public class MetersRecyclerViewAdapter extends RecyclerView.Adapter<MetersRecycl
         holder.setChosenReading(allMetersList.get(position));
         if (currentReadingState != holder.chosenReading.getReadingState()) {
             holder.meterReadingState.setVisibility(View.VISIBLE);
-            holder.meterReadingState.setText(holder.chosenReading.getReadingState() == AllMetersData.BILLED ?
-                    AllMetersData.BILLING_STATUS : holder.chosenReading.getHeadingText());
+
+            /*set the text on heading that defferentiates b/w the reading states*/
+            holder.meterReadingState.setText(holder.itemView.getContext().getString(
+                    holder.chosenReading.getReadingState() == AllMetersData.BILLED ?
+                            AllMetersData.BILLING_STATUS : holder.chosenReading.getHeadingText()));
             currentReadingState = holder.chosenReading.getReadingState();
-        } else holder.meterReadingState.setVisibility(View.GONE);
+        } else holder.headingViewer.setVisibility(View.GONE);
 
     }
 
@@ -61,14 +65,15 @@ public class MetersRecyclerViewAdapter extends RecyclerView.Adapter<MetersRecycl
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public final View colorChanger;
+        public final View colorChanger, headingViewer;
         public final TextView billID, date, reading, showBillID, meterReadingState;
         LinearLayout orientationChanger;
         private AllMetersData chosenReading;
 
         public ViewHolder(View view) {
             super(view);
-            colorChanger = view.findViewById(R.id.meter_relativelayout_for_orientation);
+            headingViewer = view.findViewById(R.id.meter_reading_heading_desc);
+            colorChanger = (MaterialCardView) view.findViewById(R.id.meter_relativelayout_for_color);
             billID = view.findViewById(R.id.meter_bill_id);
             date = view.findViewById(R.id.meter_date);
             reading = view.findViewById(R.id.meter_reading);
@@ -85,20 +90,28 @@ public class MetersRecyclerViewAdapter extends RecyclerView.Adapter<MetersRecycl
 
         public void setChosenReading(AllMetersData chosenReading) {
             this.chosenReading = chosenReading;
-            this.colorChanger.setBackgroundColor(chosenReading.getColorState());
+
+            /*set the color on the card for defining lhe bills sate*/
+
+            /*set the orientation for defining the state of the meter reading.*/
             this.orientationChanger.setGravity(chosenReading.getOrientationState());
 
             /*set the text style and text of the show bill id textview.*/
             this.showBillID.setTextAppearance(chosenReading.getTextStyle());
-            this.showBillID.setText(chosenReading.getHeadingText());
+
+            /*set the text on reading source description*/
+            this.showBillID.setText(itemView.getContext().getString(chosenReading.getHeadingText()));
 
             /*show bill id only if state is billed;*/
             if (chosenReading.getReadingState() == AllMetersData.BILLED) {
                 this.billID.setText(String.valueOf(chosenReading.getBillId()));
             }
 
+            /*set the reading of the meter*/
             this.reading.setText(String.valueOf(chosenReading.getLastMeterReading()));
-            this.date.setText(chosenReading.getDate().toString());
+
+            /*set the reading date*/
+            this.date.setText(AllMetersData.getMeterDate(chosenReading.getDate()));
 
         }
     }

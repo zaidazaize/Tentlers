@@ -16,7 +16,7 @@
                 tools:background="@color/color_background_house_list_item"
                 android:background="@color/color_background_house_list_item"
                 android:id="@+id/recycle_view_bills"
-                android:name="com.example.easelife.ui.bills.BillsFragment"
+                android:name="com.tentlers.mngapp.ui.bills.BillsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

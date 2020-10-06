@@ -17,7 +17,7 @@ import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -118,9 +118,11 @@ public interface HouseDao {
     @Query("SELECT * FROM tablerooms WHERE roomId = :gotRoomId")
     LiveData<TableRooms> getRoomFromRoomId(int gotRoomId);
 
-    /*
-     * For Tenants Personal Table
-     */
+    /*update the tenant  occupied status */
+    @Query("UPDATE tenantspersonal SET houseId = :gotHouseId , roomId = :gotRoomId AND isRoomAlloted = :isAlloted WHERE tenantId = :gotTenantId")
+    void upDateTenantOccupiedStatus(int gotHouseId, int gotRoomId, boolean isAlloted, int gotTenantId);
+
+    /* For Tenants Personal Table*/
     @Insert()
     void insertNewTenant(TenantsPersonal tenantsPersonal);
 
@@ -151,9 +153,7 @@ public interface HouseDao {
     @Query("UPDATE tablehouse SET occupiedRooms = occupiedRooms + :updaterooms WHERE houseId = :gothouseId")
     void updateNoOfEmptyRoomsInTable(int updaterooms, int gothouseId);
 
-    /*
-     * update the room status to occupied
-     */
+    /* update the room status to occupied*/
     @Query("UPDATE tablerooms SET ocupiedStatus = :gotIsOccupied,tenantName = :gotTenantName,tenantEntryDate = :gotEntryDate WHERE roomId = :gotRoomid")
     void updatetheRoomOccupiedStatusAndName(boolean gotIsOccupied, int gotRoomid, String gotTenantName, Date gotEntryDate);
 
@@ -181,7 +181,8 @@ public interface HouseDao {
 
     /*Get room name and house name for the specific tenant fragment*/
     @Query("SELECT houseName,roomName,tablerooms.meterId " +
-            "From TableHouse,TableRooms where tablerooms.roomId = :gotRoomId LIMIT 1")
+            "From TableHouse,TableRooms where tablerooms.roomId = :gotRoomId AND " +
+            "tablerooms.houseId = tablehouse.houseId LIMIT 1")
     LiveData<MetersListObj> getHouseRoomNameFromRoomId(int gotRoomId);
 
     /* Bills Fragment*/

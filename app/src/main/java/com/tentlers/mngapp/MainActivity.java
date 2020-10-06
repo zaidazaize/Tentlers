@@ -2,7 +2,6 @@ package com.tentlers.mngapp;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         /*
          *Set the navigation change listener to update the full screen views
          */
+        /*TODO: add andimation to hide navigation items*/
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
@@ -133,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     /*
@@ -209,8 +208,8 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        if (mainBinding.drawerLayout.isDrawerVisible(Gravity.LEFT)) {
-            mainBinding.drawerLayout.closeDrawer(Gravity.LEFT);
+        if (mainBinding.drawerLayout.isDrawerVisible(GravityCompat.START)) {
+            mainBinding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }

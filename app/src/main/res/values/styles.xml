@@ -21,4 +21,14 @@
 
     </style>
 
+    <!-- Style of room no shown in circle type-->
+    <style name="TextAppearance.WhiteTextStyle" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">@color/color_house_name</item>
+    </style>
+
+    <!-- for textview describing empty fields-->
+    <style name="TextAppearance.EmptyStyle" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@android:color/secondary_text_dark</item>
+    </style>
+
 </resources>

@@ -10,6 +10,7 @@
         android:name="com.tentlers.mngapp.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
+
         <action
             android:id="@+id/action_nav_home_to_houseEntryDilog"
             app:destination="@id/nav_houseEntryFragment"
@@ -17,6 +18,7 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+
         <action
             android:id="@+id/action_nav_home_to_nav_specificHouseFragment"
             app:destination="@id/nav_specificHouseFragment"
@@ -24,6 +26,7 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -60,6 +63,7 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_houseEntryFragment"
         android:name="com.tentlers.mngapp.ui.home.HouseEntryFragment"
@@ -152,6 +156,20 @@
     <action
         android:id="@+id/action_global_nav_specificRoomFragment"
         app:destination="@id/nav_specificRoomFragment"
+        app:enterAnim="@android:anim/slide_in_left"
+        app:exitAnim="@android:anim/slide_out_right"
+        app:popEnterAnim="@android:anim/slide_in_left"
+        app:popExitAnim="@android:anim/slide_out_right" />
+    <action
+        android:id="@+id/action_global_nav_billEntryFragment"
+        app:destination="@id/nav_billEntryFragment"
+        app:enterAnim="@android:anim/slide_in_left"
+        app:exitAnim="@android:anim/slide_out_right"
+        app:popEnterAnim="@android:anim/slide_in_left"
+        app:popExitAnim="@android:anim/slide_out_right" />
+    <action
+        android:id="@+id/action_global_nav_bills"
+        app:destination="@id/nav_bills"
         app:enterAnim="@android:anim/slide_in_left"
         app:exitAnim="@android:anim/slide_out_right"
         app:popEnterAnim="@android:anim/slide_in_left"

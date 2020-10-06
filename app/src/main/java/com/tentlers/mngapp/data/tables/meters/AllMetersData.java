@@ -4,7 +4,8 @@ import android.view.Gravity;
 
 import com.tentlers.mngapp.R;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.Formatter;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -14,18 +15,20 @@ import androidx.room.PrimaryKey;
 @Entity
 public class AllMetersData {
     @Ignore
-    public static final String TENANT_ENTRY_STRING = "New Tenant Added";
+    public static final int TENANT_ENTRY_STRING = R.string.new_tenant_added;
     @Ignore
-    public static final String TENANT_EXIT_STRING = "Tenant Left";
+    public static final int TENANT_EXIT_STRING = R.string.tenant_left;
+
+    @Ignore
+    public static final int CREATE_METER_STRING = R.string.meter_created;
+    @Ignore
+    public static final int BILLED_STRING = R.string.bill_id;
+    @Ignore
+    public static final int BILLING_STATUS = R.string.from_billing;
 
     @ColumnInfo(defaultValue = "NULL")
     private long meterId;
-    @Ignore
-    public static final String CREATE_METER_STRING = "Meter Created";
-    @Ignore
-    public static final String BILLED_STRING = "Bill Id";
-    @Ignore
-    public static final String BILLING_STATUS = "From Billing";
+
     @Ignore
     public static final int CREATE = 100;
     @Ignore
@@ -53,9 +56,9 @@ public class AllMetersData {
     @Ignore
     private int orientationState;
     @Ignore
-    private String headingText;
+    private int headingText;
 
-    public String getHeadingText() {
+    public int getHeadingText() {
         return headingText;
     }
 
@@ -114,7 +117,7 @@ public class AllMetersData {
     }
 
     public int getColorState() {
-        return colorState;
+        return this.colorState;
     }
 
     public long getEntryId() {
@@ -129,11 +132,11 @@ public class AllMetersData {
         this.meterId = meterId;
     }
 
-    public Date getDate() {
+    public java.util.Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(java.util.Date date) {
         this.date = date;
     }
 
@@ -165,5 +168,9 @@ public class AllMetersData {
         this.billId = billId;
     }
 
-
+    @Ignore
+    public static String getMeterDate(java.util.Date createDate) {
+        Formatter formatter = new Formatter();
+        return formatter.format("%td %th, %tY", createDate, createDate, createDate).toString();
+    }
 }

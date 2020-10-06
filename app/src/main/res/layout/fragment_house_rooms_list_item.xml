@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8sp"
-        android:layout_marginTop="4sp"
+        android:layout_marginTop="8sp"
         android:layout_marginEnd="8sp"
-        android:layout_marginBottom="4sp"
+        android:layout_marginBottom="8sp"
         android:clickable="true"
+        app:cardCornerRadius="40dp"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground"
         app:cardElevation="3dp">
 
         <RelativeLayout
             android:id="@+id/room_listItem_container"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5sp"
-            android:layout_marginTop="5sp"
-            android:layout_marginEnd="5sp"
-            android:layout_marginBottom="8sp">
+            android:layout_margin="10sp">
 
             <TextView
                 android:id="@+id/house_room_listitem_room_no"
@@ -31,9 +30,8 @@
                 android:layout_marginTop="2sp"
                 android:background="@drawable/circle_house_number"
                 android:gravity="center"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="@color/color_house_name"
-                tools:text="1" />
+                style="@style/TextAppearance.WhiteTextStyle"
+                tools:text="99" />
 
             <TextView
                 android:id="@+id/house_room_listitem_room_name"
@@ -67,20 +65,12 @@
                 android:src="@drawable/ic_baseline_check_circle_outline_24"
                 android:visibility="invisible" />
 
-            <View
-                android:id="@+id/house_room_listitem_line_below_room_name"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/house_room_listitem_room_no"
-                android:layout_marginTop="4sp"
-                android:background="@color/dividing_line_color" />
-
 
             <TextView
                 android:id="@+id/house_room_show_tenat_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/house_room_listitem_line_below_room_name"
+                android:layout_below="@id/house_room_listitem_room_name"
                 android:layout_alignStart="@id/house_room_listitem_room_name"
                 android:layout_marginTop="5sp"
                 android:text="@string/tenant_name"
@@ -88,15 +78,24 @@
 
             <TextView
                 android:id="@+id/house_room_listitem_room_tenant"
-                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/house_room_show_tenat_name"
+                android:layout_alignParentEnd="true"
                 android:layout_marginStart="20sp"
                 android:layout_marginEnd="@dimen/margin_top_bottom"
                 android:layout_toEndOf="@id/house_room_show_tenat_name"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                tools:text="Mohammad zaidaziz" />
+                tools:text="Mohammad zaid aziz" />
+
+            <View
+                android:id="@+id/house_room_listitem_line_below_room_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_listitem_line_width"
+                android:layout_below="@id/house_room_listitem_room_tenant"
+                android:layout_marginTop="4sp"
+                android:layout_marginBottom="4sp"
+                android:background="@color/dividing_line_color" />
 
         </RelativeLayout>
 

@@ -1,7 +1,6 @@
 package com.tentlers.mngapp.ui.tenants.specifictenant;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +23,8 @@ public class SpecificTenantFragment extends Fragment {
     FragmentSpecificTenantBinding tenantBinding;
     HouseViewModal viewModal;
     TenantsPersonal choosenTenant;
-    MetersListObj alloteRoom;
-    boolean personalDescVisibility;
+    MetersListObj allotedRoom;
+    boolean personalDescVisibility, paymentSchemeVisibility;
 
     public SpecificTenantFragment() {
         // Required empty public constructor
@@ -43,8 +42,7 @@ public class SpecificTenantFragment extends Fragment {
         // Inflate the layout for this fragment
         tenantBinding = FragmentSpecificTenantBinding.inflate(getLayoutInflater(), container, false);
 
-        /*Fetch all the data of choosen tenant*/
-        Log.d("selectedTenant", String.valueOf(viewModal.getTenantIdForSpecificTenant()));
+        /*Fetch all the data of chosen tenant*/
         viewModal.getTenantFromId(viewModal.getTenantIdForSpecificTenant()).observe(getViewLifecycleOwner(), new Observer<TenantsPersonal>() {
             @Override
             public void onChanged(TenantsPersonal tenantsPersonal) {
@@ -59,10 +57,10 @@ public class SpecificTenantFragment extends Fragment {
                     viewModal.getHouseRoomNameFromRoomId(tenantsPersonal.roomId).observe(getViewLifecycleOwner(), new Observer<MetersListObj>() {
                         @Override
                         public void onChanged(MetersListObj metersListObj) {
-                            alloteRoom = metersListObj;
-                            if (alloteRoom == null) {
+                            if (metersListObj == null) {
                                 return;
                             }
+                            allotedRoom = metersListObj;
                             setRoomInfo();
                         }
                     });
@@ -74,7 +72,7 @@ public class SpecificTenantFragment extends Fragment {
         });
 
         /*Handle the personal info layout visibility*/
-        tenantBinding.specificTenantShowImagePersonalInfoDesc.setOnClickListener(new View.OnClickListener() {
+        tenantBinding.specificTenantRelativeLayoutPersonalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (personalDescVisibility) {/*if it is visible .Make the layout insvisible*/
@@ -89,6 +87,21 @@ public class SpecificTenantFragment extends Fragment {
             }
         });
 
+        tenantBinding.specificTenantRelativeLayoutPaymentScheme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tenantBinding.specificTenantImagePaymentSchemeShowMore.setImageDrawable(
+                        !paymentSchemeVisibility ? ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_expand_less_24) :
+                                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_expand_more_24));
+
+                tenantBinding.specificTenantRelativeLayoutPaymentSchemeDesc.setVisibility(
+                        paymentSchemeVisibility ? View.GONE : View.VISIBLE);
+                paymentSchemeVisibility = !paymentSchemeVisibility;
+
+
+            }
+        });
+
 
         return tenantBinding.getRoot();
     }
@@ -98,13 +111,13 @@ public class SpecificTenantFragment extends Fragment {
 
         /*Set the teanant name and create date*/
         tenantBinding.specificTenantTextviewTenantName.setText(choosenTenant.getTenantName());
-        tenantBinding.specificTenantTenantEntryDate.setText(choosenTenant.getCreateDate().toString());
+        tenantBinding.specificTenantTenantEntryDate.setText(TenantsPersonal.getTenantDate(choosenTenant.getCreateDate()));
 
         /*Set personal data age,gender,family members*/
         tenantBinding.specificTenantTextviewAge.setText(
                 choosenTenant.getAge() == 0 ? getString(R.string.not_provided) : String.valueOf(choosenTenant.getAge()));
 
-        tenantBinding.specificTenantTextviewGender.setText(choosenTenant.getGender());
+        tenantBinding.specificTenantTextviewGender.setText(choosenTenant.getGender(requireContext()));
 
         tenantBinding.specificTenantTextviewFamilyMembers.setText(
                 choosenTenant.familyMembers == 0 ? getString(R.string.not_provided) : String.valueOf(choosenTenant.familyMembers));
@@ -118,11 +131,11 @@ public class SpecificTenantFragment extends Fragment {
 
         /*monthly charge*/
         tenantBinding.specificTenantTextviewMonthlyCharge.setText(
-                choosenTenant.mFixedCharges == 0 ? "" : String.valueOf(choosenTenant.mFixedCharges));
+                choosenTenant.mFixedCharges == 0 ? getString(R.string.not_provided) : String.valueOf(choosenTenant.mFixedCharges));
 
         /*set the electric charge*/
         /*if not enabled show that charge mode is not enabled*/
-        if (choosenTenant.isElectricChageEnabled()) {
+        if (choosenTenant.isElectricChargeEnabled()) {
             /*set the image icon for meter pay*/
             tenantBinding.specificTenantShowImageElecticityChargeMode.setImageDrawable(
                     choosenTenant.meterPay ? ContextCompat.getDrawable(requireContext(), R.drawable.ic_system_decide_24px) :
@@ -130,18 +143,19 @@ public class SpecificTenantFragment extends Fragment {
 
             /*set the text for electric pay mode*/
             tenantBinding.specificTenantTextviewElectricChargeMode.setText(
-                    choosenTenant.meterPay ? "Metered Charge" : "Manually Charged");
+                    choosenTenant.meterPay ? getString(R.string.metered_charge) : getString(R.string.manually_charged));
         } else {
             tenantBinding.specificTenantTextviewElectricChargeMode.setText(getString(R.string.not_provided));
             tenantBinding.specificTenantShowImageElecticityChargeMode.setImageDrawable(
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_about_24px));
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_sentiment_dissatisfied_24px));
         }
 
     }
 
     private void setRoomInfo() {
         /*null is checked in the calling observer.*/
-        tenantBinding.specificTenantTextviewHosueName.setText(alloteRoom.houseName);
-        tenantBinding.specificTenantTextviewRoomName.setText(alloteRoom.roomName);
+        tenantBinding.specificTenantTextviewHosueName.setText(allotedRoom.houseName);
+        tenantBinding.specificTenantTextviewRoomName.setText(allotedRoom.roomName);
     }
+
 }

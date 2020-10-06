@@ -7,7 +7,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_marginTop="4sp"
+        android:backgroundTint="@color/background_address"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="?actionBarSize">
@@ -22,6 +22,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/background_address"
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".ui.tenants.TenantsFragment"
             tools:listitem="@layout/fragment_tenants_list_item" />

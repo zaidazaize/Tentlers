@@ -1,6 +1,6 @@
 package com.tentlers.mngapp.data.tables.meters;
 
-import java.sql.Date;
+import java.util.Date;
 
 import androidx.room.ColumnInfo;
 
