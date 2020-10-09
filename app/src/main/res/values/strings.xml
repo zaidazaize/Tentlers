@@ -60,6 +60,7 @@
     <string name="manually_enter_meter_number">Manually Enter Meter Number</string>
     <string name="start_meter_reading">Start Meter Reading</string>
     <string name="no_of_rooms_must_be_less_than_100">! Number of rooms must be less than 100</string>
+    <string name="save">Save</string>
 
     <!--House List Item -->
     <string name="tenant_name">Tenant Name</string>
@@ -117,6 +118,7 @@
     <string name="personal_information">Personal Information</string>
     <string name="allot_room_and_payment_scheme">Allot Room And Payment Scheme</string>
     <string name="allot_rooms">Allot Rooms</string>
+    <string name="add_meter">Add Meter</string>
     <string name="add_electricity_charges">Add Electricity Charges</string>
     <string name="last_meter_reading">Last Meter Reading</string>
     <string name="add_manually_at_time_of_billing">Add Manually at Time of Billing</string>
@@ -153,6 +155,7 @@
     <string name="hosue_and_room_info">Hosue and Room Info</string>
     <string name="metered_charge">Metered Charge</string>
     <string name="manually_charged">Manually Charged</string>
+    <string name="oops_no_room_alloted">Oops! No Room Alloted</string>
 
     <!--Bill Home fragment-->
     <string name="no_active_tenant_found">No Active Tenant Found</string>
@@ -185,5 +188,19 @@
     <string name="meter_created">Meter Created</string>
     <string name="bill_id">Bill Id</string>
     <string name="from_billing">From Billing</string>
+
+    <!--For drawer layouts -->
+    <string name="meter_info">Meter Info</string>
+    <string name="bills">Bills</string>
+    <string name="tenants">Tenants</string>
+    <string name="rooms">Rooms</string>
+
+    <!--Main toolbar-->
+    <string name="search">Search</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_tenants_profile_picture">Choose Tenants profile picture</string>
+
 
 </resources>

@@ -3,5 +3,5 @@
     <!--TODO: change the path to save to external files.-->
     <external-files-path
         name="my_images"
-        path="/" />
+        path="." />
 </paths>

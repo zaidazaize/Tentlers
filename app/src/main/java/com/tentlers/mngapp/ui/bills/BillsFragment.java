@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
+import com.tentlers.mngapp.data.tables.bills.BillEntryTypeObject;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.databinding.FragmentBillsListBinding;
 
@@ -58,9 +60,12 @@ public class BillsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isAnyActiveTenant) {
+                    /*set the bill entry type*/
+                    viewModal.setBillEntryType((new BillEntryTypeObject()).setBillNormalPaid(true));
                     Navigation.findNavController(v).navigate(R.id.action_nav_bills_to_billEntryFragment);
                 } else {
-                    Toast.makeText(getContext(), getString(R.string.no_active_tenant_found), Toast.LENGTH_SHORT)
+                    /*shows snack bar if no tenant is found*/
+                    Snackbar.make(billsListBinding.billCoordinatorLayout, getString(R.string.no_active_tenant_found), BaseTransientBottomBar.LENGTH_SHORT)
                             .show();
                 }
             }

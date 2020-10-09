@@ -15,6 +15,7 @@ import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
+import com.tentlers.mngapp.data.tables.tenants.TenantNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
 import java.util.Date;
@@ -154,8 +155,12 @@ public interface HouseDao {
     void updateNoOfEmptyRoomsInTable(int updaterooms, int gothouseId);
 
     /* update the room status to occupied*/
-    @Query("UPDATE tablerooms SET ocupiedStatus = :gotIsOccupied,tenantName = :gotTenantName,tenantEntryDate = :gotEntryDate WHERE roomId = :gotRoomid")
-    void updatetheRoomOccupiedStatusAndName(boolean gotIsOccupied, int gotRoomid, String gotTenantName, Date gotEntryDate);
+    @Query("UPDATE tablerooms SET ocupiedStatus = :gotIsOccupied, tenantId = :gottenantid, tenantName = :gotTenantName,tenantEntryDate = :gotEntryDate WHERE roomId = :gotRoomid")
+    void updatetheRoomOccupiedStatusAndName(boolean gotIsOccupied, int gotRoomid, int gottenantid, String gotTenantName, Date gotEntryDate);
+
+    /*get the new tenant if from the roomid*/
+    @Query("SELECT tenantId FROM tenantspersonal WHERE roomId = :gotroomid")
+    Integer getTenantIdFromRoomIdFromTenantPersonal(int gotroomid);
 
 //    /*udate the tenant name in the rooms table.*/
 //    @Query("UPDATE tablerooms SET tenantName = :gotTenantName AND tenantEntryDate = :gotEntrydate WHERE roomId = :gotroomId")
@@ -187,9 +192,19 @@ public interface HouseDao {
 
     /* Bills Fragment*/
 
+    /*get all the tenant for bill entry fragment*/
+    @Query("SELECT tenantId,tenantName FROM TenantsPersonal WHERE isRoomAlloted = :isAlloted ")
+    LiveData<List<TenantNameId>> getAllTenantNameId(boolean isAlloted);
+
+    @Query("SELECT tenantId FROM tablerooms WHERE roomId = :gotroomid ")
+    LiveData<Integer> getTenantIdFromRoomID(int gotroomid);
+
     /* Bill entry fragment.
      * returns the selected tenant's :  tenantsPersonal object */
-    @Query("SELECT roomId, meterPay, nonMeterPay, mFixedCharges FROM TenantsPersonal WHERE tenantId = :gotTenantId")
+    @Transaction
+    @Query("SELECT tenantspersonal.tenantName, tenantspersonal.roomId, meterPay, nonMeterPay, mFixedCharges , roomName , houseName " +
+            "FROM TenantsPersonal ,tableRooms, tablehouse " +
+            "WHERE tenantspersonal.tenantId = :gotTenantId AND tablerooms.roomId = tenantsPersonal.roomId AND tableHouse.houseId = tenantspersonal.houseId ")
     LiveData<TenantBillEntry> getSelectedTenantForBill(int gotTenantId);
 
     /* For creating new bill.*/

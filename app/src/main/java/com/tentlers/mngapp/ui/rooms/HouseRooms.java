@@ -74,7 +74,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         /*
          * Initialise the Array adapter
          */
-        arrayAdapter = new ArrayAdapter<String>
+        arrayAdapter = new ArrayAdapter<>
                 (requireContext(), android.R.layout.simple_list_item_1);
 
         /*

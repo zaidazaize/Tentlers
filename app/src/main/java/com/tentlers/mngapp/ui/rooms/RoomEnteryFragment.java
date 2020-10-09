@@ -38,6 +38,10 @@ public class RoomEnteryFragment extends Fragment {
     FragmentRoomEnteyBinding enteyBinding;
     HouseViewModal viewModal;
 
+    public RoomEnteryFragment() {
+        tableRooms = new TableRooms();
+    }
+
     /*
      * this object holds the meter ids of all the rooms in the database.
      */
@@ -49,7 +53,8 @@ public class RoomEnteryFragment extends Fragment {
     /*
      * This object holds all the valid data entered in for the room creation.
      */
-    private TableRooms tableRooms = new TableRooms();
+    private TableRooms tableRooms;
+
 
     /*
      * This variable stores the system generated room number and room name
@@ -124,7 +129,7 @@ public class RoomEnteryFragment extends Fragment {
         enteyBinding.toolbarRoomEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.menutem_house_save) {
+                if (item.getItemId() == R.id.menuitem_house_save) {
                     if (checkforDataValidity()) {
                         getSaveDialoge().show();
                     }

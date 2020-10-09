@@ -5,6 +5,7 @@ import android.app.Application;
 import com.tentlers.mngapp.data.database.Repository;
 import com.tentlers.mngapp.data.tables.TableHouse;
 import com.tentlers.mngapp.data.tables.TableRooms;
+import com.tentlers.mngapp.data.tables.bills.BillEntryTypeObject;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
@@ -19,6 +20,7 @@ import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
+import com.tentlers.mngapp.data.tables.tenants.TenantNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
 import java.util.Date;
@@ -39,6 +41,18 @@ public class HouseViewModal extends AndroidViewModel {
     private int roomIdForSpecificRoom;
 
     private int tenantIdForSpecificTenant;
+
+    /*defines which from where bill is triggered*/
+    private BillEntryTypeObject billEntryType;
+
+    public BillEntryTypeObject getBillEntryType() {
+        return billEntryType;
+    }
+
+    public void setBillEntryType(BillEntryTypeObject billEntryType) {
+        this.billEntryType = billEntryType;
+    }
+
 
     public MetersListObj getMetersListObj() {
         return metersListObj;
@@ -225,6 +239,15 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
     /* Bill entery fragment*/
+
+    public LiveData<List<TenantNameId>> getAllTenantNameid(boolean isAlloted) {
+        return mRepository.getAllTenantNameId(isAlloted);
+    }
+
+    public LiveData<Integer> getTenantIdFromRoomId(int roomId) {
+        return mRepository.getTenantIdFromRoomId(roomId);
+    }
+
     public LiveData<TenantBillEntry> getSelectedTenantForBill(int tenantId) {
         return mRepository.getSelectedTenantForBill(tenantId);
     }

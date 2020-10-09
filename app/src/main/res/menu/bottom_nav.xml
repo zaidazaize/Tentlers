@@ -9,16 +9,16 @@
     <item
         android:id="@+id/nav_bills"
         android:icon="@drawable/ic_bill_pay_24"
-        android:title="Bills" />
+        android:title="@string/bills" />
 
     <item
         android:id="@+id/nav_tenants"
         android:icon="@drawable/ic_tenant_profile_24px"
-        android:title="Tenants" />
+        android:title="@string/tenants" />
 
     <item
         android:icon="@drawable/ic_emty_rooms_24"
         android:id="@+id/nav_rooms"
-        android:title="Rooms" />
+        android:title="@string/rooms" />
 
 </menu>

@@ -5,8 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
+import com.tentlers.mngapp.data.tables.bills.BillEntryTypeObject;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 import com.tentlers.mngapp.databinding.FragmentSpecificTenantBinding;
@@ -16,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 
 public class SpecificTenantFragment extends Fragment {
@@ -102,7 +106,20 @@ public class SpecificTenantFragment extends Fragment {
             }
         });
 
-
+        /*set the fab click listener*/
+        /*handle the adding of create bill*/
+        tenantBinding.specificTenantFabCreateBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (choosenTenant != null && choosenTenant.isRoomAlloted) {
+                    viewModal.setBillEntryType(new BillEntryTypeObject().setTenantId(choosenTenant.tenantId));/*set the tenant id for creating  bill.*/
+                    Navigation.findNavController(tenantBinding.getRoot()).navigate(R.id.action_global_nav_billEntryFragment);
+                } else {
+                    Snackbar.make(tenantBinding.specificTenantCoordinatorLayout, getString(R.string.oops_no_room_alloted), BaseTransientBottomBar.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
         return tenantBinding.getRoot();
     }
 

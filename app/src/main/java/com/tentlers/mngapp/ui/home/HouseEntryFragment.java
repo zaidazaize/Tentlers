@@ -146,7 +146,7 @@ public class HouseEntryFragment extends Fragment {
         houseEntryBinding.toolbarHouseEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.menutem_house_save) {
+                if (item.getItemId() == R.id.menuitem_house_save) {
                     if (checkForDataValidity()) {
                         getSaveDialoge().show();
                     }

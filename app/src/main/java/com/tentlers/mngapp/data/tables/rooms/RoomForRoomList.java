@@ -17,4 +17,5 @@ public class RoomForRoomList {
 
     @ColumnInfo(name = "tenantName")
     public String tenantName;
+
 }

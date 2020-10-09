@@ -2,10 +2,15 @@ package com.tentlers.mngapp;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.navigation.NavigationView;
 import com.tentlers.mngapp.databinding.ActivityMainBinding;
 
@@ -26,10 +31,34 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding mainBinding;
     NavController navController;
     private ActionBarDrawerToggle drawerToggle;
+    public InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /* Initialise the adds.*/
+        MobileAds.initialize(this);
+
+        /*add the divice as for test adds*//*
+        final List<String> testDeviceIds = Collections.singletonList("33BE2250B43518CCDA7DE426D04EE231");
+        RequestConfiguration configuration =
+                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+
+        MobileAds.setRequestConfiguration(configuration);*/
+
+        interstitialAd = new InterstitialAd(this);
+        /*TODO: replace the interstitial add id */
+        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+
+        /*add listener to load new add*/
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                interstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+        });
+
         /*
          * Generating a shared preference object for saving the base id of the meter
          * if the app is running for the first time then the base meterid will get saved
@@ -94,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        // Adding back buttom on top in place of drawer icon
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         /*
          *Set up the navigation item listener so that it supports the navigation
          * the selected item id is caught here.
@@ -119,11 +147,18 @@ public class MainActivity extends AppCompatActivity {
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
 
                 switch (destination.getId()) {
+                    case R.id.nav_billEntryFragment:
+                        hideAllNavigation(true);
+                        Log.d("interstitialadd", String.valueOf(interstitialAd.isLoaded()));
+                       /* if (interstitialAd.isLoaded() ) {
+                            interstitialAd.show();
+                        }*/
+                        break;
                     case R.id.nav_houseEntryFragment:
                     case R.id.nav_roomEnteyFragment:
                     case R.id.nav_specificHouseFragment:
                     case R.id.nav_tenantEntryFragment:
-                    case R.id.nav_billEntryFragment:
+
                     case R.id.nav_metersFragment:
                     case R.id.nav_specificTenantFragment:
                     case R.id.nav_specificRoomFragment:

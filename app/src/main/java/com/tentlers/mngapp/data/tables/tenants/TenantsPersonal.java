@@ -1,6 +1,7 @@
 package com.tentlers.mngapp.data.tables.tenants;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
@@ -75,7 +76,11 @@ public class TenantsPersonal {
     @ColumnInfo(defaultValue = "NULL")
     public String imageName;
     @Ignore
-    public File tenantPhoto;
+    public File tenantPhotoFile;
+
+
+    @Ignore
+    public Uri tenantPhotoUri;
 
     public String getImageName() {
         return imageName;
@@ -155,13 +160,12 @@ public class TenantsPersonal {
         this.imageName = imageName;
     }
 
-    public File getTenantPhoto() {
-        return tenantPhoto;
+    public File getTenantPhotoFile() {
+        return tenantPhotoFile;
     }
 
-    public File setTenantPhoto(File tenantPhoto) {
-        this.tenantPhoto = tenantPhoto;
-        return this.tenantPhoto;
+    public void setTenantPhotoFile(File tenantPhotoFile) {
+        this.tenantPhotoFile = tenantPhotoFile;
     }
 
     public String getTenantName() {
@@ -180,6 +184,14 @@ public class TenantsPersonal {
     public static String getTenantDate(java.util.Date createDate) {
         Formatter formatter = new Formatter();
         return formatter.format("%td %th, %tY", createDate, createDate, createDate).toString();
+    }
+
+    public Uri getTenantPhotoUri() {
+        return tenantPhotoUri;
+    }
+
+    public void setTenantPhotoUri(Uri tenantPhotoUri) {
+        this.tenantPhotoUri = tenantPhotoUri;
     }
 }
 

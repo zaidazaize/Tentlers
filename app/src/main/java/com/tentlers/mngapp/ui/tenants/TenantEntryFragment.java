@@ -2,10 +2,10 @@ package com.tentlers.mngapp.ui.tenants;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -43,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -59,7 +59,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemClickListener, AdapterView.OnItemSelectedListener {
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+
 
     FragmentTenantEntryBinding tenantEntryBinding;
     HouseViewModal viewModal;
@@ -105,7 +105,6 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         roomAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
         houseAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
 
-
     }
 
     @Nullable
@@ -115,6 +114,8 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                              @Nullable Bundle savedInstanceState) {
 
         tenantEntryBinding = FragmentTenantEntryBinding.inflate(getLayoutInflater(), container, false);
+
+        /*check from where the tenant entry is triggered*/
 
 
         /* hide the app bar and bottom navigation via a callback in main activity */
@@ -129,12 +130,10 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
             }
         });
 
-        /*
-         * Switch checked change listeners.
+        /*Switch checked change listeners.
          * switch for controlling the visibility of the personal info fields.
          * If the switch is closed the personal info in tenant object is set to false;
-         * Initialise the switch to true after adding the listener. At the end of oncreateview;
-         */
+         * Initialise the switch to true after adding the listener. At the end of oncreateview;*/
         tenantEntryBinding.switchTenantPersonalInfo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -178,18 +177,22 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
             }
         });
 
+        /* Add the the item select listener to the house spinner which updates the room names*/
+        tenantEntryBinding.spinnerAddHouse.setAdapter(houseAdapter);
+        tenantEntryBinding.spinnerAddHouse.setOnItemSelectedListener(this);
+
         /* update the room and house spinner data*/
         /* This adds a house list in which those houses are listed which have atleast one room */
         viewModal.getHouseNameIdTEspinner().observe(getViewLifecycleOwner(), new Observer<List<HouseNameAndId>>() {
             @Override
             public void onChanged(List<HouseNameAndId> houseNameAndIdList) {
-                //TODO: Show snack bar that there are no houses that can be added.
+
                 if (houseNameAndIdList.isEmpty()) {/*If there is no house available then allot meter will be set to false.
                  which is controlled via a variable isHouseAvailable*/
                     isHosueAvailable = false;/*responsible for showing snackbar that no house is available.*/
                     tenantEntryBinding.switchTenantAllotRooms.setChecked(false);
-                    tenantEntryBinding.switchTenantAllotRooms.setEnabled(false);
                 } else isHosueAvailable = true;
+
                 houseAdapter.addAll(getHouseNamearray(houseNameAndIdList));
                 houseAdapter.notifyDataSetChanged();
                 mhouseNameAndIdList = houseNameAndIdList;
@@ -204,15 +207,8 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
             }
         });
 
-        /* set the spinner values in the room and house spinner
-         * Add the the item select listener to the house spinner which updates the room names*/
-        tenantEntryBinding.spinnerAddHouse.setAdapter(houseAdapter);
-        tenantEntryBinding.spinnerAddHouse.setOnItemSelectedListener(this);
-
-        /*
-         *Set the adapter and click listener on the room spinner
-         * The values of switch in add electric meter will be re enitialised if room is changed.
-         */
+        /*Set the adapter and click listener on the room spinner
+         * The values of switch in add electric meter will be re enitialised if room is changed.*/
         tenantEntryBinding.spinnerAddRoom.setAdapter(roomAdapter);
 
         tenantEntryBinding.spinnerAddRoom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -271,7 +267,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                     snackbar = Snackbar.make(tenantEntryBinding.coordinatorLayoutTenantEntry,
                             R.string.room_not_alloted,
                             BaseTransientBottomBar.LENGTH_SHORT);
-                    snackbar.setAction("Allot Rooms", new View.OnClickListener() {
+                    snackbar.setAction(R.string.allot_rooms, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             tenantEntryBinding.switchTenantAllotRooms.setChecked(true);
@@ -290,7 +286,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                         snackbar.dismiss();
                     }
                     snackbar = Snackbar.make(tenantEntryBinding.coordinatorLayoutTenantEntry, R.string.meter_is_missing_add_meter_to_the_selected_room, BaseTransientBottomBar.LENGTH_SHORT);
-                    snackbar.setAction("Add Meter", new View.OnClickListener() {
+                    snackbar.setAction(R.string.add_meter, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             //TODO Show the dialog here. to add the meter.*/
@@ -326,22 +322,25 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
             }
         });
 
-        //TODO: Handle the photo features after wards.
-        tenantEntryBinding.tenantEntryImageviewAddphoto.setOnClickListener(new View.OnClickListener() {
+        tenantEntryBinding.tenantEntryFabAddphoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("camerabuttion", "yes camera button pressed");
+
                 if (Build.VERSION.SDK_INT >= 29) {
-                    dispatchPhoto();
+                    selectImage(requireContext());
                 }
-                //TODO: show request permission dialog for lower versions.
-                if (ContextCompat.checkSelfPermission(
-                        requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED) {
-                    dispatchPhoto();
+                    selectImage(requireContext());
+
+                } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    /*show the snack bar why we need permission to write external storage*/
+                    Snackbar.make(tenantEntryBinding.coordinatorLayoutTenantEntry, "Permission needed to create new Image File", BaseTransientBottomBar.LENGTH_SHORT)
+                            .show();
                 } else {
-                    Log.d("camerabutton", "requesting permission");
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MyAuthorities.REQUEST_WRITE_EXTERNAL_PERMISION);
+                    /*we are not using system magaged request code */
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, MyAuthorities.REQUEST_WRITE_EXTERNAL_PERMISION);
                 }
             }
         });
@@ -353,19 +352,36 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         return tenantEntryBinding.getRoot();
     }
 
-    private void setLastMeterReaing() {
-        if (choosenRoom.isMeterEnabled) {//fetch for reading only if the meter is enabled;
-            viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(choosenRoom.roomId)).observe(getViewLifecycleOwner(),
-                    new Observer<LastReadingWithDate>() {
-                        @Override
-                        public void onChanged(LastReadingWithDate lastReadingWithDate) {
-                            lastMeterReading = lastReadingWithDate.getLastMeterReading();
-                            tenantEntryBinding.tenantEntryStartMeterReading.setText(String.valueOf(lastMeterReading));
+    private void selectImage(Context context) {
+        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
 
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        builder.setTitle(R.string.choose_tenants_profile_picture);
 
-                        }
-                    });
-        }
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals(getString(R.string.take_photo))) {
+                   /* Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);*/
+                    dispatchPhoto();
+
+                } else if (options[item].equals(getString(R.string.choose_from_gallery))) {
+                    pickPhoto();
+                } else if (options[item].equals(getString(R.string.cancel))) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    /*use to pick photo from the library*/
+    private void pickPhoto() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, MyAuthorities.REQUEST_GET_SELECTED_IMAGE);
     }
 
     /*send intent to capture the photo.*/
@@ -373,19 +389,19 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         Intent takeimage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takeimage.resolveActivity(requireActivity().getPackageManager()) != null) {
             File imagefile = null;
+
             try {
                 imagefile = getImageName();
             } catch (Exception e) {
-                for (int i = 0; i < e.getStackTrace().length; i++) {
-                    Log.d("exception", e.getStackTrace()[i].toString());
-                }
+                Log.d("exception", Arrays.toString(e.getStackTrace()));
+
             }
             if (imagefile != null) {
-                Uri photouri = FileProvider.getUriForFile(requireContext(), MyAuthorities.CONTENT_AUTORITY, imagefile);
-                takeimage.putExtra(MediaStore.EXTRA_OUTPUT, photouri);
-                startActivityForResult(takeimage, REQUEST_IMAGE_CAPTURE);
+                tenantsPersonal.setTenantPhotoUri(FileProvider.getUriForFile(requireContext(), MyAuthorities.CONTENT_AUTORITY, imagefile));
+                takeimage.putExtra(MediaStore.EXTRA_OUTPUT, tenantsPersonal.getTenantPhotoUri());
+                startActivityForResult(takeimage, MyAuthorities.REQUEST_IMAGE_CAPTURE);
             } else {
-                Toast.makeText(getContext(), "Cannot create the file", Toast.LENGTH_SHORT).show();
+                Snackbar.make(tenantEntryBinding.coordinatorLayoutTenantEntry, "Cannot create the file", BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         }
     }
@@ -393,35 +409,102 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
     /*get the unique photo name. Stores the name in the tenantspersonal object.*/
     private File getImageName() throws IOException {
         String timestamp = SimpleDateFormat.getDateInstance(SimpleDateFormat.LONG).format(new Date());
-        Log.d("simpledateformat", timestamp);
         tenantsPersonal.imageName = "JPEG_" + timestamp + "_";
 
-        return tenantsPersonal.setTenantPhoto(File.createTempFile(tenantsPersonal.getImageName(),
-                ".jpg",
-                /*storage dir*/ requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)));
-    }
+        /*if the android level  is less than equal  to 9 then save the image in image public directory
+         * else save it in "MediaStore.Images" directory*/
+        if (Build.VERSION.SDK_INT <= 28) {
+            tenantsPersonal.setTenantPhotoFile(File.createTempFile(tenantsPersonal.getImageName(),
+                    ".jpg", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
+        } else {
+            tenantsPersonal.setTenantPhotoFile(
+                    File.createTempFile(tenantsPersonal.getImageName(), ".jpg", requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)));
+        }
+        return tenantsPersonal.getTenantPhotoFile();
 
-    /* Add Photo to gallery */
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(tenantsPersonal.getTenantPhoto().getAbsolutePath());
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        requireActivity().sendBroadcast(mediaScanIntent);
     }
 
     /*add the photo to gallery
      * show the image icon on the photo. if data is not equal to null.*/
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d("settingImage", "startactivitybefore");
         super.onActivityResult(requestCode, resultCode, data);
-        galleryAddPic();
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                Bundle extras = data.getExtras();
-                Bitmap image = (Bitmap) extras.get("data");
-                tenantEntryBinding.tenantEntryImageViewTenantPhoto.setImageBitmap(image);
+        Log.d("settingImage", "startActivity");
+
+        if (requestCode != Activity.RESULT_CANCELED && data != null) {
+            Uri goturi = data.getData();
+            Log.d("settingImage", "here uri");
+            if (goturi != null) {
+                Log.d("settingImage", "here before set");
+                tenantEntryBinding.tenantEntryImageViewTenantPhoto.setImageURI(goturi);
+                Log.d("settingImage", "seted image");
             }
+        }
+        /*if (resultCode == Activity.RESULT_CANCELED) {
+            return;
+        }*/
+      /*  switch (requestCode) {
+            case MyAuthorities.REQUEST_IMAGE_CAPTURE:
+                if (data != null) {
+                    Bundle extras = data.getExtras();
+                    Bitmap image = (Bitmap) extras.get("data");
+                    tenantEntryBinding.tenantEntryImageViewTenantPhoto.setImageBitmap(image);
+                }
+                break;
+
+            case MyAuthorities.REQUEST_GET_SELECTED_IMAGE:
+                if (data != null) {
+                    Uri imageUri = data.getData();
+                    String[] filepath = {MediaStore.Images.Media.DATA};
+
+                    if (imageUri != null) {
+                        return;
+                    }
+                    if (Build.VERSION.SDK_INT >= 29) {
+                        Bitmap photo = null;
+                        try {
+                            photo = requireContext().getContentResolver().loadThumbnail(tenantsPersonal.getTenantPhotoUri(),new Size(200,200),null);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (photo != null) {
+                            tenantEntryBinding.tenantEntryImageViewTenantPhoto.setImageURI();}
+                    }
+                    else {
+
+
+                    }
+
+
+                        if (cursor != null) {
+                            cursor.moveToNext();
+                            int columnIndex = cursor.getColumnIndexOrThrow(filepath[0]);
+                            String picturePath = cursor.getString(columnIndex);
+                            tenantEntryBinding.tenantEntryImageViewTenantPhoto.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                            cursor.close();
+                        }
+
+                }
+
+
+        }*/
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+
+        if (requestCode != MyAuthorities.REQUEST_WRITE_EXTERNAL_PERMISION) {
+            /* handle the request to take photo only if the write external storage permission is provided.*/
+            return;
+        }
+        if (permissions.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            /* todo dispatchPhoto();*/
+            pickPhoto();
         }
     }
 
@@ -444,7 +527,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
      */
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.menutem_house_save) {
+        if (item.getItemId() == R.id.menuitem_house_save) {
             if (isTenantValid()) {
                 getSaveDialoge().show();
             }
@@ -551,9 +634,25 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         }
     }
 
+    private void setLastMeterReaing() {
+        if (choosenRoom.isMeterEnabled) {//fetch for reading only if the meter is enabled;
+            viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(choosenRoom.roomId)).observe(getViewLifecycleOwner(),
+                    new Observer<LastReadingWithDate>() {
+                        @Override
+                        public void onChanged(LastReadingWithDate lastReadingWithDate) {
+                            lastMeterReading = lastReadingWithDate.getLastMeterReading();
+                            tenantEntryBinding.tenantEntryStartMeterReading.setText(String.valueOf(lastMeterReading));
+
+
+                        }
+                    });
+        }
+    }
+
     /*
      * Method for handling the saving of Tenant data
      */
+
     private void saveTenantData() {
         setFamilyMemberAgeGender();
         setAllotedRoom();

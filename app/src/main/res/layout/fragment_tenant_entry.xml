@@ -36,26 +36,29 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_top_bottom">
 
                         <!-- TODO: make view circular  -->
 
                         <ImageView
                             android:id="@+id/tenant_entry_imageView_tenant_photo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
                             android:layout_gravity="center_horizontal"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_baseline_person_24" />
 
-                        <ImageView
-                            android:id="@+id/tenant_entry_imageview_addphoto"
-                            android:layout_width="30sp"
-                            android:layout_height="30sp"
-                            app:srcCompat="@drawable/ic_menu_camera"
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/tenant_entry_fab_addphoto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_add_a_photo_24px"
+                            app:fabSize="mini"
                             app:layout_constraintBottom_toBottomOf="@+id/tenant_entry_imageView_tenant_photo"
                             app:layout_constraintEnd_toEndOf="@+id/tenant_entry_imageView_tenant_photo" />
 
@@ -253,118 +256,110 @@
                         android:layout_marginEnd="10sp"
                         android:text="@string/allot_room_and_payment_scheme" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switch_tenant_allot_rooms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_left_right"
-                        android:layout_marginEnd="@dimen/margin_left_right"
-                        android:checked="true"
-                        android:drawableStart="@drawable/ic_emty_rooms_24"
-                        android:drawablePadding="4sp"
-                        android:text="@string/allot_rooms" />
-
                     <LinearLayout
-                        android:id="@+id/linear_layout_allot_rooms"
+                        android:id="@+id/tenant_entry_linear_layout_allot_rooms"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_start_end_level2"
-                        android:layout_marginEnd="@dimen/margin_start_end_level2"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
-                        <LinearLayout
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_tenant_allot_rooms"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6sp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/textView_choseHouse"
-                                style="@style/TextAppearance.MaterialComponents.Body1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:text="@string/choose_house" />
-
-                            <Spinner
-                                android:id="@+id/spinner_add_house"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="20sp"
-                                android:gravity="center_vertical"
-                                android:spinnerMode="dialog" />
-                        </LinearLayout>
+                            android:layout_marginStart="@dimen/margin_left_right"
+                            android:layout_marginEnd="@dimen/margin_left_right"
+                            android:checked="true"
+                            android:drawableStart="@drawable/ic_emty_rooms_24"
+                            android:drawablePadding="4sp"
+                            android:text="@string/allot_rooms" />
 
                         <LinearLayout
+                            android:id="@+id/linear_layout_allot_rooms"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6sp"
-                            android:orientation="horizontal">
+                            android:layout_marginStart="@dimen/margin_start_end_level2"
+                            android:layout_marginEnd="@dimen/margin_start_end_level2"
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/textView_choose_room"
-                                style="@style/TextAppearance.MaterialComponents.Body1"
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:text="@string/choose_room" />
+                                android:layout_marginTop="6sp"
+                                android:orientation="horizontal">
 
-                            <Spinner
-                                android:id="@+id/spinner_add_room"
-                                android:layout_width="wrap_content"
+                                <TextView
+                                    android:id="@+id/textView_choseHouse"
+                                    style="@style/TextAppearance.MaterialComponents.Body1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/choose_house" />
+
+                                <Spinner
+                                    android:id="@+id/spinner_add_house"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:gravity="center_vertical"
+                                    android:spinnerMode="dialog" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="20sp"
-                                android:gravity="center_vertical"
-                                android:spinnerMode="dialog" />
+                                android:layout_marginTop="6sp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_choose_room"
+                                    style="@style/TextAppearance.MaterialComponents.Body1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/choose_room" />
+
+                                <Spinner
+                                    android:id="@+id/spinner_add_room"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20sp"
+                                    android:gravity="center_vertical"
+                                    android:spinnerMode="dialog" />
+                            </LinearLayout>
                         </LinearLayout>
+
                     </LinearLayout>
-
                     <!--if the add tenant is selected from the specific room.-->
 
-                    <RelativeLayout
-                        android:id="@+id/tenant_entry_relative_layout_allot_rooms"
+                    <LinearLayout
+                        android:id="@+id/tenant_entry_linear_layout_allot_rooms_specific"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_left_right"
                         android:layout_marginEnd="@dimen/margin_left_right"
+                        android:orientation="vertical"
                         android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/tenant_entry_show_image_house"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            app:srcCompat="@drawable/ic_baseline_house_24" />
 
                         <TextView
                             android:id="@+id/tenant_entry_textview_hosue_name"
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBottom="@id/tenant_entry_show_image_house"
-                            android:layout_marginStart="5sp"
-                            android:layout_toEndOf="@id/tenant_entry_show_image_house"
+                            android:drawablePadding="5dp"
+                            app:drawableStartCompat="@drawable/ic_baseline_house_24"
                             tools:text="hosue1" />
-
-                        <ImageView
-                            android:id="@+id/tenant_entry_show_image_room"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tenant_entry_show_image_house"
-                            android:layout_marginTop="14sp"
-                            app:srcCompat="@drawable/ic_emty_rooms_24" />
 
                         <TextView
                             android:id="@+id/tenant_enatry_textview_room_name"
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBottom="@id/tenant_entry_show_image_room"
-                            android:layout_marginStart="5sp"
-                            android:layout_toEndOf="@id/tenant_entry_show_image_room"
+                            android:layout_marginTop="@dimen/margin_left_right"
+                            android:drawablePadding="5dp"
+                            app:drawableStartCompat="@drawable/ic_emty_rooms_24"
                             tools:text="hosue1" />
-                    </RelativeLayout>
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"

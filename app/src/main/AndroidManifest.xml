@@ -6,6 +6,10 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_app_launcher"
@@ -18,6 +22,9 @@
                app to run.
         -->
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5672803231011245~3180641076" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.tentlers.mngapp.FileProvider"

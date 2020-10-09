@@ -35,12 +35,12 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/bill_entry_spinner_choose_tenant"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_left_right"
                         android:layout_marginTop="@dimen/margin_left_right"
-                        android:layout_marginEnd="@dimen/margin_left_right"
-                        android:layout_marginBottom="4sp">
+                        android:layout_marginEnd="@dimen/margin_left_right">
 
                         <TextView
                             style="@style/TextAppearance.MaterialComponents.Headline5"
@@ -57,36 +57,69 @@
 
                     </LinearLayout>
 
+                    <RelativeLayout
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textview7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:text="@string/tenant_name"
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_marginStart="@dimen/margin_left_right" />
+
+                        <TextView
+                            android:id="@+id/bill_entry_specific_tenant_name"
+                            style="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:layout_width="wrap_content"
+                            android:layout_below="@id/textview7"
+                            android:layout_alignStart="@id/textview7"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="5sp"
+                            app:drawableStartCompat="@drawable/ic_baseline_tenant_name"
+                            tools:text="Mohannad Zaid Aziz" />
+
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_layout_line_width"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:layout_marginBottom="@dimen/margin_top_bottom"
+                        android:background="@color/dividing_line_color" />
 
                     <TextView
-                        android:layout_marginTop="12sp"
-                        android:drawablePadding="5sp"
-                        android:layout_marginStart="@dimen/margin_left_right"
                         android:id="@+id/bill_entry_house_name"
                         style="@style/TextAppearance.MaterialComponents.Subtitle1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="House1"
-                        app:drawableStartCompat="@drawable/ic_baseline_house_24" />
+                        android:layout_marginStart="@dimen/margin_left_right"
+                        android:drawablePadding="5sp"
+                        app:drawableStartCompat="@drawable/ic_baseline_house_24"
+                        tools:text="House1" />
 
                     <TextView
-                        android:drawablePadding="5sp"
                         android:id="@+id/bill_entry_room_name"
-                        android:layout_marginStart="@dimen/margin_left_right"
                         style="@style/TextAppearance.MaterialComponents.Subtitle1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_left_right"
                         android:layout_marginTop="12sp"
                         android:layout_marginEnd="10sp"
-                        tools:text="Room1"
-                        app:drawableStartCompat="@drawable/ic_emty_rooms_24" />
+                        android:drawablePadding="5sp"
+                        app:drawableStartCompat="@drawable/ic_emty_rooms_24"
+                        tools:text="Room1" />
 
 
                     <View
                         android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_layout_line_width"
                         android:layout_marginTop="@dimen/margin_top_bottom"
                         android:layout_marginBottom="@dimen/margin_top_bottom"
-                        android:layout_height="@dimen/height_layout_line_width"
                         android:background="@color/dividing_line_color" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -131,19 +164,19 @@
 
                     <View
                         android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_layout_line_width"
                         android:layout_marginTop="@dimen/margin_top_bottom"
                         android:layout_marginBottom="@dimen/margin_top_bottom"
-                        android:layout_height="@dimen/height_layout_line_width"
                         android:background="@color/dividing_line_color" />
 
                     <!--TODO: add electricity symbol here-->
                     <TextView
                         android:id="@+id/bill_entry_textview_electricity_charges"
                         android:layout_width="match_parent"
-                        android:layout_marginBottom="@dimen/margin_top_bottom"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8sp"
                         android:layout_marginEnd="10sp"
+                        android:layout_marginBottom="@dimen/margin_top_bottom"
                         android:text="@string/electricity_charges"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
@@ -153,8 +186,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12sp"
-                        android:drawablePadding="5sp"
                         android:layout_marginBottom="8sp"
+                        android:drawablePadding="5sp"
                         android:text="@string/manually_enter_electricity_charge"
                         app:drawableStartCompat="@drawable/ic_manually_enter_24px" />
 
@@ -185,8 +218,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12sp"
-                        android:drawablePadding="5sp"
                         android:layout_marginBottom="8sp"
+                        android:drawablePadding="5sp"
                         android:text="@string/auto_generate_electricity_cost"
                         app:drawableStartCompat="@drawable/ic_system_decide_24px" />
 
@@ -258,9 +291,9 @@
 
                     <View
                         android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_layout_line_width"
                         android:layout_marginTop="@dimen/margin_top_bottom"
                         android:layout_marginBottom="@dimen/margin_top_bottom"
-                        android:layout_height="@dimen/height_layout_line_width"
                         android:background="@color/dividing_line_color" />
 
                     <RelativeLayout
@@ -275,31 +308,31 @@
                             android:id="@+id/bill_entry_show_total_amt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
                             android:layout_alignParentBottom="true"
                             android:layout_marginEnd="20sp"
-                            android:layout_alignParentStart="true"
                             android:layout_toStartOf="@+id/bill_entry_total_amt"
                             android:text="@string/total_amount"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
                         <TextView
                             android:id="@+id/bill_entry_total_amt"
-                            app:tint="?attr/colorControlNormal"
                             style="@style/TextAppearance.MaterialComponents.Headline5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="5sp"
                             android:layout_alignBaseline="@id/bill_entry_show_total_amt"
                             android:layout_alignParentEnd="true"
-                            tools:text="2343244"
-                            app:drawableStartCompat="@drawable/ic_bill_pay_24" />
+                            android:drawablePadding="5sp"
+                            app:drawableStartCompat="@drawable/ic_bill_pay_24"
+                            app:tint="?attr/colorControlNormal"
+                            tools:text="2343244" />
                     </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_layout_line_width"
                         android:layout_marginTop="@dimen/margin_top_bottom"
                         android:layout_marginBottom="@dimen/margin_top_bottom"
-                        android:layout_height="@dimen/height_layout_line_width"
                         android:background="@color/dividing_line_color" />
 
                 </LinearLayout>

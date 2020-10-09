@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MyTenantsRecyclerViewAdapter extends RecyclerView.Adapter<MyTenantsRecyclerViewAdapter.ViewHolder> {
 
     private List<TenantNameHouseRoom> mTenantList;
-    OnTenantClickListener tenantClickListener;
+    final OnTenantClickListener tenantClickListener;
 
     public MyTenantsRecyclerViewAdapter(OnTenantClickListener listener) {
         tenantClickListener = listener;
@@ -62,7 +62,7 @@ public class MyTenantsRecyclerViewAdapter extends RecyclerView.Adapter<MyTenants
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mTenantName, mHouseName, mRoomName;
         public TenantNameHouseRoom chossenTenant;
-        OnTenantClickListener onTenantClickListener;
+        final OnTenantClickListener onTenantClickListener;
 
         public ViewHolder(View itemview, OnTenantClickListener listener) {
             super(itemview);

@@ -17,12 +17,13 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
+import com.tentlers.mngapp.data.tables.bills.BillEntryTypeObject;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
-import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
+import com.tentlers.mngapp.data.tables.tenants.TenantNameId;
 import com.tentlers.mngapp.databinding.FragmentBillEntryBinding;
 
 import java.util.ArrayList;
@@ -41,20 +42,23 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
     HouseViewModal viewModal;
     FragmentBillEntryBinding billEntryBinding;
     ArrayAdapter<String> arrayAdapter;
-    List<TenantNameHouseRoom> tenantNameHouseRoomsList;
+    List<TenantNameId> tenantNameIds;
     TenantBillEntry choosenTenant;
 
-    Bills createdbill = new Bills();
+    BillEntryTypeObject billEntryTypeObject;
+
+    Bills createdbill;
 
     public BillEntryFragment() {
+        createdbill = new Bills();
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModal = new ViewModelProvider(this).get(HouseViewModal.class);
-        arrayAdapter = new ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1);
+        viewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
+        arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -65,12 +69,15 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         billEntryBinding = FragmentBillEntryBinding.inflate(getLayoutInflater(), container, false);
 
+        /*handle the cross button clicked*/
         billEntryBinding.toolbarBillEnter.setNavigationOnClickListener(this);
+
+        /*handle the save button clicked*/
         billEntryBinding.toolbarBillEnter.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -85,29 +92,49 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
             }
         });
 
-        billEntryBinding.spinnerBillsTenantsName.setAdapter(arrayAdapter);
-        billEntryBinding.spinnerBillsTenantsName.setOnItemSelectedListener(this);
-        /*
-         * Get all the tenants and add all the tenants name to spinner.
-         * In on click method handle when a item is clicked.
-         */
-        viewModal.getAllTenantNHR(true).observe(getViewLifecycleOwner(),
-                new Observer<List<TenantNameHouseRoom>>() {
-                    @Override
-                    public void onChanged(List<TenantNameHouseRoom> tenantNameHouseRooms) {
-                        //TODO: show dialog if no tenant is added.
-                        tenantNameHouseRoomsList = tenantNameHouseRooms;
-                        arrayAdapter.addAll(getHouseNamearray(tenantNameHouseRooms));
-                    }
+        billEntryTypeObject = viewModal.getBillEntryType();
 
-                    private ArrayList<String> getHouseNamearray(List<TenantNameHouseRoom> tenantNameHouseRooms) {
-                        ArrayList<String> tenantNameArray = new ArrayList<>();
-                        for (TenantNameHouseRoom s : tenantNameHouseRooms) {
-                            tenantNameArray.add(s.tenantName);
+        /*adjusts the view as per the bill entry type*/
+        if (billEntryTypeObject.isBillNormalPaid) {/*if the normal mode of the payment is selected then the user has to select the tenant. */
+            billEntryBinding.spinnerBillsTenantsName.setAdapter(arrayAdapter);
+            billEntryBinding.spinnerBillsTenantsName.setOnItemSelectedListener(this);
+            Log.d("isnormalpay", String.valueOf(billEntryTypeObject.isBillNormalPaid));
+
+            /* Get all the tenants and add all the tenants name to spinner.
+             * In on click method handle when a item is clicked.*/
+            viewModal.getAllTenantNameid(true).observe(getViewLifecycleOwner(),
+                    new Observer<List<TenantNameId>>() {
+                        @Override
+                        public void onChanged(List<TenantNameId> gotTenantNameIds) {
+                            //TODO: show dialog if no tenant is added.
+                            tenantNameIds = gotTenantNameIds;
+                            arrayAdapter.addAll(getHouseNamearray(gotTenantNameIds));
                         }
-                        return tenantNameArray;
-                    }
-                });
+
+                        private ArrayList<String> getHouseNamearray(List<TenantNameId> tenantNameHouseRooms) {
+                            ArrayList<String> tenantNameArray = new ArrayList<>();
+                            for (TenantNameId s : tenantNameHouseRooms) {
+                                tenantNameArray.add(s.tenantName);
+                            }
+                            return tenantNameArray;
+                        }
+                    });
+        } else if (billEntryTypeObject.isBillSpecificTenant) {/*set the filds if tenant id is supplied*/
+            changeToSpecifiTenant();
+            Log.d("isTenantspecified", String.valueOf(billEntryTypeObject.tenantId));
+            setFieldsOfTenant(billEntryTypeObject.tenantId);
+        } else if (billEntryTypeObject.isBillSpecificRoom) {/*sets the field if room id is supplied*/
+            Log.d("roomspecified", String.valueOf(billEntryTypeObject.roomId));
+            changeToSpecifiTenant();
+            viewModal.getTenantIdFromRoomId(billEntryTypeObject.roomId).observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    setFieldsOfTenant(integer);
+                }
+            });
+        }
+
+
         /* updates the total amount in the total amt view.*/
         /* by fixed charge input field.*/
         billEntryBinding.textInputEditTextOutlinedMonthlyFixedCharge.addTextChangedListener(new TextWatcher() {
@@ -228,21 +255,38 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
         return billEntryBinding.getRoot();
     }
 
-    /* responce to the tenant name selected.
-     * makes visible the meter or bills data.
-     */
+    /* responce to the tenant name selected, makes visible the meter or bills data.*/
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        final TenantNameHouseRoom tenantNHR = tenantNameHouseRoomsList.get(position);
-        billEntryBinding.billEntryHouseName.setText(tenantNHR.houseName);
-        billEntryBinding.billEntryRoomName.setText(tenantNHR.roomName);
-        createdbill.tenantId = tenantNHR.tenantId;
-        viewModal.getSelectedTenantForBill(tenantNHR.tenantId).observe(getViewLifecycleOwner(),
+        setFieldsOfTenant(tenantNameIds.get(position).tenantId);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private void changeToSpecifiTenant() {
+        /*make the spinner invisible*/
+        billEntryBinding.billEntrySpinnerChooseTenant.setVisibility(View.GONE);
+    }
+
+    private void setFieldsOfTenant(int tenantid) {
+        createdbill.tenantId = tenantid;
+        viewModal.getSelectedTenantForBill(tenantid).observe(getViewLifecycleOwner(),
                 new Observer<TenantBillEntry>() {
                     @Override
                     public void onChanged(TenantBillEntry tenantBillEntry) {
                         choosenTenant = tenantBillEntry;
                         //TODO: Optional: change the helper string if the charge is fixed charge.
+
+                        /*set the tenant name*/
+                        billEntryBinding.billEntrySpecificTenantName.setText(tenantBillEntry.tenantName);
+
+                        /*set the house Name and room Name*/
+                        billEntryBinding.billEntryHouseName.setText(tenantBillEntry.houseName);
+                        billEntryBinding.billEntryRoomName.setText(tenantBillEntry.roomName);
+
                         /*Set the fixed charge.*/
                         billEntryBinding.textInputEditTextOutlinedMonthlyFixedCharge.setText(
                                 tenantBillEntry.mFixedCharges == 0 ? "" : String.valueOf(tenantBillEntry.mFixedCharges));
@@ -273,23 +317,23 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
                         billEntryBinding.billEntryLiniarlayoutLastmeterReading.setVisibility(
                                 tenantBillEntry.meterPay ? View.VISIBLE : View.GONE);
 
-                        if (tenantBillEntry.meterPay) {
-                            viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(tenantBillEntry.roomId))
-                                    .observe(getViewLifecycleOwner(), new Observer<LastReadingWithDate>() {
-                                        @Override
-                                        public void onChanged(LastReadingWithDate lastReadingWithDate) {
-                                            billEntryBinding.billEntryStartMeterReading.setText(String.valueOf(lastReadingWithDate.getLastMeterReading()));
-                                            createdbill.initialMeterR = lastReadingWithDate.getLastMeterReading();
-                                        }
-                                    });
-                        }
+                        /*set the last meter reading if exits*/
+                        setLastReading();
                     }
                 });
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
+    private void setLastReading() {
+        if (choosenTenant.meterPay) {
+            viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(choosenTenant.roomId))
+                    .observe(getViewLifecycleOwner(), new Observer<LastReadingWithDate>() {
+                        @Override
+                        public void onChanged(LastReadingWithDate lastReadingWithDate) {
+                            billEntryBinding.billEntryStartMeterReading.setText(String.valueOf(lastReadingWithDate.getLastMeterReading()));
+                            createdbill.initialMeterR = lastReadingWithDate.getLastMeterReading();
+                        }
+                    });
+        }
     }
 
     private void setTotalAmount() {//set nothing if total is less than 0;
@@ -306,6 +350,9 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
             createdbill.additionalcharge = Float.parseFloat(aditionalcharge);
         } else createdbill.additionalcharge = 0;
 
+        if (createdbill.getTotalAmt() == 0) {
+            return false;
+        }
         if (choosenTenant != null) {
             if (choosenTenant.meterPay) {
                 createdbill.metersData.setRoomid(choosenTenant.roomId);
@@ -366,8 +413,6 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
         createdbill.setCreateDate();
         if (createdbill.ismeterPay) {
             createdbill.electricCost = createdbill.getMeteredElectricityCost();
-            Log.d("billentry", String.valueOf(createdbill.electricCost));
-            Log.d("billEntry", String.valueOf(createdbill.metersData.getLastMeterReading()));
         }
         createdbill.setTotalAmt();
         viewModal.insertNewBill(createdbill);
@@ -418,5 +463,6 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
                 });
 
     }
+
 
 }

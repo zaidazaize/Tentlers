@@ -8,7 +8,7 @@
         <item
             android:id="@+id/meter_information"
             android:icon="@drawable/ic_electric_meter_24px"
-            android:title="Meter Info" />
+            android:title="@string/meter_info" />
     </group>
 
     <group android:checkableBehavior="single">

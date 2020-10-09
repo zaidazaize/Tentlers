@@ -36,7 +36,6 @@ public abstract class DatabaseHouse extends RoomDatabase {
                     // Name of the database;
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), DatabaseHouse.class, "housedatabase")
-                            .allowMainThreadQueries()
                             .fallbackToDestructiveMigration()
                             .build();
                 }

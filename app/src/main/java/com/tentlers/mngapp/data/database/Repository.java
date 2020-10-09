@@ -19,6 +19,7 @@ import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantBillEntry;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
+import com.tentlers.mngapp.data.tables.tenants.TenantNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
 import java.util.Date;
@@ -225,6 +226,16 @@ public class Repository {
     }
 
     /* for bill entry fragment.*/
+
+    /*get all the tenant name and id*/
+    public LiveData<List<TenantNameId>> getAllTenantNameId(boolean isAlloted) {
+        return mdao.getAllTenantNameId(isAlloted);
+    }
+
+    public LiveData<Integer> getTenantIdFromRoomId(int roomid) {
+        return mdao.getTenantIdFromRoomID(roomid);
+    }
+
     /* Get the selected tenant's object.*/
     public LiveData<TenantBillEntry> getSelectedTenantForBill(int tenantid) {
         return mdao.getSelectedTenantForBill(tenantid);
@@ -346,6 +357,7 @@ public class Repository {
             if (tenantsPersonals1.isRoomAlloted) {
                 mAsyncCreateTenantDao.updateNoOfEmptyRoomsInTable(1, tenantsPersonals1.houseId);
                 mAsyncCreateTenantDao.updatetheRoomOccupiedStatusAndName(true, tenantsPersonals1.roomId,
+                        mAsyncCreateTenantDao.getTenantIdFromRoomIdFromTenantPersonal(tenantsPersonals1.roomId),/*fetch the tenant id and add it in room table*/
                         tenantsPersonals1.getTenantName(), tenantsPersonals1.getCreateDate());
             }
             if (tenantsPersonals1.meterPay) {
