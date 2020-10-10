@@ -13,6 +13,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    apply plugin: 'com.android.application'
+    apply plugin: 'com.google.gms.google-services'
 
     buildTypes {
         release {
@@ -26,6 +28,8 @@ android {
     }
 }
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+    implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.google.android.gms:play-services-ads:19.4.0'

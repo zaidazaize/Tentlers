@@ -2,7 +2,6 @@ package com.tentlers.mngapp;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -149,10 +148,9 @@ public class MainActivity extends AppCompatActivity {
                 switch (destination.getId()) {
                     case R.id.nav_billEntryFragment:
                         hideAllNavigation(true);
-                        Log.d("interstitialadd", String.valueOf(interstitialAd.isLoaded()));
-                       /* if (interstitialAd.isLoaded() ) {
+                        if (interstitialAd.isLoaded()) {
                             interstitialAd.show();
-                        }*/
+                        }
                         break;
                     case R.id.nav_houseEntryFragment:
                     case R.id.nav_roomEnteyFragment:

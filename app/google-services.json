@@ -1,0 +1,41 @@
+{
+  "project_info": {
+    "project_number": "179519348638",
+    "firebase_url": "https://tentlers.firebaseio.com",
+    "project_id": "tentlers",
+    "storage_bucket": "tentlers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179519348638:android:c1dc5dacf0982d8a58008f",
+        "android_client_info": {
+          "package_name": "com.tentlers.mngapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179519348638-gh32pldk8e10rvt8i32rim0m9fb45lin.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2aef3YcmjnU-6VwdHezbwfWg0iNONkh8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179519348638-gh32pldk8e10rvt8i32rim0m9fb45lin.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-5672803231011245~3180641076"
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -16,6 +16,7 @@ import com.tentlers.mngapp.databinding.FragmentBillsListBinding;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,7 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 /**
  * A fragment representing a list of Items.
  */
-public class BillsFragment extends Fragment {
+public class BillsFragment extends Fragment implements View.OnClickListener {
     HouseViewModal viewModal;
     FragmentBillsListBinding billsListBinding;
     boolean isAnyActiveTenant;
@@ -46,7 +47,7 @@ public class BillsFragment extends Fragment {
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean != null) {
                     isAnyActiveTenant = aBoolean;
-                }
+                } else isAnyActiveTenant = false;
             }
         });
     }
@@ -55,21 +56,9 @@ public class BillsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         billsListBinding = FragmentBillsListBinding.inflate(getLayoutInflater(), container, false);
+
         /*add bill button listener*/
-        billsListBinding.floatingActionButtonGenerateBill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isAnyActiveTenant) {
-                    /*set the bill entry type*/
-                    viewModal.setBillEntryType((new BillEntryTypeObject()).setBillNormalPaid(true));
-                    Navigation.findNavController(v).navigate(R.id.action_nav_bills_to_billEntryFragment);
-                } else {
-                    /*shows snack bar if no tenant is found*/
-                    Snackbar.make(billsListBinding.billCoordinatorLayout, getString(R.string.no_active_tenant_found), BaseTransientBottomBar.LENGTH_SHORT)
-                            .show();
-                }
-            }
-        });
+        billsListBinding.floatingActionButtonGenerateBill.setOnClickListener(this);
 
         /* add adapter to the list recycle view*/
         final MyBillsRecyclerViewAdapter adapter = new MyBillsRecyclerViewAdapter(R.drawable.ic_baseline_check_circle_outline_24,
@@ -85,9 +74,34 @@ public class BillsFragment extends Fragment {
                 new Observer<List<BillItemForCard>>() {
                     @Override
                     public void onChanged(List<BillItemForCard> billItemForCards) {
-                        adapter.setBillsList(billItemForCards);
+                        if (billItemForCards != null && billItemForCards.size() != 0) {
+                            adapter.setBillsList(billItemForCards);
+                            /*adjust the layout visibility */
+                            billsListBinding.billsListEmptyView.getRoot().setVisibility(View.GONE);
+                            billsListBinding.recycleViewBills.setVisibility(View.VISIBLE);
+                        } else {
+                            billsListBinding.billsListEmptyView.getRoot().setVisibility(View.VISIBLE);
+                            billsListBinding.recycleViewBills.setVisibility(View.GONE);
+                            billsListBinding.billsListEmptyView.emptyViewDataNotAvailable.setText(R.string.sorry_you_have_no_bills_to_collect);
+                            billsListBinding.billsListEmptyView.emptyViewImageNotAvailable.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_no_luggage_24px));
+                        }
                     }
                 });
         return billsListBinding.getRoot();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (isAnyActiveTenant) {
+            /*set the bill entry type*/
+            viewModal.setBillEntryType((new BillEntryTypeObject()).setBillNormalPaid(true));
+            Navigation.findNavController(v).navigate(R.id.action_nav_bills_to_billEntryFragment);
+        } else {
+            /*shows snack bar if no tenant is found*/
+            Snackbar.make(billsListBinding.billCoordinatorLayout, getString(R.string.no_active_tenant_found), BaseTransientBottomBar.LENGTH_SHORT)
+                    .setAnchorView(billsListBinding.floatingActionButtonGenerateBill)
+                    .show();
+
+        }
     }
 }

@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.TableHouse;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -48,7 +51,6 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
         setHasOptionsMenu(true);
 
         // Set the list items
-
         homeRecycleViewAdapter = new HomeRecycleViewAdapter(getContext(), this);
         homeBinding.recycleViewHome.setLayoutManager(
                 new LinearLayoutManager(getContext()));
@@ -60,7 +62,24 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
 
             @Override
             public void onChanged(List<HouseForHomeFragment> tableHouses) {
-                homeRecycleViewAdapter.setHouses(tableHouses);
+
+                if (tableHouses != null && tableHouses.size() != 0) {
+                    homeRecycleViewAdapter.setHouses(tableHouses);
+                    homeBinding.recycleViewHome.setVisibility(View.VISIBLE);
+                    homeBinding.homeListEmptyView.getRoot().setVisibility(View.GONE);
+                } else {
+                    homeBinding.recycleViewHome.setVisibility(View.GONE);
+                    homeBinding.homeListEmptyView.getRoot().setVisibility(View.VISIBLE);
+                    homeBinding.homeListEmptyView.emptyViewDataNotAvailable.setText(R.string.oh_you_havent_added_any_house);
+
+                    /*set the drawable of no house available*/
+                    homeBinding.homeListEmptyView.emptyViewImageNotAvailable.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_domain_disabled_24px));
+
+                    /*show the snack bar above the add house button to add a house */
+                    Snackbar snackbar = Snackbar.make(homeBinding.homeCoordinatorLayout, "Click to add new House", BaseTransientBottomBar.LENGTH_SHORT);
+                    snackbar.setAnchorView(homeBinding.floatingActionButtonHome);
+                    snackbar.show();
+                }
             }
         });
 

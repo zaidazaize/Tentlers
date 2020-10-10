@@ -5,11 +5,6 @@
         android:id="@+id/room_popup_add_tenant"
         android:icon="@drawable/ic_add_tenant"
         android:title="@string/add_tenant" />
-    <!--TODO:change delete tenant icon-->
-    <item
-        android:id="@+id/room_popup_remove_tenant"
-        android:icon="@drawable/ic_baseline_delete_outline_24"
-        android:title="@string/remove_tenant" />
 
     <item
         android:id="@+id/room_popup_create_bill"

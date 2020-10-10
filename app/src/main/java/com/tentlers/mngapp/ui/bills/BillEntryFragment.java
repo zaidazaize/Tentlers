@@ -292,16 +292,16 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
                                 tenantBillEntry.mFixedCharges == 0 ? "" : String.valueOf(tenantBillEntry.mFixedCharges));
                         createdbill.monthlycharge = tenantBillEntry.mFixedCharges;
 
-                        /*Electricity charge entry, heading visibility*/
-                        billEntryBinding.billEntryTextviewElectricityCharges.setVisibility(/* if any one of the either auto or manual electricity is enabledn then the heading of the add electricity charge will be visible.*/
-                                tenantBillEntry.meterPay | tenantBillEntry.nonMeterPay ? View.VISIBLE : View.GONE);
+                        /* *//*Electricity charge entry, heading visibility*//*
+                        billEntryBinding.billEntryTextviewElectricityCharges.setVisibility(*//* if any one of the either auto or manual electricity is enabledn then the heading of the add electricity charge will be visible.*//*
+                                tenantBillEntry.meterPay | tenantBillEntry.nonMeterPay ? View.VISIBLE : View.GONE);*/
 
                         /*set manual electric charge heading visibility.*/
-                        billEntryBinding.billEntryManuallyEnterElectricCost.setVisibility(tenantBillEntry.nonMeterPay ? View.VISIBLE : View.GONE);
+                        billEntryBinding.billEntryManuallyEnterElectricCost.setVisibility(!tenantBillEntry.meterPay ? View.VISIBLE : View.GONE);
 
                         /*set manual charge entry edit text visibility. */
                         billEntryBinding.textInputLayoutOutlinedMonthlyElectricCharge.setVisibility(
-                                tenantBillEntry.nonMeterPay ? View.VISIBLE : View.GONE);
+                                !tenantBillEntry.meterPay ? View.VISIBLE : View.GONE);
 
                         /*Set auto generate charge heading visibility*/
                         billEntryBinding.billEntryAutoGenerateElectricCost.setVisibility(tenantBillEntry.meterPay ? View.VISIBLE : View.GONE);
@@ -357,10 +357,8 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
             if (choosenTenant.meterPay) {
                 createdbill.metersData.setRoomid(choosenTenant.roomId);
                 return isMeterPayValid() && isperUnitvalid();
-            }
-            if (choosenTenant.nonMeterPay) {
-                return isNonMeterPayValid();
-            }
+
+            } else return isNonMeterPayValid();
 
         }
         return true;
@@ -386,12 +384,11 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 
-    private boolean isNonMeterPayValid() {
-        if (choosenTenant.nonMeterPay) {
-            String value2 = Objects.requireNonNull(billEntryBinding.textInputEditTextOutlinedMonthlyElectricCharge.getText()).toString();
-            if (value2.length() != 0) {
-                createdbill.setManuallyEnteredElectricCost(Float.parseFloat(value2));
-            }
+    private boolean isNonMeterPayValid() {/*check for monthly charge entry even if no mode of charge is enabled*/
+
+        String value2 = Objects.requireNonNull(billEntryBinding.textInputEditTextOutlinedMonthlyElectricCharge.getText()).toString();
+        if (value2.length() != 0) {
+            createdbill.setManuallyEnteredElectricCost(Float.parseFloat(value2));
         }
         return true;
     }

@@ -1,7 +1,6 @@
 package com.tentlers.mngapp.ui.rooms;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
+import com.tentlers.mngapp.data.tables.bills.BillEntryTypeObject;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
 import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.databinding.FragmentHouseRoomsListBinding;
@@ -23,6 +23,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -52,10 +53,8 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
     ArrayAdapter<String> arrayAdapter;
     int noOfRoomsForChosenHouse;
 
-    /*
-     *  The recycle view adapter the drawabel passed is used to
-     * set on the list items telling about the vacancy of the room.
-     */
+    /*The recycle view adapter the drawabel passed is used to
+     * set on the list items telling about the vacancy of the room.*/
     MyroomsRecyclerViewAdapter recyclerViewAdapter;
 
     int menuImageClicked;/*tells which image in the list is clicked.This is use to fetch the room selected.*/
@@ -110,7 +109,17 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
             @Override
             public void onChanged(List<HouseNameIdNoRooms> houseNameIds) {
 
-                setArrayListonSpinner(getHouseNamearray(houseNameIds), houseNameIds);
+                if (houseNameIds != null && houseNameIds.size() != 0) {
+                    setArrayListonSpinner(getHouseNamearray(houseNameIds), houseNameIds);
+                    switchEmptyView(false);
+                } else {
+                    switchEmptyView(true);
+                    bindingRoom.roomListEmptyView.emptyViewDataNotAvailable.setText(R.string.oh_you_havent_added_any_house);
+
+                    /*set the drawable of no house available*/
+                    bindingRoom.roomListEmptyView.emptyViewImageNotAvailable.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_domain_disabled_24px));
+
+                }
             }
 
             /* the meathod prepares the array of the house names*/
@@ -150,9 +159,7 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
 
     }
 
-    /*
-     * Handle the menu item selection for entering the new room and moving the user to that fragment
-     */
+    /* Handle the menu item selection for entering the new room and moving the user to that fragment*/
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_item_room_addrooms) {
@@ -175,21 +182,29 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        /*
-         * set the house id value in the view modal to be used for entering new room.
-         * And no of rooms to the global variable for checking the entry permission.
-         */
+        /*set the house id value in the view modal to be used for entering new room.
+         * And no of rooms to the global variable for checking the entry permission.*/
         viewModal.setHouseIdForRoomEntry(nameIdNoofRoomsList.get(position).houseId);
         noOfRoomsForChosenHouse = nameIdNoofRoomsList.get(position).noOfRooms;/* It ensures total rooms is less than 100*/
         viewModal.getAllRooms(nameIdNoofRoomsList.get(position).houseId)
                 .observe(getViewLifecycleOwner(), new Observer<List<RoomForRoomList>>() {
                     @Override
                     public void onChanged(List<RoomForRoomList> roomsForRoomList) {
-                        Log.d("roomlistsize", String.valueOf(roomsForRoomList.size()));
-                        recyclerViewAdapter.setmRoomList(roomsForRoomList);
+                        if (roomsForRoomList != null && roomsForRoomList.size() != 0) {
+                            recyclerViewAdapter.setmRoomList(roomsForRoomList);
+                            switchEmptyView(false);
+                        } else {
+                            switchEmptyView(true);
+                            bindingRoom.roomListEmptyView.emptyViewDataNotAvailable.setText(R.string.feels_you_havent_added_any_room);
+                            bindingRoom.roomListEmptyView.emptyViewImageNotAvailable.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_domain_disabled_24px));
+                        }
                     }
                 });
+    }
 
+    private void switchEmptyView(boolean toSwitch) {
+        bindingRoom.recycleViewRooms.setVisibility(toSwitch ? View.GONE : View.VISIBLE);
+        bindingRoom.roomListEmptyView.getRoot().setVisibility(toSwitch ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -205,8 +220,9 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         inflater.inflate(R.menu.room_popup_menu, popupmenu);
         if (isOccupied) {/* set the visibility to add tenant or remove tenant.*/
             popupmenu.findItem(R.id.room_popup_add_tenant).setVisible(false);
-        } else {
-            popupmenu.findItem(R.id.room_popup_remove_tenant).setVisible(false);
+
+        } else {/*remove the visibility of remove tenant and create bill option.*/
+            popupmenu.findItem(R.id.room_popup_create_bill).setVisible(false);
         }
         popup.show();
     }
@@ -227,13 +243,12 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.room_popup_add_tenant:
+                Navigation.findNavController(bindingRoom.getRoot()).navigate(R.id.action_global_tenantEntryFragment);
                 return true;
-
-            case R.id.room_popup_remove_tenant:
-                Toast.makeText(getContext(), "addtenant", Toast.LENGTH_SHORT).show();
+            case R.id.room_popup_create_bill:/*set the bill entry type */
+                viewModal.setBillEntryType(new BillEntryTypeObject().setRoomId(recyclerViewAdapter.getRoomAtPosition(menuImageClicked).roomId));
+                Navigation.findNavController(bindingRoom.getRoot()).navigate(R.id.action_global_nav_billEntryFragment);
                 return true;
-            //TODO: handle the asigning the and designing of the tenants. in the room.
-
             default:
                 return false;
         }

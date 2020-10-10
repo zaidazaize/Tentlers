@@ -104,6 +104,7 @@
 
     <!--Room List-->
     <string name="chose_house">Choose House</string>
+    <string name="feels_you_havent_added_any_room">Oh! Feels you haven\'t added any room.</string>
 
     <!--specific room fragment-->
     <string name="remove_tenant">Remove Tenant</string>
@@ -159,6 +160,7 @@
 
     <!--Bill Home fragment-->
     <string name="no_active_tenant_found">No Active Tenant Found</string>
+    <string name="sorry_you_have_no_bills_to_collect">Sorry! you have no bills to collect.</string>
 
     <!--Bills list item-->
     <string name="billing_date">Billing Date</string>
@@ -188,6 +190,7 @@
     <string name="meter_created">Meter Created</string>
     <string name="bill_id">Bill Id</string>
     <string name="from_billing">From Billing</string>
+    <string name="rental_charges">Rental Charges</string>
 
     <!--For drawer layouts -->
     <string name="meter_info">Meter Info</string>
@@ -201,6 +204,7 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="cancel">Cancel</string>
     <string name="choose_tenants_profile_picture">Choose Tenants profile picture</string>
+    <string name="oh_you_havent_added_any_house">Oh! Your haven\'t added any house</string>
 
 
 </resources>

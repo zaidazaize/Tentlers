@@ -9,44 +9,60 @@
         android:layout_marginBottom="?actionBarSize">
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:id="@+id/toolbar_rooms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
-            android:minHeight="?attr/actionBarSize">
-
-            <TextView
-                android:layout_marginStart="@dimen/margin_left_right"
-                android:layout_gravity="center_vertical"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:drawablePadding="5sp"
-                android:text="@string/choose_house"
-                android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/ic_baseline_house_24" />
-
-            <Spinner
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="10sp"
-                android:id="@+id/spinner_toolbar_rooms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:dropDownWidth="wrap_content"
-                android:spinnerMode="dialog" />
-        </LinearLayout>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle_view_rooms"
-            android:name="com.example.easelife.ui.rooms.HouseRooms"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?actionBarSize"
-            android:background="@color/color_background_house_list_item"
-            app:layoutManager="LinearLayoutManager"
-            tools:context=".ui.rooms.HouseRooms"
-            tools:listitem="@layout/fragment_house_rooms_list_item" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/toolbar_rooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:minHeight="?attr/actionBarSize">
+
+                <TextView
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_gravity="center_vertical"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:drawablePadding="5sp"
+                    android:text="@string/choose_house"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="@drawable/ic_baseline_house_24" />
+
+                <Spinner
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10sp"
+                    android:id="@+id/spinner_toolbar_rooms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:dropDownWidth="wrap_content"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+            <include
+                android:id="@+id/room_list_empty_view"
+                android:visibility="gone"
+                layout="@layout/list_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycle_view_rooms"
+                android:name="com.example.easelife.ui.rooms.HouseRooms"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_background_house_list_item"
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".ui.rooms.HouseRooms"
+                tools:listitem="@layout/fragment_house_rooms_list_item" />
+        </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

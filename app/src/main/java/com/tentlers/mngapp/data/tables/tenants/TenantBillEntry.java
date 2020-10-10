@@ -1,6 +1,7 @@
 package com.tentlers.mngapp.data.tables.tenants;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
 
 public class TenantBillEntry {
     /*this object is use to update the ui with billing data */
@@ -25,4 +26,9 @@ public class TenantBillEntry {
 
     @ColumnInfo(name = "roomName")
     public String roomName;
+
+    @Ignore
+    public boolean isElectrucityPay() {
+        return meterPay && nonMeterPay;
+    }
 }
