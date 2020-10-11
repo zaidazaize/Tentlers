@@ -33,6 +33,8 @@ import androidx.lifecycle.LiveData;
 public class HouseViewModal extends AndroidViewModel {
 
     private int houseIdForSpecificHouse;
+    private TableHouse houseForEdit;/*keeps the house choosen to be eddited.*/
+
     private final Repository mRepository;
     private LiveData<List<HouseForHomeFragment>> mAllHouse;
     private int houseIdForRoomEntry;
@@ -45,6 +47,13 @@ public class HouseViewModal extends AndroidViewModel {
     /*defines which from where bill is triggered*/
     private BillEntryTypeObject billEntryType;
 
+    public HouseViewModal(@NonNull Application application) {
+        super(application);
+        mRepository = new Repository(application);
+        mAllHouse = mRepository.mgetAllHouseForHomeFragment();
+    }
+
+
     public BillEntryTypeObject getBillEntryType() {
         return billEntryType;
     }
@@ -53,6 +62,13 @@ public class HouseViewModal extends AndroidViewModel {
         this.billEntryType = billEntryType;
     }
 
+    public TableHouse getHouseForEdit() {
+        return houseForEdit;
+    }
+
+    public void setHouseForEdit(TableHouse houseForEdit) {
+        this.houseForEdit = houseForEdit;
+    }
 
     public MetersListObj getMetersListObj() {
         return metersListObj;
@@ -62,11 +78,7 @@ public class HouseViewModal extends AndroidViewModel {
         this.metersListObj = metersListObj;
     }
 
-    public HouseViewModal(@NonNull Application application) {
-        super(application);
-        mRepository = new Repository(application);
-        mAllHouse = mRepository.mgetAllHouseForHomeFragment();
-    }
+
 
     public LiveData<List<HouseForHomeFragment>> getAllHouseForHomeFragment() {
         return mAllHouse;
@@ -78,6 +90,10 @@ public class HouseViewModal extends AndroidViewModel {
 
     public void insertHouse(TableHouse tableHouse) {
         mRepository.insertNewHouse(tableHouse);
+    }
+
+    public void updateHouse(TableHouse tableHouse) {
+        mRepository.updateHouse(tableHouse);
     }
 
     public void deleteHosue(TableHouse tableHouse) {

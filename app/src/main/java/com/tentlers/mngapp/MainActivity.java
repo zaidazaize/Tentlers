@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                             interstitialAd.show();
                         }
                         break;
+                    case R.id.nav_editHouseDialog:
                     case R.id.nav_houseEntryFragment:
                     case R.id.nav_roomEnteyFragment:
                     case R.id.nav_specificHouseFragment:

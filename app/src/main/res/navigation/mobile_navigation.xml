@@ -100,7 +100,14 @@
         android:id="@+id/nav_specificHouseFragment"
         android:name="com.tentlers.mngapp.ui.home.specifichouse.SpecificHouseFragment"
         android:label="fragment_specific_house"
-        tools:layout="@layout/fragment_specific_house" >
+        tools:layout="@layout/fragment_specific_house">
+        <action
+            android:id="@+id/action_nav_specificHouseFragment_to_editHouseDialog"
+            app:destination="@id/nav_editHouseDialog"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/nav_roomEnteyFragment"
@@ -174,5 +181,10 @@
         app:exitAnim="@android:anim/slide_out_right"
         app:popEnterAnim="@android:anim/slide_in_left"
         app:popExitAnim="@android:anim/slide_out_right" />
+    <fragment
+        android:id="@+id/nav_editHouseDialog"
+        tools:layout="@layout/edit_house_dialog"
+        android:name="com.tentlers.mngapp.ui.home.specifichouse.EditHouseDialog"
+        android:label="EditHouseDialog" />
 
 </navigation>

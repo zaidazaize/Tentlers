@@ -62,6 +62,10 @@ public class Repository {
         new AsyncInsertNewHouse(mdao).execute(dataTable);
     }
 
+    public void updateHouse(TableHouse tableHouse) {
+        new AsyncUpdateHouse(mdao).execute(tableHouse);
+    }
+
     public void deleteHouse(TableHouse tableHouse) {
         new AsyncDeleteHouse(mdao).execute(tableHouse);
     }
@@ -439,6 +443,21 @@ public class Repository {
                 asyncDao.insertMeterReading(house.getAllMetersData());
 
             }
+            return null;
+        }
+    }
+
+    /*for updating the house*/
+    private static class AsyncUpdateHouse extends AsyncTask<TableHouse, Void, Void> {
+        private final HouseDao updateHouseDao;
+
+        AsyncUpdateHouse(HouseDao dao) {
+            updateHouseDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(TableHouse... tableHouses) {
+            updateHouseDao.updateHouseData(tableHouses[0]);
             return null;
         }
     }

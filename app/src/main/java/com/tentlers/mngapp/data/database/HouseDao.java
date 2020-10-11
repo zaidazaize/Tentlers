@@ -67,15 +67,20 @@ public interface HouseDao {
     @Query("SELECT houseName FROM TABLEHOUSE ")
     LiveData<List<String>> gethouseNameMeterId();
 
-    /*
-     * for updating no of rooms of the house
-     */
+    /* for updating no of rooms of the house*/
     @Query("UPDATE tablehouse SET noOfRooms =noOfRooms + :increment  WHERE houseId = :houseid")
     void updateNoOfRoomsInTableHosue(int increment, int houseid);
 
-    /*
-     *For rooms
-     */
+    @Query("UPDATE tablehouse " +
+            "SET houseName = :gothouseName " +
+            "AND houseNo = :gothouseNo AND " +
+            "locality = :gotLocality AND " +
+            "postalcode = :gotpostalcode " +
+            "AND city = :gotcity AND " +
+            "country = :gotcountry")
+    void updateHouseRecord(String gothouseName, int gothouseNo, String gotLocality, String gotpostalcode, String gotcity, String gotcountry);
+
+    /*For rooms*/
     @Insert()
     void insetNewRoomRecord(TableRooms rooms);
 

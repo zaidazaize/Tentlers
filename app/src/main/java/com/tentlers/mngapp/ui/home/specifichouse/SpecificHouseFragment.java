@@ -75,8 +75,11 @@ public class SpecificHouseFragment extends Fragment {
         binding.toolbarSpecificHosue.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-
+                if (item.getItemId() == R.id.menu_item_specific_house_edit) {
+                    if (choosenHouse != null) {
+                        viewModal.setHouseForEdit(choosenHouse);
+                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_nav_specificHouseFragment_to_editHouseDialog);
+                    }
                 }
                 return true;
             }
