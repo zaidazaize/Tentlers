@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.tenants.specifictenant.TenantEditFragment">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_edit_tenant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:logo="@drawable/ic_baseline_tenant_name"
+            app:menu="@menu/action_house_create_menu"
+            app:navigationIcon="@drawable/ic_baseline_clear_24"
+            app:title="Edit Tenant Info" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edit_tenant_outlined_tenant_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    app:errorEnabled="true"
+                    app:startIconDrawable="@drawable/ic_baseline_tenant_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_tenant_tenant_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/tenant_name"
+                        android:inputType="textCapWords" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="@string/personal_information"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edit_tenant_outlined_tenant_age"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_tenant_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/age"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16sp"
+                        android:layout_marginTop="5sp"
+                        android:text="@string/gender"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup_gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="0sp"
+                        android:layout_marginStart="@dimen/margin_left_right"
+                        android:layout_marginEnd="@dimen/margin_left_right"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+
+                        <RadioButton
+                            android:id="@+id/radioButton_male"
+                            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                            android:layout_width="0sp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/male" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_female"
+                            style="@style/Widget.MaterialComponents.CompoundButton.RadioButton"
+                            android:layout_width="0sp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/female" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton_other"
+                            style="@style/Widget.MaterialComponents.CompoundButton.RadioButton"
+                            android:layout_width="0sp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/other" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edit_tenant_outlined_family_members"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginTop="12sp"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    app:helperText="@string/optional"
+                    app:helperTextEnabled="true"
+                    app:startIconDrawable="@drawable/ic_groups_24px">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_tenant_family_members"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/total_family_members"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edit_tenant_outlined_monthly_fixed_charge"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="@dimen/margin_left_right"
+                    app:errorEnabled="true"
+                    app:helperText="@string/optional"
+                    app:startIconDrawable="@drawable/ic_bill_pay_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_tenant_monthly_fixed_charge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/monthly_fixed_charge"
+                        android:inputType="numberDecimal" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- <include
+             android:id="@+id/edit_tenant_include"
+             layout="@layout/fragment_tenant_entry"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content" />-->
+    </LinearLayout>
+</layout>

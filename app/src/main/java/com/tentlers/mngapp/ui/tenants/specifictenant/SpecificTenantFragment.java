@@ -107,6 +107,16 @@ public class SpecificTenantFragment extends Fragment {
         });
 
         /*set the fab click listener*/
+        /*handle the edit tenant button*/
+        tenantBinding.specificTenantFabEditTenant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (choosenTenant != null) {
+                    viewModal.setTenantForEdit(choosenTenant);
+                    Navigation.findNavController(tenantBinding.getRoot()).navigate(R.id.action_nav_specificTenantFragment_to_tenantEditFragment);
+                }
+            }
+        });
         /*handle the adding of create bill*/
         tenantBinding.specificTenantFabCreateBill.setOnClickListener(new View.OnClickListener() {
             @Override

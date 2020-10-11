@@ -153,11 +153,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.nav_editHouseDialog:
+                    case R.id.nav_tenantEditFragment:
                     case R.id.nav_houseEntryFragment:
                     case R.id.nav_roomEnteyFragment:
                     case R.id.nav_specificHouseFragment:
                     case R.id.nav_tenantEntryFragment:
-
                     case R.id.nav_metersFragment:
                     case R.id.nav_specificTenantFragment:
                     case R.id.nav_specificRoomFragment:

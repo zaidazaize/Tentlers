@@ -205,6 +205,7 @@
     <string name="cancel">Cancel</string>
     <string name="choose_tenants_profile_picture">Choose Tenants profile picture</string>
     <string name="oh_you_havent_added_any_house">Oh! Your haven\'t added any house</string>
+    <string name="sure_to_discard">This will delete all the modifications you did. Sure to discard ?</string>
 
 
 </resources>

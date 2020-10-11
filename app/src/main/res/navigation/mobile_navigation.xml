@@ -159,7 +159,15 @@
         android:id="@+id/nav_specificTenantFragment"
         tools:layout="@layout/fragment_specific_tenant"
         android:name="com.tentlers.mngapp.ui.tenants.specifictenant.SpecificTenantFragment"
-        android:label="SpecificTenantFragment" />
+        android:label="SpecificTenantFragment">
+        <action
+            android:id="@+id/action_nav_specificTenantFragment_to_tenantEditFragment"
+            app:destination="@id/nav_tenantEditFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
     <action
         android:id="@+id/action_global_nav_specificRoomFragment"
         app:destination="@id/nav_specificRoomFragment"
@@ -186,5 +194,10 @@
         tools:layout="@layout/edit_house_dialog"
         android:name="com.tentlers.mngapp.ui.home.specifichouse.EditHouseDialog"
         android:label="EditHouseDialog" />
+    <fragment
+        android:id="@+id/nav_tenantEditFragment"
+        android:name="com.tentlers.mngapp.ui.tenants.specifictenant.TenantEditFragment"
+        android:label="fragment_tenant_edit"
+        tools:layout="@layout/fragment_tenant_edit" />
 
 </navigation>

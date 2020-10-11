@@ -43,6 +43,7 @@ public class HouseViewModal extends AndroidViewModel {
     private int roomIdForSpecificRoom;
 
     private int tenantIdForSpecificTenant;
+    private TenantsPersonal tenantForEdit;
 
     /*defines which from where bill is triggered*/
     private BillEntryTypeObject billEntryType;
@@ -51,6 +52,14 @@ public class HouseViewModal extends AndroidViewModel {
         super(application);
         mRepository = new Repository(application);
         mAllHouse = mRepository.mgetAllHouseForHomeFragment();
+    }
+
+    public TenantsPersonal getTenantForEdit() {
+        return tenantForEdit;
+    }
+
+    public void setTenantForEdit(TenantsPersonal tenantForEdit) {
+        this.tenantForEdit = tenantForEdit;
     }
 
 
