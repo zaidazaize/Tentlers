@@ -199,5 +199,17 @@
         android:name="com.tentlers.mngapp.ui.tenants.specifictenant.TenantEditFragment"
         android:label="fragment_tenant_edit"
         tools:layout="@layout/fragment_tenant_edit" />
+    <fragment
+        android:id="@+id/nav_editMeterFragment"
+        tools:layout="@layout/fragment_edit_meter"
+        android:name="com.tentlers.mngapp.ui.meters.editmeter.EditMeterFragment"
+        android:label="EditMeterFragment" />
+    <action
+        android:id="@+id/action_global_nav_editMeterFragment"
+        app:destination="@id/nav_editMeterFragment"
+        app:enterAnim="@android:anim/slide_in_left"
+        app:exitAnim="@android:anim/slide_out_right"
+        app:popEnterAnim="@android:anim/slide_in_left"
+        app:popExitAnim="@android:anim/slide_out_right" />
 
 </navigation>

@@ -16,9 +16,9 @@ import com.tentlers.mngapp.databinding.FragmentTenantEditBinding;
 
 import java.util.Objects;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -41,7 +41,12 @@ public class TenantEditFragment extends Fragment implements Toolbar.OnMenuItemCl
         viewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
 
         choosenTenant = viewModal.getTenantForEdit();
-
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getExitDialog().show();
+            }
+        });
     }
 
     @Override
@@ -120,7 +125,6 @@ public class TenantEditFragment extends Fragment implements Toolbar.OnMenuItemCl
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
         dialogBuilder.setTitle(getString(R.string.exit))
                 .setMessage(R.string.sure_to_discard)
-                .setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_delete_outline_24))
                 .setPositiveButton("Discard Changes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

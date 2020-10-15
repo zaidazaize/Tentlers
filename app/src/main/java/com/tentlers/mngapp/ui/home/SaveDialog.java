@@ -26,9 +26,9 @@ public class SaveDialog {
                                                       DialogInterface.OnClickListener neutalCalback) {
         materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
         materialAlertDialogBuilder.setTitle(R.string.exit)
-                .setMessage("Are You Sure to Exit? ")
-                .setPositiveButton("Exit", positiveCallback)
-                .setNeutralButton("Cancel", neutalCalback);
+                .setMessage(R.string.are_you_sure_to_exit)
+                .setPositiveButton(R.string.exit, positiveCallback)
+                .setNeutralButton(R.string.cancel, neutalCalback);
 
         return materialAlertDialogBuilder;
     }
@@ -38,11 +38,11 @@ public class SaveDialog {
                                                       DialogInterface.OnClickListener neutalCalback) {
         materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context);
         materialAlertDialogBuilder.setTitle(R.string.save_changes)
-                .setMessage("Are You Sure to Save Changes ")
+                .setMessage(R.string.are_you_sure_to_save_changes)
 
-                .setPositiveButton("save", positiveCallback)
-                .setNeutralButton("Cancel", neutalCalback)
-                .setNegativeButton("Discard", negativeCallback);
+                .setPositiveButton(R.string.save, positiveCallback)
+                .setNeutralButton(R.string.cancel, neutalCalback)
+                .setNegativeButton(R.string.discard, negativeCallback);
         return materialAlertDialogBuilder;
     }
 }

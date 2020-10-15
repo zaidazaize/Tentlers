@@ -11,8 +11,9 @@ public class GetLastMeterReading {
     public boolean isMeterid;
 
     public int noOfReadings;
-    public int houseId;
-    public int roomId;
+    public long tenantid;
+    public long houseId;
+    public long roomId;
     public long meterId;
 
     public GetLastMeterReading setHouseIdForhouseMeter(int houseIdForhouseMeter) {
@@ -21,7 +22,7 @@ public class GetLastMeterReading {
         return this;
     }
 
-    public GetLastMeterReading setRoomId(int roomId) {
+    public GetLastMeterReading setRoomId(long roomId) {
         this.roomId = roomId;
         isRoomId = true;
         return this;

@@ -32,6 +32,7 @@ import com.tentlers.mngapp.data.MyAuthorities;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
+import com.tentlers.mngapp.data.tables.meters.MeterEditType;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoNameId;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
@@ -191,6 +192,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                  which is controlled via a variable isHouseAvailable*/
                     isHosueAvailable = false;/*responsible for showing snackbar that no house is available.*/
                     tenantEntryBinding.switchTenantAllotRooms.setChecked(false);
+                    tenantEntryBinding.switchTenantAllotRooms.setEnabled(false);
                 } else isHosueAvailable = true;
 
                 houseAdapter.addAll(getHouseNamearray(houseNameAndIdList));
@@ -290,6 +292,11 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
                         @Override
                         public void onClick(View v) {
                             //TODO Show the dialog here. to add the meter.*/
+                            if (choosenRoom != null) {
+                                viewModal.setMeterEditType(new MeterEditType()
+                                        .setForNewMeter(MeterEditType.ENTRY_ROOM, choosenRoom.roomId, choosenRoom.roomName));
+                                Navigation.findNavController(tenantEntryBinding.getRoot()).navigate(R.id.action_global_nav_editMeterFragment);
+                            }
                         }
                     })
                             .show();
@@ -634,6 +641,7 @@ public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemC
         }
     }
 
+    /*sets last meter reading for updating reading when tenant is added*/
     private void setLastMeterReaing() {
         if (choosenRoom.isMeterEnabled) {//fetch for reading only if the meter is enabled;
             viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(choosenRoom.roomId)).observe(getViewLifecycleOwner(),

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/edit_meter_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:menu="@menu/action_house_create_menu"
+            app:navigationIcon="@drawable/ic_baseline_clear_24" />
+
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_electric_meter_number_manual"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_top_bottom"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_left_right"
+            android:layout_marginEnd="@dimen/margin_left_right"
+            android:checked="false"
+            android:drawableStart="@drawable/ic_manually_enter_24px"
+            android:text="@string/manually_enter_meter_number" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_outline_meter_MeterNo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/margin_left_right"
+            android:layout_marginBottom="@dimen/margin_left_right"
+            android:layout_weight="1"
+            android:visibility="gone"
+            app:errorEnabled="true"
+            app:helperText="@string/enter_only_numerical_part_of_meter_id"
+            app:startIconDrawable="@drawable/ic_meter_reading_24px">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_meter_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/meter_number"
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_electric_meter_number_system_decide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_left_right"
+            android:layout_marginEnd="@dimen/margin_left_right"
+            android:checked="true"
+            android:clickable="false"
+            android:drawableStart="@drawable/ic_system_decide_24px"
+            android:text="@string/use_system_generated_number" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_outline_initial_meter_reading"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_left_right"
+            android:layout_marginTop="5sp"
+            android:layout_marginEnd="@dimen/margin_left_right"
+            android:layout_marginBottom="@dimen/margin_left_right"
+            app:helperText="@string/enter_current_meter_reading">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_initial_meter_reading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/start_meter_reading"
+                android:inputType="number" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </LinearLayout>
+</layout>

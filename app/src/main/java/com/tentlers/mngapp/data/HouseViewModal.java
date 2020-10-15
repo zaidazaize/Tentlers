@@ -11,6 +11,7 @@ import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
+import com.tentlers.mngapp.data.tables.meters.MeterEditType;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
@@ -32,17 +33,22 @@ import androidx.lifecycle.LiveData;
 
 public class HouseViewModal extends AndroidViewModel {
 
-    private int houseIdForSpecificHouse;
+    private long houseIdForSpecificHouse;
     private TableHouse houseForEdit;/*keeps the house choosen to be eddited.*/
 
     private final Repository mRepository;
     private LiveData<List<HouseForHomeFragment>> mAllHouse;
-    private int houseIdForRoomEntry;
+    private long houseIdForRoomEntry;
 
+    /*transfers data about which meter reading history is to be shown*/
     private MetersListObj metersListObj;
-    private int roomIdForSpecificRoom;
 
-    private int tenantIdForSpecificTenant;
+    private MeterEditType meterEditType;
+
+    private long roomIdForSpecificRoom;
+
+    private long tenantIdForSpecificTenant;
+
     private TenantsPersonal tenantForEdit;
 
     /*defines which from where bill is triggered*/
@@ -52,6 +58,14 @@ public class HouseViewModal extends AndroidViewModel {
         super(application);
         mRepository = new Repository(application);
         mAllHouse = mRepository.mgetAllHouseForHomeFragment();
+    }
+
+    public MeterEditType getMeterEditType() {
+        return meterEditType;
+    }
+
+    public void setMeterEditType(MeterEditType meterEditType) {
+        this.meterEditType = meterEditType;
     }
 
     public TenantsPersonal getTenantForEdit() {
@@ -88,12 +102,11 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
 
-
     public LiveData<List<HouseForHomeFragment>> getAllHouseForHomeFragment() {
         return mAllHouse;
     }
 
-    public LiveData<TableHouse> getHouseFromHouseId(int houseId) {
+    public LiveData<TableHouse> getHouseFromHouseId(long houseId) {
         return mRepository.getHosueFromHouseId(houseId);
     }
 
@@ -115,11 +128,11 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
     /* For displaying specific House details. */
-    public int getHouseIdForSpecificHouse() {
+    public long getHouseIdForSpecificHouse() {
         return houseIdForSpecificHouse;
     }
 
-    public void setHouseIdForSpecificHouse(int houseid) {
+    public void setHouseIdForSpecificHouse(long houseid) {
         this.houseIdForSpecificHouse = houseid;
     }
 
@@ -134,7 +147,7 @@ public class HouseViewModal extends AndroidViewModel {
     /*
      * this is used to display the three rooms in the specific house fragemnt
      */
-    public LiveData<List<RoomForRoomList>> getThreeRooms(int houseId) {
+    public LiveData<List<RoomForRoomList>> getThreeRooms(long houseId) {
         return mRepository.getThreeRooms(houseId);
     }
 
@@ -147,11 +160,11 @@ public class HouseViewModal extends AndroidViewModel {
 
     /* For transfering the house id to the room entry fragment*/
 
-    public int getHouseIdForRoomEntry() {
+    public long getHouseIdForRoomEntry() {
         return houseIdForRoomEntry;
     }
 
-    public void setHouseIdForRoomEntry(int houseIdForRoomEntry) {
+    public void setHouseIdForRoomEntry(long houseIdForRoomEntry) {
         this.houseIdForRoomEntry = houseIdForRoomEntry;
     }
 
@@ -164,15 +177,15 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
     /*get the room data for specific room fragment*/
-    public LiveData<TableRooms> getRoomFromRoomId(int roomId) {
+    public LiveData<TableRooms> getRoomFromRoomId(long roomId) {
         return mRepository.getRoomFromRoomId(roomId);
     }
 
-    public int getRoomIdForSpecificRoom() {
+    public long getRoomIdForSpecificRoom() {
         return roomIdForSpecificRoom;
     }
 
-    public void setRoomIdForSpecificRoom(int roomIdForSpecificRoom) {
+    public void setRoomIdForSpecificRoom(long roomIdForSpecificRoom) {
         this.roomIdForSpecificRoom = roomIdForSpecificRoom;
     }
 
@@ -207,11 +220,11 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
     /*For specific tenant Frogment*/
-    public int getTenantIdForSpecificTenant() {
+    public long getTenantIdForSpecificTenant() {
         return tenantIdForSpecificTenant;
     }
 
-    public void setTenantIdForSpecificTenant(int gotid) {
+    public void setTenantIdForSpecificTenant(long gotid) {
         this.tenantIdForSpecificTenant = gotid;
     }
 
@@ -244,7 +257,7 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
     /*get all of selected tenant*/
-    public LiveData<TenantsPersonal> getTenantFromId(int tenantIdForSpecificTenant) {
+    public LiveData<TenantsPersonal> getTenantFromId(long tenantIdForSpecificTenant) {
         return mRepository.getTenantFromId(tenantIdForSpecificTenant);
     }
 
@@ -259,7 +272,7 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
     /* Get house name from house id*/
-    public LiveData<String> getHouseNameFromHouseId(int houseid) {
+    public LiveData<String> getHouseNameFromHouseId(long houseid) {
         return mRepository.getHouseNameFromHouseId(houseid);
     }
 
@@ -285,11 +298,26 @@ public class HouseViewModal extends AndroidViewModel {
         return mRepository.getIsAntActiveTenant(isactive);
     }
 
-    public LiveData<List<BillItemForCard>> getAllBillForCard(boolean isBillActive) {
-        return mRepository.getAllBillForCard(isBillActive);
+    public LiveData<List<BillItemForCard>> getAllBillForCard(boolean isBillpaid) {
+        return mRepository.getAllBillForCard(isBillpaid);
     }
 
-    public LiveData<List<BillItemForCard>> getThreeBillForCard(int roomId) {
+    public LiveData<List<BillItemForCard>> getThreeBillForCard(long roomId) {
         return mRepository.getThreeBillForCard(roomId);
+    }
+
+    /*for geting all meter nos*/
+    public LiveData<List<Long>> getAllMeterNos() {
+        return mRepository.getAllMeterNos();
+    }
+
+    /*get meter no from meter id*/
+    public LiveData<Long> getMeterNoFromMeterId(GetLastMeterReading readingType) {
+        return mRepository.getMeterNoFromMeteId(readingType);
+    }
+
+    /*for editing meter details*/
+    public void updateMeterDetails(MeterEditType editDetails) {
+        mRepository.updateMeterDetails(editDetails);
     }
 }

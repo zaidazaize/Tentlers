@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.bills.BillEntryTypeObject;
@@ -163,14 +165,14 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_item_room_addrooms) {
-            if (nameIdNoofRoomsList.size() == 0) {
-                Toast.makeText(getContext(), "No house available to add room.", Toast.LENGTH_SHORT).show();
+            if (nameIdNoofRoomsList == null || nameIdNoofRoomsList.size() == 0) {
+                Toast.makeText(getContext(), R.string.no_house_available_to_add_rooms, Toast.LENGTH_SHORT).show();
                 return true;
             }
             if (noOfRoomsForChosenHouse < 99) {
                 Navigation.findNavController(bindingRoom.getRoot()).navigate(R.id.action_nav_rooms_to_roomEnteyFragment);
             } else {
-                Toast.makeText(getContext(), "Max room limit reached.", Toast.LENGTH_SHORT).show();
+                Snackbar.make(bindingRoom.recycleViewRooms, R.string.max_room_limit_reached, BaseTransientBottomBar.LENGTH_SHORT).show();
             }
         }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
+import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.databinding.FragmentMeterListBinding;
 
@@ -58,8 +59,14 @@ public class MetersFragment extends Fragment {
             });
         } else meterListBinding.meterHouseName.setText(chossenMeter.houseName);
 
-        /*set the title of the toolbar.*/
-        meterListBinding.meterToolbar.setTitle(String.valueOf(chossenMeter.meterId));
+        /*fetch the meter no and set it as the title of the toolbar*/
+        houseViewModal.getMeterNoFromMeterId(new GetLastMeterReading().setMeterId(chossenMeter.meterId)).observe(getViewLifecycleOwner(), new Observer<Long>() {
+            @Override
+            public void onChanged(Long aLong) {
+                meterListBinding.meterToolbar.setTitle(String.valueOf(aLong));
+            }
+        });
+
         final MetersRecyclerViewAdapter metersRecyclerViewAdapter = new MetersRecyclerViewAdapter();
 
         meterListBinding.meterRecycleView.setAdapter(metersRecyclerViewAdapter);

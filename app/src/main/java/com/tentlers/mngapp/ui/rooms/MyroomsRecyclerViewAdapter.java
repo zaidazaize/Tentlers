@@ -35,8 +35,8 @@ public class MyroomsRecyclerViewAdapter extends RecyclerView.Adapter<MyroomsRecy
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-            RoomForRoomList room = mRoomList.get(position);
-            holder.mRoomno.setText(String.valueOf(room.roomNo));
+        RoomForRoomList room = mRoomList.get(position);
+        holder.mRoomno.setText(String.valueOf(room.roomNo));
 
         if (room.ocupiedStatus) {
             holder.isOccupied.setVisibility(View.VISIBLE);

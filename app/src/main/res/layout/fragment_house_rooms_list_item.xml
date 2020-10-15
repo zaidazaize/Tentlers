@@ -94,6 +94,10 @@
                 android:layout_height="@dimen/height_listitem_line_width"
                 android:layout_below="@id/house_room_listitem_room_tenant"
                 android:layout_marginTop="4sp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/margin_left_right"
+                android:layout_marginEnd="@dimen/margin_left_right"
                 android:layout_marginBottom="4sp"
                 android:background="@color/dividing_line_color" />
 

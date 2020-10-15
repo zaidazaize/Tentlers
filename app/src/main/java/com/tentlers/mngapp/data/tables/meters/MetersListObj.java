@@ -10,8 +10,7 @@ import androidx.room.Ignore;
 
 public class MetersListObj {
     @Ignore
-    public int houseId;
-
+    public long houseId;
     public long meterId;
     public String houseName;
     public String roomName;

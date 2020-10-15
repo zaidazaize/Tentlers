@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +44,7 @@ public class RoomEnteryFragment extends Fragment {
     /*
      * this object holds the meter ids of all the rooms in the database.
      */
-    private List<Long> gotAllroomMeterids;
+    private List<Long> allMeterNos;
 
     /* This object holds all the room names in the given house*/
     private List<RoomNoName> allMeterIds;
@@ -81,10 +80,10 @@ public class RoomEnteryFragment extends Fragment {
         tableRooms.setHouseId(viewModal.getHouseIdForRoomEntry());
 
         /*get and assing all the meter ids*/
-        viewModal.getAllMeterIdOfState(AllMetersData.CREATE).observe(this, new Observer<List<Long>>() {
+        viewModal.getAllMeterNos().observe(this, new Observer<List<Long>>() {
             @Override
             public void onChanged(List<Long> longs) {
-                gotAllroomMeterids = longs;
+                allMeterNos = longs;
             }
         });
     }
@@ -108,7 +107,7 @@ public class RoomEnteryFragment extends Fragment {
 
                 /*if list of rooms is empty set the room number to 1 */
                 generatedroomNOName.roomNo = roomNoNames.size() == 0 ? generatedroomNOName.roomNo = 1 : roomNoNames.get(0).roomNo + 1;
-                generatedroomNOName.roomName = ("Room" + generatedroomNOName.roomNo);
+                generatedroomNOName.roomName = (getString(R.string.room_for_room_name) + generatedroomNOName.roomNo);
 
                 enteyBinding.textInputEditTextOutlinedRoomNo.setText(String.valueOf(generatedroomNOName.roomNo));
                 enteyBinding.textInputEditTextOutlinedRoomName.setText(generatedroomNOName.roomName);
@@ -209,8 +208,7 @@ public class RoomEnteryFragment extends Fragment {
 
                     long meterNumberLong = Long.parseLong(meterNumber);
                     if (isMeterNoUnique(meterNumberLong)) {/*set the error to null and add the meter no in the Tableroom object*/
-                        tableRooms.setMeterId(meterNumberLong);
-
+                        tableRooms.getAllMeters().setMeterNo(meterNumberLong);
                         enteyBinding.textInputLayoutRoomMeterNo.setError("");
                         return true;
                     } else {/*set the error that meter is not unique*/
@@ -233,8 +231,8 @@ public class RoomEnteryFragment extends Fragment {
     /*This meathod is responsible for checking the uniquenes of the meter number inserted*/
     private boolean isMeterNoUnique(long getmeterno) {
 
-        if (gotAllroomMeterids != null && gotAllroomMeterids.size() != 0) {
-            for (long i : gotAllroomMeterids) {
+        if (allMeterNos != null && allMeterNos.size() != 0) {
+            for (long i : allMeterNos) {
                 if (i == getmeterno) {
                     return false;
                 }
@@ -302,6 +300,10 @@ public class RoomEnteryFragment extends Fragment {
 
         if (roomNo.length() != 0) {
             int roomNoInt = Integer.parseInt(roomNo);
+            if (roomNoInt > 99) {
+                enteyBinding.textInputLayoutOutlinedRoomNo.setError(getString(R.string.room_no_cannot_be_greater_than_99));
+                return false;
+            }
             if (isRoomNoUnique(roomNoInt)) {
                 /*
                  * Set error to null and add the value to the tableroom object
@@ -340,14 +342,12 @@ public class RoomEnteryFragment extends Fragment {
      * meter id if user has enabled the system generated meter id.
      */
     private void saveRoomData() {
-        Log.d("isSystemDecide", String.valueOf(tableRooms.isSystemDeside()));
         if (tableRooms.isSystemDeside()) {
             SharedPreferences sh = requireActivity().getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
 
-            tableRooms.setMeterId((sh.getLong(getString(R.string.system_generated_meterid_last_entry), 100000)) + 1);
-            sh.edit().putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.getMeterId())
+            tableRooms.getAllMeters().setMeterNo((sh.getLong(getString(R.string.system_generated_meterid_last_entry), 100000)) + 1);
+            sh.edit().putLong(getString(R.string.system_generated_meterid_last_entry), tableRooms.getAllMeters().getMeterNo())
                     .apply();
-            Log.d("shardPrefferences", String.valueOf(tableRooms.getMeterId()));
         }
         viewModal.insertNewRoom(tableRooms);
     }

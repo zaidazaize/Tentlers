@@ -94,6 +94,7 @@
     <string name="filled_rooms">Filled Rooms</string>
     <string name="max_room_limit_reached">Max room limit reached.</string>
     <string name="opps_no_address_found">Opps! No Address Found</string>
+    <string name="oops_feels_you_haven_t_attached_any_meter">Oops! Feels you haven\'t attached any meter</string>
 
     <!--Room Entry Fragment-->
     <string name="enter_the_room_name">Enter The Room Name</string>
@@ -101,6 +102,8 @@
     <string name="room_number">Room Number</string>
     <string name="enter_only_numerical_part_of_meter_id">Enter Only Numeral Part Of Meter id</string>
     <string name="enter_current_meter_reading">Enter current meter reading</string>
+    <string name="room_no_cannot_be_greater_than_99">!Error : Room Number cannot be greater than 99</string>
+    <string name="room_for_room_name">Room</string>
 
     <!--Room List-->
     <string name="chose_house">Choose House</string>
@@ -114,6 +117,9 @@
     <string name="bills_info">Bills Info</string>
     <string name="oop_no_bills_found">Oop! No Bills Found</string>
     <string name="meter_number">Meter Number</string>
+    <string name="no_house_available_to_add_rooms">No house available to add room.</string>
+    <string name="remove_the_tenant">Remove the tenant</string>
+    <string name="add_the_tenant">Add the tenant</string>
 
     <!--Tenant Entry Fragment-->
     <string name="personal_information">Personal Information</string>
@@ -206,6 +212,15 @@
     <string name="choose_tenants_profile_picture">Choose Tenants profile picture</string>
     <string name="oh_you_havent_added_any_house">Oh! Your haven\'t added any house</string>
     <string name="sure_to_discard">This will delete all the modifications you did. Sure to discard ?</string>
+    <string name="are_you_sure_to_exit">Are You Sure to Exit? </string>
+    <string name="are_you_sure_to_save_changes">"Are You Sure to Save Changes "</string>
+    <string name="discard">Discard</string>
+
+    <!--for meter edit fragment-->
+    <string name="create_new_meter">Create New Meter</string>
+    <string name="update_meter">Update Meter</string>
+    <string name="all_changes_you_mde_will_be_dicarded">All changes you made will be discarded. Sure to exit ?</string>
+    <string name="edit_meter">Edit Meter</string>
 
 
 </resources>

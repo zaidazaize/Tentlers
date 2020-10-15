@@ -37,6 +37,7 @@ public class AllMetersData {
     public static final int TENANT_ENTRY = 102;
     @Ignore
     public static final int TENANT_EXIT = 103;
+
     @PrimaryKey(autoGenerate = true)
     private long entryId;
     @ColumnInfo

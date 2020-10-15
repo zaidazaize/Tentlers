@@ -1,5 +1,6 @@
 package com.tentlers.mngapp.data.tables;
 
+import com.tentlers.mngapp.data.tables.meters.AllMeters;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 
 import java.util.Date;
@@ -12,14 +13,13 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class TableRooms {
-    @Ignore
-    private AllMetersData allMetersData;
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
-    private int roomId;
+    private long roomId;
 
     @ColumnInfo
-    private int houseId;
+    private long houseId;
 
     @ColumnInfo
     private int roomNo;
@@ -32,6 +32,8 @@ public class TableRooms {
 
     @ColumnInfo
     private long meterId;
+    @Ignore
+    public long meterNo;
 
     @ColumnInfo
     private boolean isMeterEnabled;
@@ -58,7 +60,15 @@ public class TableRooms {
     public void setDate(Date date) {
         this.date = date;
         getAllMetersData().setDate(date);
+        getAllMeters().setCreatedate(date);
     }
+
+    @Ignore
+    private AllMetersData allMetersData;
+
+    @Ignore/*now this varialble stores data of for entering the new meter*/
+    private AllMeters allMeters;
+
 
     @Ignore
     public AllMetersData getAllMetersData() {
@@ -73,19 +83,19 @@ public class TableRooms {
         this.allMetersData = allMetersData;
     }
 
-    public int getRoomId() {
+    public long getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(int roomId) {
+    public void setRoomId(long roomId) {
         this.roomId = roomId;
     }
 
-    public int getHouseId() {
+    public long getHouseId() {
         return houseId;
     }
 
-    public void setHouseId(int houseId) {
+    public void setHouseId(long houseId) {
         this.houseId = houseId;
     }
 
@@ -170,5 +180,16 @@ public class TableRooms {
     public static String getRoomDate(java.util.Date createDate) {
         Formatter formatter = new Formatter();
         return formatter.format("%td %th, %tY", createDate, createDate, createDate).toString();
+    }
+
+    public AllMeters getAllMeters() {
+        if (allMeters == null) {
+            this.allMeters = new AllMeters();
+        }
+        return allMeters;
+    }
+
+    public void setAllMeters(AllMeters allMeters) {
+        this.allMeters = allMeters;
     }
 }

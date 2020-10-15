@@ -1,7 +1,6 @@
 package com.tentlers.mngapp.ui.home;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,10 +13,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
-import com.tentlers.mngapp.data.tables.TableHouse;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.databinding.FragmentHomeBinding;
-import com.tentlers.mngapp.ui.home.specifichouse.GetDeleteHouseDialog;
 
 import java.util.List;
 
@@ -99,7 +96,6 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
         inflater.inflate(R.menu.fragment_home, menu);
     }
 
-
     @Override
     public void onItemClicked(int position, View v) {
         houseViewModal.setHouseIdForSpecificHouse(homeRecycleViewAdapter.getHouseAtPosition(position).houseId);/*set house id to view it in specific house fragment*/
@@ -122,27 +118,16 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.homw_fragment_popup_add_rooms:
+        if (item.getItemId() == R.id.homw_fragment_popup_add_rooms) {/*if no of rooms is equal to 99 then show snack bar for max room reached.*/
+            if (homeRecycleViewAdapter.getHouseAtPosition(imageclicked).noOfRooms < 99) {
                 houseViewModal.setHouseIdForRoomEntry(homeRecycleViewAdapter.getHouseAtPosition(imageclicked).houseId);
                 Navigation.findNavController(homeBinding.getRoot()).navigate(R.id.action_global_nav_roomEnteyFragment);
-                return true;
-
-            case R.id.home_fragment_delete_House:
-                new GetDeleteHouseDialog().getdeleteHouseDilog(requireContext(),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                houseViewModal.deleteHosue(new TableHouse()/*set the house id and delete housebyid to true so that repository can process the further information.*/
-                                        .setHouseId(homeRecycleViewAdapter.getHouseAtPosition(imageclicked).houseId)
-                                        .setDeleteHouseByid(true));
-                            }
-                        })
+            } else {
+                Snackbar.make(homeBinding.homeCoordinatorLayout, R.string.max_room_limit_reached, BaseTransientBottomBar.LENGTH_SHORT)
                         .show();
-                return true;
-            default:
-                return false;
+            }
         }
+        return true;
 
     }
 }

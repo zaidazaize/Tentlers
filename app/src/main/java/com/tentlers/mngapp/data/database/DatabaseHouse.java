@@ -6,6 +6,7 @@ import com.tentlers.mngapp.data.tables.TableHouse;
 import com.tentlers.mngapp.data.tables.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.dataconvertes.Converters;
+import com.tentlers.mngapp.data.tables.meters.AllMeters;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
@@ -14,8 +15,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {TableHouse.class, TableRooms.class, TenantsPersonal.class, AllMetersData.class, Bills.class},
-        version = 1, exportSchema = false)
+@Database(entities = {TableHouse.class, TableRooms.class, TenantsPersonal.class, AllMetersData.class, AllMeters.class, Bills.class},
+        version = 2, exportSchema = false)
 
 @TypeConverters({Converters.class})
 public abstract class DatabaseHouse extends RoomDatabase {

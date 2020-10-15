@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,6 +19,7 @@ import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
+import com.tentlers.mngapp.data.tables.meters.MeterEditType;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.databinding.FragmentBillsListItemBinding;
 import com.tentlers.mngapp.databinding.FragmentSpecificRoomBinding;
@@ -25,13 +28,14 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-public class SpecificRoomFragment extends Fragment {
+public class SpecificRoomFragment extends Fragment implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
     HouseViewModal viewModal;
     FragmentSpecificRoomBinding roomBinding;
     Drawable drawableMore, drawableLess;
@@ -51,7 +55,7 @@ public class SpecificRoomFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         drawableMore = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_expand_more_24);
         drawableLess = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_expand_less_24);
@@ -72,9 +76,17 @@ public class SpecificRoomFragment extends Fragment {
                     /*don't fetch the last reading if no meter is alloted
                    also disalble the meters button*/
                     roomBinding.specificRoomButtonViewAllMeterReading.setEnabled(false);
-                    roomBinding.specificRoomMeterNumber.setText(getString(R.string.not_provided));
                     return;
                 }
+                /*fetch the meter no and update in the meter no field*/
+                viewModal.getMeterNoFromMeterId(new GetLastMeterReading().setMeterId(choosenRoom.getMeterId())).observe(getViewLifecycleOwner(), new Observer<Long>() {
+                    @Override
+                    public void onChanged(Long aLong) {
+                        roomBinding.specificRoomMeterNumber.setText(String.valueOf(aLong));
+                        choosenRoom.meterNo = aLong;
+                    }
+                });
+
                 /*update the last reading and reading date in the textviews.*/
                 viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setRoomId(tableRooms.getRoomId()))
                         .observe(getViewLifecycleOwner(), new Observer<LastReadingWithDate>() {
@@ -86,6 +98,7 @@ public class SpecificRoomFragment extends Fragment {
                                 roomBinding.specificRoomLastReadingDate.setText(AllMetersData.getMeterDate(lastReadingWithDate.getDate()));
                             }
                         });
+
                 /* Update the meter create date in the textview */
                 viewModal.getMeterCreateDate(tableRooms.getMeterId()).observe(getViewLifecycleOwner(),
                         new Observer<Date>() {
@@ -103,20 +116,19 @@ public class SpecificRoomFragment extends Fragment {
         /*set the three listitems of the room*/
         setRoomList();
 
-
         /*Add button on click listeners*/
         /*handle the on add tenant click listener*/
         /*TODO handle the remove and add of the tenant.*/
         roomBinding.specificRoomFabAddTenant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (choosenRoom == null) {
-                    return;
+                if (choosenRoom != null) {
+                    /*remove the tenant */
+                    if (!choosenRoom.isOcupiedStatus()) {
+                        Navigation.findNavController(roomBinding.getRoot()).navigate(R.id.action_global_tenantEntryFragment);
+                    } else /*TODO HANDLE remove of the tenant*/
+                        Snackbar.make(roomBinding.specificRoomCoordinatorLayout, getString(R.string.remove_the_tenant), BaseTransientBottomBar.LENGTH_SHORT).show();
                 }
-                /*remove the tenant */
-                Snackbar.make(roomBinding.specificRoomCoordinatorLayout,
-                        choosenRoom.isOcupiedStatus() ? "Remove the tenant" : "Add the tenant", BaseTransientBottomBar.LENGTH_SHORT).show();
-
             }
         });
 
@@ -155,14 +167,21 @@ public class SpecificRoomFragment extends Fragment {
         roomBinding.specificRoomRelativeLayoutMeterShowMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                roomBinding.specificRoomRelativeLayoutMeterInfo.setVisibility(isMetervisible ? View.GONE : View.VISIBLE);
+                if (choosenRoom.isMeterEnabled()) {/*if no meter is enabled then show empty view for no meter else show meter details*/
+                    roomBinding.specificRoomRelativeLayoutMeterInfo.setVisibility(isMetervisible ? View.GONE : View.VISIBLE);
+                } else
+                    roomBinding.specificRoomTextviewNoMeter.setVisibility(isMetervisible ? View.GONE : View.VISIBLE);
+
                 roomBinding.specificRoomImageMeterShowMore.setImageDrawable(
                         isMetervisible ? ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_expand_more_24)
-                                : ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_expand_less_24))
-                ;
+                                : ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_expand_less_24));
+
                 isMetervisible = !isMetervisible;
             }
         });
+
+        /*set long click listener for showing the pop up munu to edit meter*/
+        roomBinding.specificRoomRelativeLayoutMeterShowMore.setOnLongClickListener(this);
 
         /*if no meter is handled then the button state is disabled.*/
         roomBinding.specificRoomButtonViewAllMeterReading.setOnClickListener(new View.OnClickListener() {
@@ -198,21 +217,14 @@ public class SpecificRoomFragment extends Fragment {
             /*set the tenant name and occupied date if available*/
             roomBinding.specificRoomTenantName.setText(choosenRoom.getTenantName());
             roomBinding.specificRoomTenantEntryDate.setText(TableRooms.getRoomDate(choosenRoom.getDate()));
+
+            /*Control the add tenant button change it from add tenant to delete tenant as per the tenant data*/
+            roomBinding.specificRoomTextviewAddTenant.setText(getString(R.string.remove_tenant));
+            roomBinding.specificRoomFabAddTenant.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_delete_outline_24));
         } else {
             roomBinding.specificRoomRelativeLayoutTenantName.setVisibility(View.GONE);
             roomBinding.specificRoomNoTenantFound.setVisibility(View.VISIBLE);
         }
-
-        /*set the meter number*/
-        roomBinding.specificRoomMeterNumber.setText(
-                choosenRoom.isMeterEnabled() ? String.valueOf(choosenRoom.getMeterId()) : getString(R.string.not_provided));
-
-        /*Control the add tenant button change it from add tenant to delete tenant as per the tenant data*/
-        if (choosenRoom.isOcupiedStatus()) {
-            roomBinding.specificRoomTextviewAddTenant.setText(getString(R.string.remove_tenant));
-            roomBinding.specificRoomFabAddTenant.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_delete_outline_24));
-        }
-
 
     }
 
@@ -284,4 +296,30 @@ public class SpecificRoomFragment extends Fragment {
                 });
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        PopupMenu popup = new PopupMenu(requireContext(), v);
+        MenuInflater inflater = popup.getMenuInflater();
+        popup.setOnMenuItemClickListener(this);
+        inflater.inflate(R.menu.meter_popup, popup.getMenu());
+        popup.show();
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.meter_edit_meter) {
+            if (choosenRoom != null) {
+                if (choosenRoom.isMeterEnabled()) {/*if the meter is enabled then the edit type will be old else it will be new*/
+                    viewModal.setMeterEditType(new MeterEditType()
+                            .setForOldMeter(MeterEditType.ENTRY_ROOM, choosenRoom.getRoomName(), choosenRoom.getMeterId(), choosenRoom.meterNo));
+                } else {
+                    viewModal.setMeterEditType(new MeterEditType()
+                            .setForNewMeter(MeterEditType.ENTRY_ROOM, choosenRoom.getRoomId(), choosenRoom.getRoomName()));
+                }
+                Navigation.findNavController(roomBinding.getRoot()).navigate(R.id.action_global_nav_editMeterFragment);
+            }
+        }
+        return true;
+    }
 }

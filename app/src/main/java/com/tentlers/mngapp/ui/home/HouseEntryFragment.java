@@ -53,8 +53,8 @@ public class HouseEntryFragment extends Fragment {
      * meter ids.
      **/
     List<String> allHouseName;
-    List<Long> allMeterId;
-    int lastEnteredHouseId;
+    List<Long> allMeterNos;
+    long lastEnteredHouseId;
 
     /*
      * This object holds all the data related to the house and
@@ -83,11 +83,11 @@ public class HouseEntryFragment extends Fragment {
                 allHouseName = houseNames;
             }
         });
-        /*update all meter ids in the field*/
-        houseViewModal.getAllMeterIdOfState(AllMetersData.CREATE).observe(this, new Observer<List<Long>>() {
+        /*update all meter nos in the field*/
+        houseViewModal.getAllMeterNos().observe(this, new Observer<List<Long>>() {
             @Override
             public void onChanged(List<Long> longs) {
-                allMeterId = longs;
+                allMeterNos = longs;
             }
         });
 
@@ -125,7 +125,7 @@ public class HouseEntryFragment extends Fragment {
         SharedPreferences sharedPreferences = requireActivity()
                 .getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
 
-        lastEnteredHouseId = sharedPreferences.getInt(getString(R.string.LastEnteredHouseId), 0);
+        lastEnteredHouseId = sharedPreferences.getLong(getString(R.string.LastEnteredHouseId), 0);
         houseEntryBinding.textInputEditTextOutlinedHousename.setText(String.format(getString(R.string.updateHouseName), (lastEnteredHouseId + 1)));
 
         /*Assining the handler tho the cross sign .
@@ -285,8 +285,8 @@ public class HouseEntryFragment extends Fragment {
                 return false;
             }
             long housemeternolong = Long.parseLong(housemeterno);
-            if (isHouseMeterunique(housemeternolong)) {
-                tableHouse.setMeterid(housemeternolong);
+            if (isMeterNounique(housemeternolong)) {
+                tableHouse.getAllMeters().setMeterNo(housemeternolong);/*set the meter no on in the allmeters obj*/
                 tableHouse.getAllMetersData().setOnlyReadingState(AllMetersData.CREATE); /* Set the reading state*/
                 houseEntryBinding.textInputLayoutManualEnterHouseMeterNo.setError("");
                 return true;
@@ -387,9 +387,9 @@ public class HouseEntryFragment extends Fragment {
     }
 
     /*check for unique meter number*/
-    private boolean isHouseMeterunique(long gotmeterno) {
-        if (allMeterId != null) {
-            for (long s : allMeterId) {
+    private boolean isMeterNounique(long gotmeterno) {
+        if (allMeterNos != null) {
+            for (long s : allMeterNos) {
                 if (gotmeterno == s) {
                     return false;
                 }
@@ -405,16 +405,17 @@ public class HouseEntryFragment extends Fragment {
          * If the rooms are to be auto generated then it will be done in the repository.*/
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), Context.MODE_PRIVATE);
         if (tableHouse.isIsmetersystemgenerated()) {
-            tableHouse.setMeterid(sharedPreferences.getLong(getString(R.string.system_generated_meterid_last_entry), 100000) + 1);
+            tableHouse.getAllMeters().setMeterNo(sharedPreferences.getLong(getString(R.string.system_generated_meterid_last_entry), 100000) + 1);
             tableHouse.getAllMetersData().setReadingState(AllMetersData.CREATE);
             sharedPreferences.edit()
-                    .putLong(getString(R.string.system_generated_meterid_last_entry), tableHouse.getMeterid())
+                    .putLong(getString(R.string.system_generated_meterid_last_entry), tableHouse.getAllMeters().getMeterNo())
                     .apply();
 
         }
-        /*update shore prefernce of house id*/
+
+        /*update shore preffernce of house id*/
         sharedPreferences.edit()
-                .putInt(getString(R.string.LastEnteredHouseId), lastEnteredHouseId + 1)
+                .putLong(getString(R.string.LastEnteredHouseId), lastEnteredHouseId + 1)
                 .apply();
         tableHouse.setHouseIdForAutoRoom((lastEnteredHouseId + 1));
         houseViewModal.insertHouse(tableHouse);

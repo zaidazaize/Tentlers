@@ -3,6 +3,7 @@ package com.tentlers.mngapp.ui.home.specifichouse;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.TableHouse;
-import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
+import com.tentlers.mngapp.data.tables.meters.MeterEditType;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.rooms.RoomForRoomList;
 import com.tentlers.mngapp.databinding.FragmentHouseRoomsListItemBinding;
@@ -24,6 +25,7 @@ import com.tentlers.mngapp.databinding.FragmentSpecificHouseBinding;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -31,7 +33,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-public class SpecificHouseFragment extends Fragment {
+public class SpecificHouseFragment extends Fragment implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
 
     FragmentSpecificHouseBinding binding;
     HouseViewModal viewModal;
@@ -40,7 +42,7 @@ public class SpecificHouseFragment extends Fragment {
      * This object holds the data of the house chosed by the user
      * for displaying the house Details.
      */
-    int houseId;
+    long houseId;
     TableHouse choosenHouse;
 
     /*visibility controling varibles*/
@@ -67,7 +69,6 @@ public class SpecificHouseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentSpecificHouseBinding.inflate(getLayoutInflater(), container, false);
-        isMeterDetailsVisible = true;
 
         /*
          * Bind the toolbar and set the buttons
@@ -116,27 +117,29 @@ public class SpecificHouseFragment extends Fragment {
                                     : tableHouse.getAddress().country);
                 }
 
-                /*Set the meter number and reading (reading date)*/
                 if (tableHouse.getIsMeterIncluded()) {
-                    binding.specificHouseMeterNo.setText(String.valueOf(tableHouse.getMeterid()));
+                    /*first fetch the meter no by using the meterid*/
+                    viewModal.getMeterNoFromMeterId(new GetLastMeterReading().setMeterId(tableHouse.getMeterid())).observe(getViewLifecycleOwner(), new Observer<Long>() {
+                        @Override
+                        public void onChanged(Long aLong) {
+                            binding.specificHouseMeterNo.setText(String.valueOf(aLong));
+                            choosenHouse.meterNo = aLong;
+
+                        }
+                    });
+
+                    /*now fetch the last reading and update it in the text view.*/
                     viewModal.getLastEnteredMeterEntry(new GetLastMeterReading().setMeterId(tableHouse.getMeterid())).observe(getViewLifecycleOwner(),
                             new Observer<LastReadingWithDate>() {
                                 @Override
                                 public void onChanged(LastReadingWithDate lastReadingWithDate) {
-
                                     /*set last meter reading*/
                                     binding.specificHouseLastReading.setText(String.valueOf(lastReadingWithDate.getLastMeterReading()));
-
-                                    /*set last meter reading Date*/
-                                    binding.specificHouseLastReadingDate.setText(AllMetersData.getMeterDate(lastReadingWithDate.getDate()));
-
                                     binding.specificHosueRelativeLayoutLastmeterReading.setVisibility(View.VISIBLE);
 
                                 }
                             });
                 } else {
-                    binding.specificHouseMeterNo.setText(getText(R.string.not_provided));
-                    binding.specificHouseMeterNo.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorButtonText));
                     binding.specificViewButtonMeter.setEnabled(false);
                 }
 
@@ -216,17 +219,24 @@ public class SpecificHouseFragment extends Fragment {
         binding.specificHouseRelativeLayoutShowMeterDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.specificHouseRelativeLayoutMeterDetailsDesc.setVisibility(
-                        isMeterDetailsVisible ? View.GONE : View.VISIBLE);
-
+                if (choosenHouse != null && choosenHouse.isMeterIncluded) {
+                    binding.specificHouseRelativeLayoutMeterDetailsDesc.setVisibility(
+                            isMeterDetailsVisible ? View.GONE : View.VISIBLE);
+                } else {
+                    binding.specificHouseTextviewNoMeter.setVisibility(
+                            isMeterDetailsVisible ? View.GONE : View.VISIBLE);
+                }
                 binding.specificHouseShowImageMeterDetailsDesc.setImageDrawable(
                         !isMeterDetailsVisible ?
                                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_expand_less_24) :
                                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_expand_more_24));
 
+
                 isMeterDetailsVisible = !isMeterDetailsVisible;
             }
         });
+        /*set long click listener for editing meter details*/
+        binding.specificHouseRelativeLayoutShowMeterDetails.setOnLongClickListener(this);
 
         /* Add the listener to "view All" meters button which transfers the user to the specific meter fragment or the meter history
          * if no meter is added then button is made unclickable in observer*/
@@ -332,9 +342,42 @@ public class SpecificHouseFragment extends Fragment {
         binding = null;
     }
 
-    private void selectSpecificRoom(int roomid) {
+    private void selectSpecificRoom(long roomid) {
         viewModal.setRoomIdForSpecificRoom(roomid);
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_global_nav_specificRoomFragment);
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        PopupMenu popup = new PopupMenu(requireContext(), v);
+        MenuInflater inflater = popup.getMenuInflater();
+        popup.setOnMenuItemClickListener(this);
+        inflater.inflate(R.menu.meter_popup, popup.getMenu());
+        popup.show();
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.meter_edit_meter) {
+            if (choosenHouse != null) {
+                if (choosenHouse.isMeterIncluded) {/*if meter is included then the edit type will be of old meter*/
+                    viewModal.setMeterEditType(new MeterEditType()
+                            .setForOldMeter(
+                                    MeterEditType.ENTRY_HOUSE,
+                                    choosenHouse.getHouseName(),
+                                    choosenHouse.getMeterid(),
+                                    choosenHouse.meterNo));
+
+                } else {/*if meter id not icluded then edit type will be of new meter*/
+                    viewModal.setMeterEditType(new MeterEditType().setForNewMeter(
+                            MeterEditType.ENTRY_HOUSE, choosenHouse.getHouseId(), choosenHouse.getHouseName()));
+                }
+
+                /*now navigate for entering the meter*/
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_global_nav_editMeterFragment);
+            }
+        }
+        return true;
+    }
 }

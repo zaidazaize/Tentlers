@@ -18,6 +18,7 @@ import com.tentlers.mngapp.databinding.EditHouseDialogBinding;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -48,6 +49,13 @@ public class EditHouseDialog extends Fragment {
             public void onChanged(List<String> strings) {
                 allHouseNames = strings;
                 Log.d("alladdress", strings.toString());
+            }
+        });
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getExitDialog().show();
             }
         });
     }

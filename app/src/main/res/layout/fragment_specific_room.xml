@@ -184,6 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_marginTop="5sp"
                     android:drawablePadding="5sp"
                     android:text="@string/oops_no_tenant_found"
@@ -342,6 +343,20 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
+
+                <TextView
+                    app:drawableStartCompat="@drawable/ic_sentiment_dissatisfied_24px"
+                    android:id="@+id/specific_room_textview_no_meter"
+                    style="@style/TextAppearance.EmptyStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/margin_top_bottom"
+                    android:layout_marginStart="@dimen/margin_top_bottom"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/margin_top_bottom"
+                    android:text="@string/oops_feels_you_haven_t_attached_any_meter"
+                    android:visibility="gone" />
 
                 <View
                     android:id="@+id/line3"

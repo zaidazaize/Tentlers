@@ -2,14 +2,17 @@ package com.tentlers.mngapp.data.database;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.tentlers.mngapp.data.tables.TableHouse;
 import com.tentlers.mngapp.data.tables.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;
+import com.tentlers.mngapp.data.tables.meters.AllMeters;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
+import com.tentlers.mngapp.data.tables.meters.MeterEditType;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
@@ -52,7 +55,7 @@ public class Repository {
     }
 
     /*return the selected house data object*/
-    public LiveData<TableHouse> getHosueFromHouseId(int houseid) {
+    public LiveData<TableHouse> getHosueFromHouseId(long houseid) {
         return mdao.getHouseFromHouseId(houseid);
     }
 
@@ -76,7 +79,7 @@ public class Repository {
     }
 
     /*Get house name from house id */
-    public LiveData<String> getHouseNameFromHouseId(int houseId) {
+    public LiveData<String> getHouseNameFromHouseId(long houseId) {
         return mdao.getHouseNameFromHosueId(houseId);
     }
 
@@ -97,7 +100,7 @@ public class Repository {
     /*
      * Getting the three rooms for displaying in the "Specific house Fragement
      */
-    public LiveData<List<RoomForRoomList>> getThreeRooms(int mhouseId) {
+    public LiveData<List<RoomForRoomList>> getThreeRooms(long mhouseId) {
         return mdao.getThreerooms(mhouseId);
     }
 
@@ -120,7 +123,7 @@ public class Repository {
     }
 
     /* Get the specific room selected.*/
-    public LiveData<TableRooms> getRoomFromRoomId(int roomId) {
+    public LiveData<TableRooms> getRoomFromRoomId(long roomId) {
         return mdao.getRoomFromRoomId(roomId);
     }
 
@@ -211,7 +214,7 @@ public class Repository {
 
     /* Get the date on which meter was created From all meters table.*/
     public LiveData<Date> getMeterCreateDate(long meterid) {
-        return mdao.getMeterCreateDate(meterid, AllMetersData.CREATE);
+        return mdao.getMeterCreateDate(meterid);
     }
 
     /* Get all tenant list for tenant fragment*/
@@ -220,7 +223,7 @@ public class Repository {
     }
 
     /* Get all data of tenant for specific tenant fragment*/
-    public LiveData<TenantsPersonal> getTenantFromId(int teanantId) {
+    public LiveData<TenantsPersonal> getTenantFromId(long teanantId) {
         return mdao.getTenantFromId(teanantId);
     }
 
@@ -262,8 +265,30 @@ public class Repository {
         return mdao.getAllBillForCard(isBillPaid);
     }
 
-    public LiveData<List<BillItemForCard>> getThreeBillForCard(int roomId) {
+    public LiveData<List<BillItemForCard>> getThreeBillForCard(long roomId) {
         return mdao.getThreeBillForRoom(roomId);
+    }
+
+    /*for manuputing all meters table*/
+    /*inserting new meter*/
+    public void insertNewMeter(AllMeters allMeters) {
+        new AsyncInsertNewMeter(mdao).execute(allMeters);
+    }
+
+    public LiveData<List<Long>> getAllMeterNos() {
+
+        return mdao.getAllMeterNos();
+    }
+
+    /*get the meter no from the meter id*/
+    public LiveData<Long> getMeterNoFromMeteId(GetLastMeterReading readingtype) {
+        if (readingtype.isMeterid) {
+            return mdao.getMeterNoFromMeterId(readingtype.meterId);
+        } else if (readingtype.isRoomId) {
+            return mdao.getMeterNofromRoomId(readingtype.roomId);
+        } else {
+            return mdao.getMeterNoFromTenantId(readingtype.tenantid);
+        }
     }
 
     private static class AsyncDeleteHouse extends AsyncTask<TableHouse, Void, Void> {
@@ -296,16 +321,21 @@ public class Repository {
 
         @Override
         protected Void doInBackground(TableRooms... tableRooms) {
-            tableRooms[0].setDate(new Date(System.currentTimeMillis()));
-            mAsyncRoomDao.insetNewRoomRecord(tableRooms[0]);
-            mAsyncRoomDao.updateNoOfRoomsInTableHosue(+1, tableRooms[0].getHouseId());
+            TableRooms tableRooms1 = tableRooms[0];
+            tableRooms1.setDate(new Date(System.currentTimeMillis()));
+            if (tableRooms1.isMeterEnabled()) {
+                tableRooms1.getAllMeters().setAttachDate(new Date(System.currentTimeMillis()));
+                tableRooms1.setMeterId(mAsyncRoomDao.insertNewMeter(tableRooms1.getAllMeters()));
 
-            /*add first meter reading if meter is enabled*/
-            if (tableRooms[0].isMeterEnabled()) {
-                mAsyncRoomDao.insertMeterReading(tableRooms[0].getAllMetersData());
+                /*add first meter reading if meter is enabled*/
+                mAsyncRoomDao.insertMeterReading(tableRooms1.getAllMetersData());
 
                 /*updates all meters table with new meters data*/
             }
+            mAsyncRoomDao.insetNewRoomRecord(tableRooms1);
+            mAsyncRoomDao.updateNoOfRoomsInTableHosue(+1, tableRooms1.getHouseId());
+
+
             return null;
         }
     }
@@ -380,7 +410,13 @@ public class Repository {
 
         @Override
         protected Void doInBackground(TenantsPersonal... tenantsPersonals) {
-            mAsyncUpdateTenantDao.updateTenant(tenantsPersonals[0]);
+            TenantsPersonal personals = tenantsPersonals[0];
+            mAsyncUpdateTenantDao.updateTenant(personals);
+
+            /*update tenant name in room*/
+            if (personals.isRoomAlloted) {
+                mAsyncUpdateTenantDao.updateTenantNameInRoom(personals.getTenantName(), personals.roomId);
+            }
             return null;
         }
     }
@@ -426,6 +462,14 @@ public class Repository {
             TableHouse house = tableHouses[0];
             Date date = new Date(System.currentTimeMillis());
             house.setDate(date);
+
+            /*check if meter is included*/
+            if (house.isMeterIncluded) {/*insert new meter in the table and add the returned id in the table house*/
+                house.getAllMeters().setOnlyHouse(true);
+                house.getAllMeters().setAttachDate(date);
+                house.setMeterid(asyncDao.insertNewMeter(house.getAllMeters()));
+            }
+
             asyncDao.insertHouseRecord(house);
 
             if (house.isRoomAutoGenerated()) {
@@ -481,6 +525,69 @@ public class Repository {
                 asyncinsertnewbilldao.insertMeterReading(bills[0].getMetersData());
             }
             return null;
+        }
+    }
+
+    private static class AsyncInsertNewMeter extends AsyncTask<AllMeters, Void, Void> {
+        private final HouseDao newMeterDao;
+
+        AsyncInsertNewMeter(HouseDao meterdao) {
+            newMeterDao = meterdao;
+        }
+
+        @Override
+        protected Void doInBackground(AllMeters... allMeters) {
+            newMeterDao.insertNewMeter(allMeters[0]);
+
+            return null;
+        }
+    }
+
+    /*for editing meter details*/
+    public void updateMeterDetails(MeterEditType editDetails) {
+        new EditMeterAsyncTask(mdao).execute(editDetails);
+    }
+
+    private static class EditMeterAsyncTask extends AsyncTask<MeterEditType, Void, Void> {
+        private final HouseDao editmeterdao;
+        MeterEditType meterEditType;
+
+        EditMeterAsyncTask(HouseDao dao) {
+            this.editmeterdao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(MeterEditType... meterEditTypes) {
+
+            meterEditType = meterEditTypes[0];
+            switch (meterEditType.getMeterEntrytype()) {
+                case MeterEditType.ENTRY_OLD:
+                    Log.d("foroldmeter", String.valueOf(meterEditType.getUpdatedMeter().getMeterNo()));
+                    editmeterdao.updateMeterNoFromMeterId(meterEditType.getUpdatedMeter().getMeterNo(), meterEditType.getUpdatedMeter().meterId);
+                    break;
+                case MeterEditType.ENTRY_NEW:
+                    Log.d("fornewmeter", String.valueOf(meterEditType.houseId));
+                    forNewMeter();
+            }
+            return null;
+        }
+
+        private void forNewMeter() {
+            meterEditType.getUpdatedMeter().setCreatedate(new Date(System.currentTimeMillis()));
+            meterEditType.getUpdatedMeter().setMeterId(editmeterdao.insertNewMeter(meterEditType.getUpdatedMeter()));/*insert the new meter and update its id in the allmeters obj.*/
+
+            /*as per the entryfor update the tables with the respective meter id*/
+            switch (meterEditType.getEntryFor()) {
+                case MeterEditType.ENTRY_HOUSE:
+                    editmeterdao.updateMeterIdInTableHouse(meterEditType.getUpdatedMeter().getMeterId(), true, meterEditType.houseId);
+                    break;
+                case MeterEditType.ENTRY_ROOM:
+                    editmeterdao.updateMeterInTableRoom(meterEditType.getUpdatedMeter().getMeterId(), true, meterEditType.roomId);
+                    break;
+            }
+
+            /*update the initial reading*/
+            editmeterdao.insertMeterReading(meterEditType.getReadingObj());
         }
     }
 }

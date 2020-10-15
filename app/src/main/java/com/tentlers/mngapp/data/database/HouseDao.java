@@ -4,6 +4,7 @@ import com.tentlers.mngapp.data.tables.TableHouse;
 import com.tentlers.mngapp.data.tables.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;
+import com.tentlers.mngapp.data.tables.meters.AllMeters;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
@@ -32,9 +33,7 @@ import androidx.room.Update;
 @Dao
 public interface HouseDao {
 
-    /*
-     * For inserting new House
-     */
+    /*For inserting new House*/
     @Insert()
     void insertHouseRecord(TableHouse tableHouse);
 
@@ -42,17 +41,20 @@ public interface HouseDao {
     void deleteHouse(TableHouse tableHouse);
 
     @Query("DELETE FROM TableHouse WHERE houseId = :gotHouseId")
-    void deleteHouseById(int gotHouseId);
+    void deleteHouseById(long gotHouseId);
 
     /* Deleting all the records related to the house.*/
     @Query("DELETE FROM tablerooms WHERE houseId = :houseId")
-    void deleteRoomsOfTheHouse(int houseId);
+    void deleteRoomsOfTheHouse(long houseId);
 
     @Query("DELETE FROM tenantspersonal WHERE houseId = :houseId")
-    void deleteTenantsOfTheHouse(int houseId);
+    void deleteTenantsOfTheHouse(long houseId);
 
     @Update
     void updateHouseData(TableHouse tableHouse);
+
+    @Query("UPDATE TableHouse SET meterid = :gotmeterid , isMeterIncluded = :isIncluded WHERE houseId = :gothouseId")
+    void updateMeterIdInTableHouse(long gotmeterid, boolean isIncluded, long gothouseId);
 
     /*select all the house to display in the list on home fragment.*/
     @Query("SELECT houseId, houseName, noOfRooms,occupiedRooms,date FROM TableHouse ORDER BY houseId")
@@ -60,7 +62,7 @@ public interface HouseDao {
 
     /*for displaying specific house.*/
     @Query("SELECT * FROM TableHouse WHERE houseId = :gotHouseid")
-    LiveData<TableHouse> getHouseFromHouseId(int gotHouseid);
+    LiveData<TableHouse> getHouseFromHouseId(long gotHouseid);
 
     /*for house entry fragment*/
     /*selects all the house names for comparison*/
@@ -69,7 +71,7 @@ public interface HouseDao {
 
     /* for updating no of rooms of the house*/
     @Query("UPDATE tablehouse SET noOfRooms =noOfRooms + :increment  WHERE houseId = :houseid")
-    void updateNoOfRoomsInTableHosue(int increment, int houseid);
+    void updateNoOfRoomsInTableHosue(int increment, long houseid);
 
     @Query("UPDATE tablehouse " +
             "SET houseName = :gothouseName " +
@@ -102,7 +104,7 @@ public interface HouseDao {
             " FROM TableRooms " +
             "WHERE tablerooms.houseId = :houseidgot" +
             " ORDER BY date LIMIT 3 ")
-    LiveData<List<RoomForRoomList>> getThreerooms(int houseidgot);
+    LiveData<List<RoomForRoomList>> getThreerooms(long houseidgot);
 
     /*
      *For displaying house names in the spinner of rooms fragment.
@@ -122,11 +124,15 @@ public interface HouseDao {
 
     /*Get all the room data for specific room fragment.*/
     @Query("SELECT * FROM tablerooms WHERE roomId = :gotRoomId")
-    LiveData<TableRooms> getRoomFromRoomId(int gotRoomId);
+    LiveData<TableRooms> getRoomFromRoomId(long gotRoomId);
 
     /*update the tenant  occupied status */
     @Query("UPDATE tenantspersonal SET houseId = :gotHouseId , roomId = :gotRoomId AND isRoomAlloted = :isAlloted WHERE tenantId = :gotTenantId")
     void upDateTenantOccupiedStatus(int gotHouseId, int gotRoomId, boolean isAlloted, int gotTenantId);
+
+    /*for updating meter id in table rooms*/
+    @Query("UPDATE tablerooms SET meterId = :gotMeterId , isMeterEnabled = :isMeterEnabled WHERE roomId = :gotRoomId")
+    void updateMeterInTableRoom(long gotMeterId, boolean isMeterEnabled, long gotRoomId);
 
     /* For Tenants Personal Table*/
     @Insert()
@@ -134,6 +140,10 @@ public interface HouseDao {
 
     @Update
     void updateTenant(TenantsPersonal tenantsPersonal);
+
+    /*update tenant name in room record*/
+    @Query("UPDATE tablerooms set tenantName = :gottenantname WHERE roomId = :gotroomid")
+    void updateTenantNameInRoom(String gottenantname, int gotroomid);
 
     @Delete
     void deleteTenant(TenantsPersonal tenantsPersonal);
@@ -187,7 +197,7 @@ public interface HouseDao {
     /*Specific tenant Fragment*/
     /*get all tenants data for specifec tenant fragment*/
     @Query("SELECT * FROM tenantspersonal WHERE tenantId = :gotTenantId")
-    LiveData<TenantsPersonal> getTenantFromId(int gotTenantId);
+    LiveData<TenantsPersonal> getTenantFromId(long gotTenantId);
 
     /*Get room name and house name for the specific tenant fragment*/
     @Query("SELECT houseName,roomName,tablerooms.meterId " +
@@ -251,7 +261,7 @@ public interface HouseDao {
             "AND TenantsPersonal.roomId = tablerooms.roomId " +
             "AND TenantsPersonal.houseId = tableHouse.houseId " +
             " AND tenantspersonal.roomId = :gotRoomId ORDER BY bills.createDate DESC LIMIT 3")
-    LiveData<List<BillItemForCard>> getThreeBillForRoom(int gotRoomId);
+    LiveData<List<BillItemForCard>> getThreeBillForRoom(long gotRoomId);
 
     /* For meters*/
     /* For entering meter reading.*/
@@ -276,11 +286,11 @@ public interface HouseDao {
             " WHERE tablerooms.meterId = allmetersdata.meterId" +
             " AND tablerooms.roomId = :gotRoomid " +
             "ORDER BY allmetersdata.date DESC LIMIT :noOfReadings ")
-    LiveData<LastReadingWithDate> getLastMeterReadingForRoom(int gotRoomid, int noOfReadings);
+    LiveData<LastReadingWithDate> getLastMeterReadingForRoom(long gotRoomid, int noOfReadings);
 
     /*get create date of meter.It returns the date on which meter was added to the room/house*/
-    @Query("SELECT date FROM allmetersdata where meterId = :gotMeterId and readingState = :gotreadingState LIMIT 1")
-    LiveData<Date> getMeterCreateDate(long gotMeterId, int gotreadingState);
+    @Query("SELECT createdate FROM allmeters where meterId = :gotMeterId ")
+    LiveData<Date> getMeterCreateDate(long gotMeterId);
 
     /* get Meter no from room id*/
     @Query("SELECT meterid FROM tablerooms WHERE roomId = :gotRoomId")
@@ -292,6 +302,34 @@ public interface HouseDao {
 
     /*get house name from house id*/
     @Query("SELECT houseName FROM tablehouse WHERE houseId = :gothouseId")
-    LiveData<String> getHouseNameFromHosueId(int gothouseId);
+    LiveData<String> getHouseNameFromHosueId(long gothouseId);
+
+    /*for all meters table*/
+    @Insert
+    long insertNewMeter(AllMeters meter);
+
+    @Update
+    void updateMeter(AllMeters meters);
+
+    @Query("SELECT meterNo FROM allmeters ;")
+    LiveData<List<Long>> getAllMeterNos();
+
+    /*get meter no from the meter  id*/
+    @Query("SELECT meterNo FROM allmeters WHERE meterId = :meterId")
+    LiveData<Long> getMeterNoFromMeterId(long meterId);
+
+    /*get meter no from room id */
+    @Query("SELECT meterNo FROM allmeters,tablerooms WHERE " +
+            "allmeters.meterId = tablerooms.meterId AND roomId = :gotroomId")
+    LiveData<Long> getMeterNofromRoomId(long gotroomId);
+
+    @Query("SELECT meterNo FROM allmeters,tablerooms " +
+            "WHERE allmeters.meterId = tablerooms.meterId AND " +
+            "tablerooms.tenantId = :gottenantid")
+    LiveData<Long> getMeterNoFromTenantId(long gottenantid);
+
+    /*update the meter no in the all meters id*/
+    @Query("UPDATE allmeters SET meterNo = :gotmeterno WHERE meterId = :gotmeterid")
+    void updateMeterNoFromMeterId(long gotmeterno, long gotmeterid);
 }
 

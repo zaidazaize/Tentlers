@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/homw_fragment_popup_add_rooms"
-        android:title="@string/add_room" />
-
+        android:title="@string/edit_meter"
+        android:id="@+id/meter_edit_meter" />
 </menu>

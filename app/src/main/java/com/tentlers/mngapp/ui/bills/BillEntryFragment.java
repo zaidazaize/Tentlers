@@ -121,10 +121,8 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
                     });
         } else if (billEntryTypeObject.isBillSpecificTenant) {/*set the filds if tenant id is supplied*/
             changeToSpecifiTenant();
-            Log.d("isTenantspecified", String.valueOf(billEntryTypeObject.tenantId));
             setFieldsOfTenant(billEntryTypeObject.tenantId);
         } else if (billEntryTypeObject.isBillSpecificRoom) {/*sets the field if room id is supplied*/
-            Log.d("roomspecified", String.valueOf(billEntryTypeObject.roomId));
             changeToSpecifiTenant();
             viewModal.getTenantIdFromRoomId(billEntryTypeObject.roomId).observe(getViewLifecycleOwner(), new Observer<Integer>() {
                 @Override

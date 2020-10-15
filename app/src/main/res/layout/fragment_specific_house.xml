@@ -153,26 +153,17 @@
                         android:layout_marginTop="@dimen/margin_top_bottom"
                         android:layout_marginEnd="10sp">
 
-                        <ImageView
-                            android:id="@+id/specific_house_show_image_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            app:srcCompat="@drawable/ic_place_24px" />
-
                         <TextView
                             android:id="@+id/specific_house_show_textview_address"
                             style="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
-                            android:layout_alignBottom="@id/specific_house_show_image_address"
-                            android:layout_marginStart="5sp"
+                            android:layout_alignParentStart="true"
+                            android:drawablePadding="5sp"
                             android:layout_toStartOf="@id/specific_house_show_image_address_desc"
-                            android:layout_toEndOf="@id/specific_house_show_image_address"
                             android:text="@string/address"
-                            android:textAllCaps="false" />
+                            android:textAllCaps="false"
+                            app:drawableStartCompat="@drawable/ic_place_24px" />
                         <!--TODO: animate the transition between show more and less icons-->
 
                         <ImageView
@@ -342,25 +333,18 @@
                         android:layout_marginTop="@dimen/margin_top_bottom"
                         android:layout_marginEnd="10sp">
 
-                        <ImageView
-                            android:id="@+id/specific_house_show_image_meter_details"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            app:srcCompat="@drawable/ic_meter_reading_24px" />
 
                         <TextView
                             android:id="@+id/specific_house_show_textview_meter_details"
                             style="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBottom="@id/specific_house_show_image_meter_details"
-                            android:layout_marginStart="5sp"
+                            android:layout_alignParentStart="true"
+                            android:drawablePadding="5sp"
                             android:layout_toStartOf="@id/specific_house_show_image_meter_details_desc"
-                            android:layout_toEndOf="@id/specific_house_show_image_meter_details"
                             android:text="@string/electricity_energy_meter"
-                            android:textAllCaps="false" />
+                            android:textAllCaps="false"
+                            app:drawableStartCompat="@drawable/ic_meter_reading_24px" />
                         <!--TODO: animate the transition between show more and less icons-->
 
                         <ImageView
@@ -369,13 +353,29 @@
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@id/specific_house_show_textview_meter_details"
                             android:layout_alignParentEnd="true"
-                            app:srcCompat="@drawable/ic_baseline_expand_less_24" />
+                            app:srcCompat="@drawable/ic_baseline_expand_more_24" />
 
                     </RelativeLayout>
 
                     <!--TODO: if no meter is added then make the meter number view invisible and add a view that shows "no meter found" with a button to add a meter-->
 
+                    <TextView
+                        app:drawableStartCompat="@drawable/ic_sentiment_dissatisfied_24px"
+                        android:id="@+id/specific_house_textview_no_meter"
+                        style="@style/TextAppearance.EmptyStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5sp"
+                        android:gravity="center"
+                        android:layout_marginEnd="@dimen/margin_top_bottom"
+                        android:layout_marginStart="@dimen/margin_top_bottom"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        android:text="@string/oops_feels_you_haven_t_attached_any_meter"
+                        android:visibility="gone" />
+
                     <RelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/specific_house_relative_layout_meter_details_desc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

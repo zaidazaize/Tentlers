@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
              */
             getSharedPreferences(getString(R.string.base_ids_sharedpreferences_file), MODE_PRIVATE).edit()
                     .putLong(getString(R.string.system_generated_meterid_last_entry), 100000)
-                    .putInt(getString(R.string.LastEnteredHouseId), 0)
+                    .putLong(getString(R.string.LastEnteredHouseId), 0)
                     .apply();
 
             /* Add last entered house id to be 1 if it is run for the first time*/
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (destination.getId()) {
                     case R.id.nav_billEntryFragment:
+                    case R.id.nav_editMeterFragment:
                         hideAllNavigation(true);
                         if (interstitialAd.isLoaded()) {
                             interstitialAd.show();
