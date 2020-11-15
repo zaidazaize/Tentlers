@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.tentlers.mngapp.data.FilterObj;
 import com.tentlers.mngapp.data.tables.TableHouse;
 import com.tentlers.mngapp.data.tables.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
@@ -14,6 +15,7 @@ import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.meters.MeterEditType;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
+import com.tentlers.mngapp.data.tables.queryobjects.HouseAndRoomName;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
@@ -29,6 +31,8 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 public class Repository {
 
@@ -86,8 +90,8 @@ public class Repository {
     /*
      * This is used  for checking the uniqueness of house name and meter id in house Entry fragment
      */
-    public LiveData<List<String>> mgetHousenameMeterId() {
-        return mdao.gethouseNameMeterId();
+    public LiveData<List<String>> getAllHouseNames() {
+        return mdao.getAllHouseNames();
     }
 
     /*
@@ -218,18 +222,28 @@ public class Repository {
     }
 
     /* Get all tenant list for tenant fragment*/
-    public LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean withRoomAlloted) {
-        return mdao.getAllTenantNHR(withRoomAlloted);
+    public LiveData<List<TenantNameHouseRoom>> getTenantForTenantList(FilterObj filterObj) {
+        Log.d("filterfield", filterObj.getQuerry());
+        return mdao.getTenantForList(filterObj.getQuerryObject());
     }
 
+    /*get all the house name and house id */
+    public LiveData<List<HouseNameAndId>> getAllHouseNameAndId() {
+        return mdao.getAllHouseNameAndId();
+    }
     /* Get all data of tenant for specific tenant fragment*/
     public LiveData<TenantsPersonal> getTenantFromId(long teanantId) {
         return mdao.getTenantFromId(teanantId);
     }
 
     /*Get room name and house name for the specific tenant fragment*/
-    public LiveData<MetersListObj> getHouseRoomNameFromRoomId(int roomid) {
+    public LiveData<MetersListObj> getHouseRoomNameFromRoomId(long roomid) {
         return mdao.getHouseRoomNameFromRoomId(roomid);
+    }
+
+    /*get the house name and room name from roomid*/
+    public HouseAndRoomName getHouseNameRoomNameFromRoomId(long roomid) {
+        return mdao.getHouseNameRoomNameFromRoomId(roomid);
     }
 
     /* for bill entry fragment.*/
@@ -244,7 +258,7 @@ public class Repository {
     }
 
     /* Get the selected tenant's object.*/
-    public LiveData<TenantBillEntry> getSelectedTenantForBill(int tenantid) {
+    public LiveData<TenantBillEntry> getSelectedTenantForBill(long tenantid) {
         return mdao.getSelectedTenantForBill(tenantid);
     }
 
@@ -264,6 +278,12 @@ public class Repository {
     public LiveData<List<BillItemForCard>> getAllBillForCard(boolean isBillPaid) {
         return mdao.getAllBillForCard(isBillPaid);
     }
+
+    /*update the bill paids status*/
+    public void updateBillStatus(BillItemForCard billItemForCard) {
+        new AsyncUpdateBIllStatus(mdao).execute(billItemForCard);
+    }
+
 
     public LiveData<List<BillItemForCard>> getThreeBillForCard(long roomId) {
         return mdao.getThreeBillForRoom(roomId);
@@ -516,17 +536,44 @@ public class Repository {
 
         @Override
         protected Void doInBackground(Bills... bills) {
-            bills[0].setCreateDate();
-            asyncinsertnewbilldao.insertNewBill(bills[0]);
-            asyncinsertnewbilldao.updateTotalBillsinTenant(+1, bills[0].tenantId);
-            if (bills[0].ismeterPay) {
+            Bills bill = bills[0];
+            bill.setCreateDate();
+            asyncinsertnewbilldao.insertNewBill(bill);
+
+            /*update the unpaid amt and number of total bills in the tenant table in the tenants table table*/
+            asyncinsertnewbilldao.updateTotalBillsAndUnpaidAmtinTenant(+1, bill.getTotalAmt(), bill.tenantId);
+            if (bill.ismeterPay) {
                 /* fetch meter id using room id and set in the meters table sub-object bills table.*/
-                bills[0].metersData.setMeterId(asyncinsertnewbilldao.getMeterId(bills[0].metersData.getRoomid()));
-                asyncinsertnewbilldao.insertMeterReading(bills[0].getMetersData());
+                bill.metersData.setMeterId(asyncinsertnewbilldao.getMeterId(bill.metersData.getRoomid()));
+                asyncinsertnewbilldao.insertMeterReading(bill.getMetersData());
             }
             return null;
         }
     }
+
+
+    private static class AsyncUpdateBIllStatus extends AsyncTask<BillItemForCard, Void, Void> {
+        private final HouseDao billsdao;
+
+        AsyncUpdateBIllStatus(HouseDao dao) {
+            billsdao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(BillItemForCard... billItemForCards) {
+            BillItemForCard item = billItemForCards[0];
+            billsdao.updateBillPaidStatus(item.billId,
+                    true);
+
+            /*update the no of paid bills and unpaid amt in the table*/
+            billsdao.updateNoOfPaidBillsAndUnpaidAmtInTenant(1,
+                    -item.totalAmt,
+                    item.tenantId);
+
+            return null;
+        }
+    }
+
 
     private static class AsyncInsertNewMeter extends AsyncTask<AllMeters, Void, Void> {
         private final HouseDao newMeterDao;

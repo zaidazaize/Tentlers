@@ -41,31 +41,65 @@
             tools:text="Tenant Name" />
 
         <TextView
+            android:id="@+id/tenant_listitem_show_pending_amt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/tenant_listitem_tenant_name"
+            android:layout_below="@id/tenant_listitem_tenant_name"
+            android:layout_marginBottom="5sp"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:text="@string/pending_amount" />
+
+        <TextView
+            android:id="@+id/tenant_listitem_amt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tenant_listitem_show_pending_amt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10sp"
+            android:layout_toEndOf="@id/tenant_listitem_show_pending_amt"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="Room1"
+            app:drawableStartCompat="@drawable/ic_baseline_list_item_money" />
+
+        <com.google.android.material.chip.Chip
+            android:visibility="gone"
+            android:id="@+id/chip_no_room_alloted"
+            android:clickable="false"
+            android:focusable="false"
+            android:checkable="false"
+            android:text="@string/no_room_alloted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/tenant_listitem_amt"/>
+
+
+        <TextView
             android:id="@+id/tenant_listitem_tenant_house_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/tenant_listitem_tenant_name"
-            android:layout_below="@+id/tenant_listitem_tenant_name"
+            android:layout_below="@id/tenant_listitem_amt"
             android:layout_marginBottom="5sp"
-            android:gravity="top"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             tools:text="Hosue1" />
 
         <TextView
             android:id="@+id/tenant_listitem_tenant_room_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tenant_listitem_tenant_name"
             android:layout_alignBaseline="@id/tenant_listitem_tenant_house_name"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10sp"
             android:layout_toEndOf="@+id/tenant_listitem_tenant_house_name"
-            android:gravity="top"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             tools:text="Room1" />
 
 
     </RelativeLayout>
-
 
 </com.google.android.material.card.MaterialCardView>

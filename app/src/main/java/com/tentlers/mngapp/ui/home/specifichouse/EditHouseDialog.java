@@ -44,11 +44,10 @@ public class EditHouseDialog extends Fragment {
 
         choosenHouse = viewModal.getHouseForEdit();
 
-        viewModal.getHouseNameMeterId().observe(this, new Observer<List<String>>() {
+        viewModal.getAllHouseNames().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> strings) {
                 allHouseNames = strings;
-                Log.d("alladdress", strings.toString());
             }
         });
 

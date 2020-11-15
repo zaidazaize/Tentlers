@@ -13,6 +13,7 @@ import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.meters.MeterEditType;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
+import com.tentlers.mngapp.data.tables.queryobjects.HouseAndRoomName;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
@@ -28,12 +29,16 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 public class HouseViewModal extends AndroidViewModel {
 
     private long houseIdForSpecificHouse;
+    private String userName;
     private TableHouse houseForEdit;/*keeps the house choosen to be eddited.*/
 
     private final Repository mRepository;
@@ -51,6 +56,9 @@ public class HouseViewModal extends AndroidViewModel {
 
     private TenantsPersonal tenantForEdit;
 
+    /*filter object that is used to monitor the filters in the different fields*/
+    MutableLiveData<FilterObj> tenantFilterObj = new MutableLiveData<>();
+
     /*defines which from where bill is triggered*/
     private BillEntryTypeObject billEntryType;
 
@@ -58,6 +66,11 @@ public class HouseViewModal extends AndroidViewModel {
         super(application);
         mRepository = new Repository(application);
         mAllHouse = mRepository.mgetAllHouseForHomeFragment();
+    }
+
+
+    public void setTenantFilterObj(FilterObj tenantFilterObj) {
+        this.tenantFilterObj.setValue(tenantFilterObj);
     }
 
     public MeterEditType getMeterEditType() {
@@ -122,8 +135,8 @@ public class HouseViewModal extends AndroidViewModel {
         mRepository.deleteHouse(tableHouse);
     }
 
-    public LiveData<List<String>> getHouseNameMeterId() {
-        return mRepository.mgetHousenameMeterId();
+    public LiveData<List<String>> getAllHouseNames() {
+        return mRepository.getAllHouseNames();
 
     }
 
@@ -252,8 +265,19 @@ public class HouseViewModal extends AndroidViewModel {
         return mRepository.getMeterCreateDate(meterId);
     }
 
-    public LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean withRoomAlloted) {
-        return mRepository.getAllTenantNHR(withRoomAlloted);
+    public LiveData<List<TenantNameHouseRoom>> getTenantForTenantList() {
+
+        return Transformations.switchMap(tenantFilterObj, new Function<FilterObj, LiveData<List<TenantNameHouseRoom>>>() {
+            @Override
+            public LiveData<List<TenantNameHouseRoom>> apply(FilterObj input) {
+                return mRepository.getTenantForTenantList(input);
+            }
+        });
+    }
+
+    /*get all the house name and house id */
+    public LiveData<List<HouseNameAndId>> getAllHouseNameAndId() {
+        return mRepository.getAllHouseNameAndId();
     }
 
     /*get all of selected tenant*/
@@ -262,8 +286,14 @@ public class HouseViewModal extends AndroidViewModel {
     }
 
     /*Get room name and house name for the specific tenant fragment*/
-    public LiveData<MetersListObj> getHouseRoomNameFromRoomId(int roomid) {
+    public LiveData<MetersListObj> getHouseRoomNameFromRoomId(long roomid) {
         return mRepository.getHouseRoomNameFromRoomId(roomid);
+    }
+
+
+    /*get the house name and room name from roomid*/
+    public HouseAndRoomName getHouseNameRoomNameFromRoomId(long roomid) {
+        return mRepository.getHouseNameRoomNameFromRoomId(roomid);
     }
 
     /* Get all the reading of the meter.*/
@@ -286,7 +316,7 @@ public class HouseViewModal extends AndroidViewModel {
         return mRepository.getTenantIdFromRoomId(roomId);
     }
 
-    public LiveData<TenantBillEntry> getSelectedTenantForBill(int tenantId) {
+    public LiveData<TenantBillEntry> getSelectedTenantForBill(long tenantId) {
         return mRepository.getSelectedTenantForBill(tenantId);
     }
 
@@ -294,6 +324,10 @@ public class HouseViewModal extends AndroidViewModel {
         mRepository.insertNewBills(bills);
     }
 
+    /*for updating bill paid status*/
+    public void updateBillPaidStatus(BillItemForCard billItemForCard) {
+        mRepository.updateBillStatus(billItemForCard);
+    }
     public LiveData<Boolean> getIsAnyActivetenant(boolean isactive) {
         return mRepository.getIsAntActiveTenant(isactive);
     }
@@ -319,5 +353,13 @@ public class HouseViewModal extends AndroidViewModel {
     /*for editing meter details*/
     public void updateMeterDetails(MeterEditType editDetails) {
         mRepository.updateMeterDetails(editDetails);
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

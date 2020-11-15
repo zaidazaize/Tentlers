@@ -1,17 +1,25 @@
 package com.tentlers.mngapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.databinding.ActivityMainBinding;
+
+import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +27,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -26,16 +35,46 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private int RC_SIGNIN = 34;
     ActivityMainBinding mainBinding;
     NavController navController;
+    HouseViewModal viewModal;
     private ActionBarDrawerToggle drawerToggle;
     public InterstitialAd interstitialAd;
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGNIN) {
+            IdpResponse idpResponse = IdpResponse.fromResultIntent(data);
+            if (requestCode != RESULT_OK) {
+                if (idpResponse == null) {/*user has pressed back button*/
+                    finish();
+                }
+            }
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        viewModal = new ViewModelProvider(this).get(HouseViewModal.class);
+
+        /*authenticate the user*/
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            authenticateUser();
+        } else {
+            viewModal.setUserName(auth.getCurrentUser().getDisplayName());
+            TextView username = mainBinding.navView.getHeaderView(0).findViewById(R.id.app_user_name);
+            username.setText(viewModal.getUserName() == null || viewModal.getUserName().length() == 0 ? auth.getCurrentUser().getPhoneNumber() : viewModal.getUserName());
+           /* username.setOnClickListener(this);*//*TODO: set the listeer to edit the user name*/
+        }
+
         /* Initialise the adds.*/
+
         MobileAds.initialize(this);
 
         /*add the divice as for test adds*//*
@@ -63,8 +102,9 @@ public class MainActivity extends AppCompatActivity {
          * if the app is running for the first time then the base meterid will get saved
          * or else will be ignored.
          */
-        SharedPreferences sharedPref = getSharedPreferences(
-                getString(R.string.first_launch_shared_prefferences), MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.first_launch_shared_prefferences),
+                MODE_PRIVATE);
+
         if (sharedPref.getBoolean(getString(R.string.is_app_first_launch), true)) {
             sharedPref.edit().putBoolean(getString(R.string.is_app_first_launch), false)
                     .apply();
@@ -80,36 +120,23 @@ public class MainActivity extends AppCompatActivity {
             /* Add last entered house id to be 1 if it is run for the first time*/
         }
 
-        /*
-         * Generating the binding class for the main Activiy .
-         * this controls the nav_hostfragment, bottom Nav and the
-         * top navigation bar.
-         */
-        mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+
         setContentView(mainBinding.getRoot());
 
-        /*
-         * Set the toolbar to the main activity
-         */
+        /* Set the toolbar to the main activity */
         setSupportActionBar(mainBinding.toolbar);
+      /*  Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+       /* AppBarConfiguration  mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home, R.id.nav_bills, R.id.nav_tenants,R.id.nav_rooms)
+                .setOpenableLayout(mainBinding.drawerLayout)
+                .build();*/
 
-        /*
-         * Get the navControler and add the bottom Navigation to the Main activity
-         */
+        /* Get the navControler and add the bottom Navigation to the Main activity*/
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mainBinding.bottomNav, navController);
 
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-
-//        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home, R.id.nav_bills, R.id.nav_tenants)
-//                .setDrawerLayout(mainBinding.drawerLayout)
-//                .build();
-//        // Add the action bar
-//        NavigationUI.setupWithNavController(mainBinding.navView,navController);
-
-//
         /*
          * Adding The Navigation drawer to the app
          * and Adding the toggle manager to the drawer layout
@@ -119,16 +146,14 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle = new ActionBarDrawerToggle(this, mainBinding.drawerLayout, R.string.openDrawerContentDescRes, R.string.closeDrawerContentDescRes);
         mainBinding.drawerLayout.addDrawerListener(drawerToggle);
 
+        /*handle the openning of the drawer layout when navigation icon is clicked.*/
+        mainBinding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainBinding.drawerLayout.open();
+            }
+        });
 
-//        // Adding back buttom on top in place of drawer icon
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        /*
-         *Set up the navigation item listener so that it supports the navigation
-         * the selected item id is caught here.
-         * we can manage the navigation by listenenig to those ids.
-         *
-         * Nav_view is the id of navigaton holder in drawer layout
-         */
         mainBinding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -153,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                             interstitialAd.show();
                         }
                         break;
+                    case R.id.loginFragment:
                     case R.id.nav_editHouseDialog:
                     case R.id.nav_tenantEditFragment:
                     case R.id.nav_houseEntryFragment:
@@ -169,6 +195,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /*method to authenticate the usesr*/
+    private void authenticateUser() {
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig.PhoneBuilder().build()))
+                        .build(),
+                RC_SIGNIN);
     }
 
     /*
@@ -225,19 +261,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            /*
-             * If the item selected belongs to the drawer layout it is transffered to
-             * drawer item click listener assingned in oncreate meathod.
-             */
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     /*
      * this handles the closing of the drawer if it is open when the back button is pressed
      */
@@ -249,5 +272,6 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }
 

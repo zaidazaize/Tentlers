@@ -269,7 +269,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
         billEntryBinding.billEntrySpinnerChooseTenant.setVisibility(View.GONE);
     }
 
-    private void setFieldsOfTenant(int tenantid) {
+    private void setFieldsOfTenant(long tenantid) {
         createdbill.tenantId = tenantid;
         viewModal.getSelectedTenantForBill(tenantid).observe(getViewLifecycleOwner(),
                 new Observer<TenantBillEntry>() {
@@ -402,6 +402,12 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
             billEntryBinding.textInputLayoutOutlinedMonthlyElectricPerUnitCharge.setError("");
             return true;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        billEntryBinding = null;
     }
 
     private void generateBill() {

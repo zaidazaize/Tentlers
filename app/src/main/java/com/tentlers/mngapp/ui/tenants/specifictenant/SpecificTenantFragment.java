@@ -133,6 +133,12 @@ public class SpecificTenantFragment extends Fragment {
         return tenantBinding.getRoot();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        tenantBinding = null;
+    }
+
     private void setTenantData() {
         /*Null is handled in the observer*/
 

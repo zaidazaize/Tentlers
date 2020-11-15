@@ -8,6 +8,7 @@ import com.tentlers.mngapp.data.tables.meters.AllMeters;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.meters.MetersListObj;
+import com.tentlers.mngapp.data.tables.queryobjects.HouseAndRoomName;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameIdNoRooms;
@@ -27,8 +28,11 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Transaction;
 import androidx.room.Update;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 @Dao
 public interface HouseDao {
@@ -67,7 +71,7 @@ public interface HouseDao {
     /*for house entry fragment*/
     /*selects all the house names for comparison*/
     @Query("SELECT houseName FROM TABLEHOUSE ")
-    LiveData<List<String>> gethouseNameMeterId();
+    LiveData<List<String>> getAllHouseNames();
 
     /* for updating no of rooms of the house*/
     @Query("UPDATE tablehouse SET noOfRooms =noOfRooms + :increment  WHERE houseId = :houseid")
@@ -143,7 +147,7 @@ public interface HouseDao {
 
     /*update tenant name in room record*/
     @Query("UPDATE tablerooms set tenantName = :gottenantname WHERE roomId = :gotroomid")
-    void updateTenantNameInRoom(String gottenantname, int gotroomid);
+    void updateTenantNameInRoom(String gottenantname, long gotroomid);
 
     @Delete
     void deleteTenant(TenantsPersonal tenantsPersonal);
@@ -167,15 +171,15 @@ public interface HouseDao {
      * update number of occupied rooms.
      */
     @Query("UPDATE tablehouse SET occupiedRooms = occupiedRooms + :updaterooms WHERE houseId = :gothouseId")
-    void updateNoOfEmptyRoomsInTable(int updaterooms, int gothouseId);
+    void updateNoOfEmptyRoomsInTable(int updaterooms, long gothouseId);
 
     /* update the room status to occupied*/
     @Query("UPDATE tablerooms SET ocupiedStatus = :gotIsOccupied, tenantId = :gottenantid, tenantName = :gotTenantName,tenantEntryDate = :gotEntryDate WHERE roomId = :gotRoomid")
-    void updatetheRoomOccupiedStatusAndName(boolean gotIsOccupied, int gotRoomid, int gottenantid, String gotTenantName, Date gotEntryDate);
+    void updatetheRoomOccupiedStatusAndName(boolean gotIsOccupied, long gotRoomid, int gottenantid, String gotTenantName, Date gotEntryDate);
 
     /*get the new tenant if from the roomid*/
     @Query("SELECT tenantId FROM tenantspersonal WHERE roomId = :gotroomid")
-    Integer getTenantIdFromRoomIdFromTenantPersonal(int gotroomid);
+    Integer getTenantIdFromRoomIdFromTenantPersonal(long gotroomid);
 
 //    /*udate the tenant name in the rooms table.*/
 //    @Query("UPDATE tablerooms SET tenantName = :gotTenantName AND tenantEntryDate = :gotEntrydate WHERE roomId = :gotroomId")
@@ -187,23 +191,41 @@ public interface HouseDao {
      * This is can handle both the querries for currently active tenant and previously active tenant.
      * in the houses
      */
-    @Query("SELECT tenantspersonal.tenantId, tenantspersonal.tenantName, houseName,roomName " +
+
+    /*get all house name and house id*/
+    @Query("SELECT houseName, houseId FROM tablehouse")
+    LiveData<List<HouseNameAndId>> getAllHouseNameAndId();
+/*
+    @Deprecated
+    @Query("SELECT tenantspersonal.tenantId,isRoomAlloted, tenantspersonal.tenantName, tenantspersonal.unpaidAmt, houseName,roomName " +
             "FROM tenantspersonal,tablehouse , tablerooms " +
             "WHERE tenantspersonal.houseId = tablehouse.houseId " +
             "AND tenantspersonal.roomId = tablerooms.roomId " +
             "AND tenantspersonal.isRoomAlloted = :gotisRoomAlloted")
-    LiveData<List<TenantNameHouseRoom>> getAllTenantNHR(boolean gotisRoomAlloted);
+    LiveData<List<TenantNameHouseRoom>> getAllTenantForList(boolean gotisRoomAlloted);*/
+
+    /*tenant list fragment*/
+    /* this raw querry is used to generate the runtime querries as per the filter options*/
+    @RawQuery(observedEntities = TenantsPersonal.class)
+    LiveData<List<TenantNameHouseRoom>> getTenantForList(SupportSQLiteQuery supportSQLiteQuery);
 
     /*Specific tenant Fragment*/
     /*get all tenants data for specifec tenant fragment*/
     @Query("SELECT * FROM tenantspersonal WHERE tenantId = :gotTenantId")
     LiveData<TenantsPersonal> getTenantFromId(long gotTenantId);
 
+
     /*Get room name and house name for the specific tenant fragment*/
     @Query("SELECT houseName,roomName,tablerooms.meterId " +
             "From TableHouse,TableRooms where tablerooms.roomId = :gotRoomId AND " +
             "tablerooms.houseId = tablehouse.houseId LIMIT 1")
-    LiveData<MetersListObj> getHouseRoomNameFromRoomId(int gotRoomId);
+    LiveData<MetersListObj> getHouseRoomNameFromRoomId(long gotRoomId);
+
+    /*get the house name and room name from the room id*/
+    @Query("SELECT roomName,houseName FROM tablerooms ,tablehouse " +
+            "WHERE tablehouse.houseId = tablerooms.houseId AND " +
+            "tablerooms.roomid = :gotroomId")
+    HouseAndRoomName getHouseNameRoomNameFromRoomId(long gotroomId);
 
     /* Bills Fragment*/
 
@@ -220,7 +242,7 @@ public interface HouseDao {
     @Query("SELECT tenantspersonal.tenantName, tenantspersonal.roomId, meterPay, nonMeterPay, mFixedCharges , roomName , houseName " +
             "FROM TenantsPersonal ,tableRooms, tablehouse " +
             "WHERE tenantspersonal.tenantId = :gotTenantId AND tablerooms.roomId = tenantsPersonal.roomId AND tableHouse.houseId = tenantspersonal.houseId ")
-    LiveData<TenantBillEntry> getSelectedTenantForBill(int gotTenantId);
+    LiveData<TenantBillEntry> getSelectedTenantForBill(long gotTenantId);
 
     /* For creating new bill.*/
     @Insert
@@ -229,13 +251,21 @@ public interface HouseDao {
     @Update
     void updateBill(Bills bills);
 
-    /* Update the Total bills*/
-    @Query("UPDATE tenantspersonal SET totalBills = totalBills + :gotTotalbills WHERE tenantId = :gotTenantId")
-    void updateTotalBillsinTenant(int gotTotalbills, int gotTenantId);
+    /* Update the Total bills total unpaid amt in the table while creating the bill*/
+    @Query("UPDATE tenantspersonal SET totalBills = totalBills + :gotTotalbills , unpaidAmt = unpaidAmt + :gotamt WHERE tenantId = :gotTenantId")
+    void updateTotalBillsAndUnpaidAmtinTenant(int gotTotalbills, double gotamt, long gotTenantId);
 
     /* Update the paid bills*/
-    @Query("UPDATE tenantspersonal SET paidBills = paidBills + :gotPaidBills WHERE tenantId = :gotTenantId")
-    void updatePaidBillsinTenant(int gotPaidBills, int gotTenantId);
+    @Query("UPDATE tenantspersonal SET paidBills = paidBills + :paidBills , unpaidAmt = unpaidAmt + :gotAmt WHERE tenantId = :gotTenantId")
+    void updateNoOfPaidBillsAndUnpaidAmtInTenant(int paidBills, double gotAmt, long gotTenantId);
+
+    /*update the total unpaid amt*/
+    @Query("UPDATE tenantspersonal SET unpaidAmt = :gotamt WHERE tenantId = :gottenantId")
+    void updateUnpaidAmt(long gottenantId, double gotamt);
+
+    /*for updating paid status*/
+    @Query("UPDATE bills SET isBillPaid = :gotPaidStatus WHERE billId = :gotBillId")
+    void updateBillPaidStatus(long gotBillId, boolean gotPaidStatus);
 
     /* Getting to know if atleast one tenant is active*/
     @Query("SELECT isRoomAlloted FROM tenantspersonal WHERE isRoomAlloted = :getbolean LIMIT 1 ")
@@ -243,7 +273,7 @@ public interface HouseDao {
 
     /*Showing bills in recycle view of bills page*/
     @Transaction
-    @Query("SELECT billId, bills.createDate, bills.monthlycharge, bills.additionalcharge, bills.totalAmt, " +
+    @Query("SELECT billId, bills.createDate, bills.monthlycharge,bills.tenantId, bills.additionalcharge, bills.totalAmt, " +
             "bills.electricCost, bills.isBillPaid, tenantspersonal.tenantName, tablehouse.houseName, tablerooms.roomName " +
             "FROM bills,tenantspersonal,tablehouse,tablerooms " +
             "WHERE bills.tenantId =  tenantspersonal.tenantId  " +
@@ -254,7 +284,7 @@ public interface HouseDao {
 
     /*get three bills for card.*/
     @Transaction
-    @Query("SELECT billId, bills.createDate, bills.monthlycharge, bills.additionalcharge, bills.totalAmt, " +
+    @Query("SELECT billId, bills.createDate, bills.monthlycharge,bills.tenantId, bills.additionalcharge, bills.totalAmt, " +
             "bills.electricCost, bills.isBillPaid, tenantspersonal.tenantName, tablehouse.houseName, tablerooms.roomName " +
             "FROM bills,tenantspersonal,tablehouse,tablerooms " +
             "WHERE bills.tenantId =  tenantspersonal.tenantId  " +

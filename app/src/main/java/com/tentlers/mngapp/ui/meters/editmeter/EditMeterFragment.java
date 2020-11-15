@@ -96,6 +96,12 @@ public class EditMeterFragment extends Fragment implements Toolbar.OnMenuItemCli
         return binding.getRoot();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
     private boolean isDataValid() {
         switch (choosenMeter.getMeterEntrytype()) {
             case MeterEditType.ENTRY_NEW:

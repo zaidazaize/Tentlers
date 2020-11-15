@@ -12,6 +12,8 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Bills {
+    public static final String CREATE_DATE = "createDate";
+    public static final String TOTAL_AMT = "totalAmt";
     @Ignore
     public final AllMetersData metersData;
 
@@ -20,14 +22,14 @@ public class Bills {
     public long billId;
 
     @ColumnInfo
-    public int tenantId;
+    public long tenantId;
 
     @ColumnInfo
     public long initialMeterR;
     @ColumnInfo
     public long endMeterR;
     @ColumnInfo
-    public java.util.Date createDate;
+    public Date createDate;
     @ColumnInfo
     public Date billpaymentDate;
     @ColumnInfo
@@ -35,7 +37,7 @@ public class Bills {
     @ColumnInfo
     public float electricCost;
     @ColumnInfo
-    public float monthlycharge;
+    public double monthlycharge;
     @ColumnInfo
     public float additionalcharge;
     @ColumnInfo
@@ -43,7 +45,7 @@ public class Bills {
     @ColumnInfo
     public float manuallyEnteredElectricCost;
     @ColumnInfo
-    public float totalAmt;
+    public double totalAmt;
 
     public Bills() {
         metersData = new AllMetersData();
@@ -72,7 +74,7 @@ public class Bills {
         this.totalAmt = getTotalAmt();
     }
 
-    public float getTotalAmt() {
+    public double getTotalAmt() {
         return monthlycharge + additionalcharge + getMeteredElectricityCost() + manuallyEnteredElectricCost;
     }
 

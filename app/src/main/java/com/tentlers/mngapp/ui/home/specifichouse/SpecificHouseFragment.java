@@ -342,6 +342,8 @@ public class SpecificHouseFragment extends Fragment implements View.OnLongClickL
         binding = null;
     }
 
+
+
     private void selectSpecificRoom(long roomid) {
         viewModal.setRoomIdForSpecificRoom(roomid);
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_global_nav_specificRoomFragment);

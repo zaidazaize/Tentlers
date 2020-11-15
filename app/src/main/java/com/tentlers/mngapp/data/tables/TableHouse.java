@@ -15,6 +15,9 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class TableHouse {
+
+    public static final String HOUSE_ID = "houseId";
+
     @ColumnInfo(defaultValue = "false")
     public boolean isMeterIncluded;
 

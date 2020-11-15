@@ -9,7 +9,6 @@ public class HouseForHomeFragment extends HouseNameIdNoRooms {
     @ColumnInfo(name = "occupiedRooms")
     public int occupiedRooms;
 
-
     @ColumnInfo(name = "date")
     public Date date;
 

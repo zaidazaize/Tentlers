@@ -14,6 +14,8 @@ import androidx.room.PrimaryKey;
 @Entity
 public class TableRooms {
 
+    public static final String ROOM_ID = "roomId";
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
     private long roomId;

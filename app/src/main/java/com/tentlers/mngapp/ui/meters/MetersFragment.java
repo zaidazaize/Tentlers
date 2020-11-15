@@ -80,4 +80,10 @@ public class MetersFragment extends Fragment {
         });
         return meterListBinding.getRoot();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        meterListBinding = null;
+    }
 }

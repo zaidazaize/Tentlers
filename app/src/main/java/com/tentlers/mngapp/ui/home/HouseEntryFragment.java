@@ -77,7 +77,7 @@ public class HouseEntryFragment extends Fragment {
 
         /*Getting the list of all the house Names  from the database
          * these are specific to the users and can be null.*/
-        houseViewModal.getHouseNameMeterId().observe(this, new Observer<List<String>>() {
+        houseViewModal.getAllHouseNames().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> houseNames) {
                 allHouseName = houseNames;
@@ -104,8 +104,8 @@ public class HouseEntryFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
 
         /* detaching the binding  for avoiding the memory leak.*/
         houseEntryBinding = null;

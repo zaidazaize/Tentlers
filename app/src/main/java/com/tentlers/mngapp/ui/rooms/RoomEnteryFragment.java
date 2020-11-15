@@ -181,6 +181,12 @@ public class RoomEnteryFragment extends Fragment {
         return enteyBinding.getRoot();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        enteyBinding = null;
+    }
+
     /*
      * This is responsible for validating the data entered for the room
      * for the specific house.

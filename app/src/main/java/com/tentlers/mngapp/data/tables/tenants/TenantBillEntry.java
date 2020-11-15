@@ -19,7 +19,7 @@ public class TenantBillEntry {
     public boolean nonMeterPay;
 
     @ColumnInfo(name = "mFixedCharges")
-    public float mFixedCharges;
+    public double mFixedCharges;
 
     @ColumnInfo(name = "houseName")
     public String houseName;

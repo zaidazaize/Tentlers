@@ -205,6 +205,12 @@ public class SpecificRoomFragment extends Fragment implements View.OnLongClickLi
         return roomBinding.getRoot();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        roomBinding = null;
+    }
+
     private void setDataInFields() {
         /*set the room name*/
         roomBinding.specificRoomName.setText(choosenRoom.getRoomName());

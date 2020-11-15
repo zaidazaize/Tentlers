@@ -43,24 +43,28 @@
                     android:layout_below="@id/bill_show_order_date"
                     tools:text="12:30 AM  12 Dec 2020" />
 
-                <ImageView
-                    android:id="@+id/bill_imageview_payment_status_icon"
-                    android:layout_width="24sp"
-                    android:layout_height="24sp"
-                    android:layout_above="@id/bill_textview_payment_status"
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_alignBottom="@id/bill_textview_time_and_date"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="10sp"
-                    tools:src="@drawable/ic_baseline_info_24" />
-
-                <TextView
-                    android:id="@+id/bill_textview_payment_status"
-                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:id="@+id/bill_card_change_status"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/bill_textview_payment_status"
-                    android:layout_alignBaseline="@id/bill_textview_time_and_date"
-                    android:layout_alignParentEnd="true"
-                    tools:text="Pending" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/bill_imageview_payment_status_icon"
+                        android:layout_width="24sp"
+                        android:layout_height="24sp"
+                        tools:src="@drawable/ic_baseline_info_24" />
+
+                    <TextView
+                        android:id="@+id/bill_textview_payment_status"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Pending" />
+                </LinearLayout>
 
                 <View
                     android:id="@+id/bill_card_line_below_billingdate"
@@ -129,10 +133,10 @@
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:drawableTint="?attr/colorControlNormal"
                     android:layout_alignBaseline="@id/bill_card_show_monthly_charge"
                     android:layout_toEndOf="@id/bill_card_show_monthly_charge"
                     app:drawableStartCompat="@drawable/ic_bill_pay_24"
+                    app:drawableTint="?attr/colorControlNormal"
                     tools:text="35803" />
 
                 <TextView
@@ -151,11 +155,11 @@
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:drawableTint="?attr/colorControlNormal"
                     android:layout_alignBaseline="@id/bill_card_show_aditional_charge"
                     android:layout_alignStart="@id/bill_card_monthly_charges"
                     android:layout_toEndOf="@id/bill_card_show_aditional_charge"
                     app:drawableStartCompat="@drawable/ic_bill_pay_24"
+                    app:drawableTint="?attr/colorControlNormal"
                     tools:text="35803" />
 
 
@@ -175,11 +179,11 @@
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:drawableTint="?attr/colorControlNormal"
                     android:layout_alignBaseline="@id/bill_card_show_electricity_charge"
                     android:layout_alignStart="@id/bill_card_additional_charges"
                     android:layout_toEndOf="@id/bill_card_show_electricity_charge"
                     app:drawableStartCompat="@drawable/ic_bill_pay_24"
+                    app:drawableTint="?attr/colorControlNormal"
                     tools:text="35803" />
 
             </RelativeLayout>

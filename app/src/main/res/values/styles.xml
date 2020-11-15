@@ -13,7 +13,6 @@
 
     <!--for text items that describe a specific entry-->
     <style name="TextAppearance.DescriptionTextStyle" parent="TextAppearance.MaterialComponents.Subtitle2">
-
     </style>
 
     <!-- Style of room no shown in circle type-->
@@ -26,5 +25,13 @@
         <item name="android:textColor">@android:color/secondary_text_dark</item>
     </style>
 
+    <!--for rounded image view-->
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Widget.MyApp.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+    </style>
 
 </resources>

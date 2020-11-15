@@ -2,7 +2,7 @@ package com.tentlers.mngapp.data.tables.bills;
 
 public class BillEntryTypeObject {
 
-    public BillEntryTypeObject setTenantId(int tenantId) {
+    public BillEntryTypeObject setTenantId(long tenantId) {
         this.tenantId = tenantId;
         this.isBillSpecificTenant = true;
         return this;
@@ -14,7 +14,7 @@ public class BillEntryTypeObject {
         return this;
     }
 
-    public int tenantId;
+    public long tenantId;
     public int roomId;
     public boolean isBillSpecificTenant;
     public boolean isBillSpecificRoom;

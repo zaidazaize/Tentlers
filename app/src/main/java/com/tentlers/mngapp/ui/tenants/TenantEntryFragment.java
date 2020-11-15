@@ -60,7 +60,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 public class TenantEntryFragment extends Fragment implements Toolbar.OnMenuItemClickListener, AdapterView.OnItemSelectedListener {
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        tenantEntryBinding = null;
+    }
 
     FragmentTenantEntryBinding tenantEntryBinding;
     HouseViewModal viewModal;

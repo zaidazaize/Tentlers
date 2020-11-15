@@ -153,11 +153,16 @@ public class HouseRooms extends Fragment implements AdapterView.OnItemSelectedLi
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        bindingRoom = null;
+    }
+
     /* Inflates the menu. Hide the setting options from the app bar.*/
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_fragment_rooms, menu);
-        menu.findItem(R.id.action_settings).setVisible(false);
 
     }
 

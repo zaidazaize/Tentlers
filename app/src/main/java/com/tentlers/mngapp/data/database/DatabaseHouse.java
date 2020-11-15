@@ -10,19 +10,30 @@ import com.tentlers.mngapp.data.tables.meters.AllMeters;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {TableHouse.class, TableRooms.class, TenantsPersonal.class, AllMetersData.class, AllMeters.class, Bills.class},
-        version = 2, exportSchema = false)
+        version = 4, exportSchema = false)
 
 @TypeConverters({Converters.class})
 public abstract class DatabaseHouse extends RoomDatabase {
 
     private static volatile DatabaseHouse INSTANCE;
+/*
+    *//*TODO:edit migration*//*
 
+    static final Migration migration2_3 = new Migration(2,3) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+
+        }
+    };*/
     public static DatabaseHouse getDatabase(final Context context) {
         if (INSTANCE == null) {
 

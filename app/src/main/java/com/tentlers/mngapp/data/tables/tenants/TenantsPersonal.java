@@ -9,6 +9,7 @@ import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import java.io.File;
 import java.util.Date;
 import java.util.Formatter;
+import java.util.jar.Attributes;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -17,8 +18,15 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class TenantsPersonal {
-    @ColumnInfo(name = "tenantName")
-    private String tenantName;
+    public static final String TABLE_NAME = "TenantsPersonal";
+    public static final String CREATE_DATE = "createDate";
+    public static final String UNPAID_AMOUNT = "unpaidAmt";
+    public static final String MFIXED_CHARGES = "mFixedCharges";
+    public static final String TOTAL_BILLS = "totalBills";
+    public static final String IS_ROOM_ALLOTTED = "isRoomAlloted";
+    public static final String TENANT_ID = "tenantId";
+    public static final String TENANT_NAME = "tenantName";
+
     @Ignore
     public static final int NOGENDER = 0;
     @Ignore
@@ -28,15 +36,17 @@ public class TenantsPersonal {
     @Ignore
     public static final int OTHER = 102;
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo()
-    public int tenantId;
+    @ColumnInfo(name = "tenantId")
+    public long tenantId;
+    @ColumnInfo(name = "tenantName")
+    private String tenantName;
     @ColumnInfo(defaultValue = "NULL")
-    public int houseId;
+    public long houseId;
     @ColumnInfo(defaultValue = "NULL")
-    public int roomId;
+    public long roomId;
     @ColumnInfo(defaultValue = "false")
     public boolean isRoomAlloted;
-    @ColumnInfo
+    @ColumnInfo(name = "createDate")
     public Date createDate;
     /*
      * Tenant personal information
@@ -62,7 +72,7 @@ public class TenantsPersonal {
     @ColumnInfo(defaultValue = "false")
     public boolean nonMeterPay;
     @ColumnInfo(defaultValue = "0")
-    public float mFixedCharges;
+    public double mFixedCharges;
 
     public TenantsPersonal() {
         allMetersData = new AllMetersData();
@@ -72,12 +82,13 @@ public class TenantsPersonal {
     public int totalBills;
     @ColumnInfo
     public int paidBills;
+    @ColumnInfo
+    private double unpaidAmt;
 
     @ColumnInfo(defaultValue = "NULL")
     public String imageName;
     @Ignore
     public File tenantPhotoFile;
-
 
     @Ignore
     public Uri tenantPhotoUri;
@@ -86,11 +97,11 @@ public class TenantsPersonal {
         return imageName;
     }
 
-    public void setHouseId(int houseId) {
+    public void setHouseId(long houseId) {
         this.houseId = houseId;
     }
 
-    public void setRoomId(int roomId) {
+    public void setRoomId(long roomId) {
         this.roomId = roomId;
     }
 
@@ -192,6 +203,14 @@ public class TenantsPersonal {
 
     public void setTenantPhotoUri(Uri tenantPhotoUri) {
         this.tenantPhotoUri = tenantPhotoUri;
+    }
+
+    public double getUnpaidAmt() {
+        return unpaidAmt;
+    }
+
+    public void setUnpaidAmt(double unpaidAmt) {
+        this.unpaidAmt = unpaidAmt;
     }
 }
 

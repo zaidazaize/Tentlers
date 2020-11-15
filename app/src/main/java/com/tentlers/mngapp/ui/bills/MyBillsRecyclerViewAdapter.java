@@ -21,12 +21,19 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
 
     final int paidDrawable, unpaidDrawable, expandmore, expandless;
     List<BillItemForCard> billsList;
+    private OnBillStatusClickedListener billlistener;
 
-    public MyBillsRecyclerViewAdapter(int paid, int unpaid, int expandmore, int expandless) {
+    public interface OnBillStatusClickedListener {
+        void onBillStatusClicked(View v, int position);
+    }
+
+
+    public MyBillsRecyclerViewAdapter(int paid, int unpaid, int expandmore, int expandless, OnBillStatusClickedListener listener) {
         paidDrawable = paid;
         unpaidDrawable = unpaid;
         this.expandmore = expandmore;
         this.expandless = expandless;
+        billlistener = listener;
 
     }
 
@@ -36,12 +43,11 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_bills_list_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view,billlistener);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
 
         holder.chosenBill = billsList.get(position);
 
@@ -87,20 +93,25 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
         } else return 0;
     }
 
+    public BillItemForCard getItemAtPosition(int position) {
+        return billsList.get(position);
+    }
+
     public void setBillsList(List<BillItemForCard> billsList) {
         this.billsList = billsList;
         notifyDataSetChanged();
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         public final View mCard, relativeAmtDesc;
         public final ImageView imageViewPaymentstatus, imageViewAmtDesc;
         public final TextView textViewdatetime, paymentStatus, textViewTotalamt, monthlyCharges, aditionalCharges, electricitycharges, tenantName, roomname, housename;
         public BillItemForCard chosenBill;
         boolean expandmorestate;
+        OnBillStatusClickedListener onBillStatusClickedListener;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view,OnBillStatusClickedListener onBillStatusClickedListener) {
             super(view);
             mCard = view;
             imageViewPaymentstatus = view.findViewById(R.id.bill_imageview_payment_status_icon);
@@ -115,6 +126,8 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
             tenantName = view.findViewById(R.id.bill_card_tenant_name);
             roomname = view.findViewById(R.id.bill_card_room_name);
             housename = view.findViewById(R.id.bill_card_house_name);
+            view.findViewById(R.id.bill_card_change_status).setOnClickListener(this);
+            this.onBillStatusClickedListener = onBillStatusClickedListener;
         }
 
         public void setAmtDescListener(final Drawable expandMore, final Drawable expandLess) {
@@ -134,6 +147,10 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
             });
         }
 
+        @Override
+        public void onClick(View v) {
+            onBillStatusClickedListener.onBillStatusClicked(v,getLayoutPosition());
+        }
     }
 
 }

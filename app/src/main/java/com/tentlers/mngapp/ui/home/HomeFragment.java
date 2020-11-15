@@ -35,8 +35,8 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
     private int imageclicked;
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         homeBinding = null;
     }
 

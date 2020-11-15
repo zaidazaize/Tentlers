@@ -163,6 +163,7 @@
     <string name="metered_charge">Metered Charge</string>
     <string name="manually_charged">Manually Charged</string>
     <string name="oops_no_room_alloted">Oops! No Room Alloted</string>
+    <string name="no_room_alloted">No Room Alloted</string>
 
     <!--Bill Home fragment-->
     <string name="no_active_tenant_found">No Active Tenant Found</string>
@@ -221,6 +222,36 @@
     <string name="update_meter">Update Meter</string>
     <string name="all_changes_you_mde_will_be_dicarded">All changes you made will be discarded. Sure to exit ?</string>
     <string name="edit_meter">Edit Meter</string>
+    <string name="user_name">User Name</string>
+    <string name="edit_user_name">Edit User Name</string>
+    <string name="pending_amount">Pending Amount</string>
+    <string name="mark_as_paid">Mark as Paid</string>
 
 
+
+    <string-array name="tenant_filter">
+        <item name="sortBy">Sort By</item>
+        <item name="all">All</item>
+        <item name="house">House</item>
+        <item name="alloted">With room alloted</item>
+        <item name="unalloted">With room not alloted</item>
+        <item name="paymentLeft">Payment Left</item>
+        <item name="paymentCompleted">Payment Completed</item>
+    </string-array>
+
+    <string-array name="filter_orders" >
+        <item name="earliest_first">Earliest First</item>
+        <item name="earliest_last">Earliest Last</item>
+        <item name="amt_lowest_first">Amount Lowest First</item>
+        <item name="amt_lowest_last">Amount Lowest Last</item>
+    </string-array>
+
+    <string-array name="filter_orders_tenants">
+        <item name="earliest_first">Earliest First</item>
+        <item name="earliest_last">Earliest Last</item>
+        <item name="amt_lowest_first">Amount Lowest First</item>
+        <item name="amt_lowest_last">Amount Lowest Last</item>
+        <item name="lh_total_bills">Low to High Total Bills</item>
+        <item name="hl_total_bills">High to Low Total Bills</item>
+    </string-array>
 </resources>

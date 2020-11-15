@@ -31,6 +31,9 @@ public class BillItemForCard {
     @ColumnInfo(name = "totalAmt")
     public float totalAmt;
 
+    @ColumnInfo(name = "tenantId")
+    public long tenantId;
+
     @ColumnInfo(name = "tenantName")
     public String tenantName;
 

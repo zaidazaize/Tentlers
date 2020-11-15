@@ -102,6 +102,12 @@ public class TenantEditFragment extends Fragment implements Toolbar.OnMenuItemCl
         return tenantEditBinding.getRoot();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        tenantEditBinding = null;
+    }
+
     private boolean isDataValid() {
         String tenantname, age, totalfamily, fixedcharge;
 
