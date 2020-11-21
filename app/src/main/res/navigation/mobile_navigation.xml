@@ -32,8 +32,7 @@
     <fragment
         android:id="@+id/nav_bills"
         android:name="com.tentlers.mngapp.ui.bills.BillsFragment"
-        android:label="Bills List"
-        tools:layout="@layout/fragment_bills_list" >
+        android:label="Bills List">
         <action
             android:id="@+id/action_nav_bills_to_billEntryFragment"
             app:destination="@id/nav_billEntryFragment"

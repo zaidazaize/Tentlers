@@ -6,6 +6,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -13,7 +14,7 @@ import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
 import com.tentlers.mngapp.data.tables.bills.BillEntryTypeObject;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
-import com.tentlers.mngapp.databinding.FragmentBillsListBinding;
+import com.tentlers.mngapp.databinding.DualFilterListBinding;
 
 import java.util.List;
 
@@ -26,12 +27,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-/**
- * A fragment representing a list of Items.
- */
+/*A fragment representing a list of Items.*/
 public class BillsFragment extends Fragment implements View.OnClickListener, MyBillsRecyclerViewAdapter.OnBillStatusClickedListener, PopupMenu.OnMenuItemClickListener {
     HouseViewModal viewModal;
-    FragmentBillsListBinding billsListBinding;
+    DualFilterListBinding billsListBinding;
     boolean isAnyActiveTenant;
     int billClicked;
     BillItemForCard selectedBill;
@@ -61,10 +60,13 @@ public class BillsFragment extends Fragment implements View.OnClickListener, MyB
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        billsListBinding = FragmentBillsListBinding.inflate(getLayoutInflater(), container, false);
+        billsListBinding = DualFilterListBinding.inflate(getLayoutInflater(), container, false);
+
+        /*add drawable to fab*/
+        billsListBinding.dualFilterAddFab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_bill_pay_24));
 
         /*add bill button listener*/
-        billsListBinding.floatingActionButtonGenerateBill.setOnClickListener(this);
+        billsListBinding.dualFilterAddFab.setOnClickListener(this);
 
         /* add adapter to the list recycle view*/
         adapter = new MyBillsRecyclerViewAdapter(R.drawable.ic_baseline_check_circle_outline_24,
@@ -73,8 +75,8 @@ public class BillsFragment extends Fragment implements View.OnClickListener, MyB
                 R.drawable.ic_baseline_expand_less_24
                 , this);
 
-        billsListBinding.recycleViewBills.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        billsListBinding.recycleViewBills.setAdapter(adapter);
+        billsListBinding.dualFilterRecycleView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        billsListBinding.dualFilterRecycleView.setAdapter(adapter);
 
         /* Set the data */
         viewModal.getAllBillForCard(false).observe(getViewLifecycleOwner(),
@@ -84,13 +86,13 @@ public class BillsFragment extends Fragment implements View.OnClickListener, MyB
                         if (billItemForCards != null && billItemForCards.size() != 0) {
                             adapter.setBillsList(billItemForCards);
                             /*adjust the layout visibility */
-                            billsListBinding.billsListEmptyView.getRoot().setVisibility(View.GONE);
-                            billsListBinding.recycleViewBills.setVisibility(View.VISIBLE);
+                            billsListBinding.dualFilterListEmptyView.getRoot().setVisibility(View.GONE);
+                            billsListBinding.dualFilterRecycleView.setVisibility(View.VISIBLE);
                         } else {
-                            billsListBinding.billsListEmptyView.getRoot().setVisibility(View.VISIBLE);
-                            billsListBinding.recycleViewBills.setVisibility(View.GONE);
-                            billsListBinding.billsListEmptyView.emptyViewDataNotAvailable.setText(R.string.sorry_you_have_no_bills_to_collect);
-                            billsListBinding.billsListEmptyView.emptyViewImageNotAvailable.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_no_luggage_24px));
+                            billsListBinding.dualFilterListEmptyView.getRoot().setVisibility(View.VISIBLE);
+                            billsListBinding.dualFilterRecycleView.setVisibility(View.GONE);
+                            billsListBinding.dualFilterListEmptyView.emptyViewDataNotAvailable.setText(R.string.sorry_you_have_no_bills_to_collect);
+                            billsListBinding.dualFilterListEmptyView.emptyViewImageNotAvailable.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_no_luggage_24px));
                         }
                     }
                 });
@@ -111,10 +113,7 @@ public class BillsFragment extends Fragment implements View.OnClickListener, MyB
             Navigation.findNavController(v).navigate(R.id.action_nav_bills_to_billEntryFragment);
         } else {
             /*shows snack bar if no tenant is found*/
-            Snackbar.make(billsListBinding.billCoordinatorLayout, getString(R.string.no_active_tenant_found), BaseTransientBottomBar.LENGTH_SHORT)
-                    .setAnchorView(billsListBinding.floatingActionButtonGenerateBill)
-                    .show();
-
+            Toast.makeText(requireContext(),getString(R.string.no_active_tenant_found),Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -131,7 +130,7 @@ public class BillsFragment extends Fragment implements View.OnClickListener, MyB
         /*billClicked = position;*/
         selectedBill = adapter.getItemAtPosition(position);
         if (selectedBill.isBillPaid) {/*if the bill status is paid then show the snackbar that bill is paid else show menu to mark it as paid.*/
-            Snackbar.make(billsListBinding.billCoordinatorLayout, "Feels Bill is already paid.", BaseTransientBottomBar.LENGTH_SHORT)
+            Snackbar.make(billsListBinding.dualFilterCoordinatorLayout, R.string.fells_bill_is_already_paid, BaseTransientBottomBar.LENGTH_SHORT)
                     .show();
         } else {
             showPopupMenu(v);

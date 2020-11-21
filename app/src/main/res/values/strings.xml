@@ -168,6 +168,7 @@
     <!--Bill Home fragment-->
     <string name="no_active_tenant_found">No Active Tenant Found</string>
     <string name="sorry_you_have_no_bills_to_collect">Sorry! you have no bills to collect.</string>
+    <string name="fells_bill_is_already_paid">Feels Bill is already paid</string>
 
     <!--Bills list item-->
     <string name="billing_date">Billing Date</string>

@@ -86,13 +86,13 @@ public class TenantsFragment extends Fragment implements MyTenantsRecyclerViewAd
                     public void onChanged(List<TenantNameHouseRoom> tenantNameHouseRooms) {
                         if (tenantNameHouseRooms != null && tenantNameHouseRooms.size() != 0) {
                             listBinding.dualFilterRecycleView.setVisibility(View.VISIBLE);
-                            listBinding.tenantsListEmptyView.getRoot().setVisibility(View.GONE);
+                            listBinding.dualFilterListEmptyView.getRoot().setVisibility(View.GONE);
                             adapter.setTenantList(tenantNameHouseRooms);
                         } else {
                             listBinding.dualFilterRecycleView.setVisibility(View.GONE);
-                            listBinding.tenantsListEmptyView.getRoot().setVisibility(View.VISIBLE);
-                            listBinding.tenantsListEmptyView.emptyViewImageNotAvailable.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_person_add_disabled_24px));
-                            listBinding.tenantsListEmptyView.emptyViewDataNotAvailable.setText(getString(R.string.no_active_tenant_found));
+                            listBinding.dualFilterListEmptyView.getRoot().setVisibility(View.VISIBLE);
+                            listBinding.dualFilterListEmptyView.emptyViewImageNotAvailable.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_person_add_disabled_24px));
+                            listBinding.dualFilterListEmptyView.emptyViewDataNotAvailable.setText(getString(R.string.no_active_tenant_found));
                         }
                     }
                 });
