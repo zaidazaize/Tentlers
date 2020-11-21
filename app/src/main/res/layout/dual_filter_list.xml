@@ -51,6 +51,7 @@
                         app:singleSelection="true">
 
                     </com.google.android.material.chip.ChipGroup>
+
                 </HorizontalScrollView>
 
                 <HorizontalScrollView
@@ -58,7 +59,7 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/tenant_chip_group_2"
+                        android:id="@+id/chip_group_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/margin_left_right"
@@ -72,12 +73,13 @@
                         app:singleSelection="true">
 
                     </com.google.android.material.chip.ChipGroup>
+
                 </HorizontalScrollView>
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycle_view_tenants"
+                android:id="@+id/dual_filter_recycle_view"
                 android:name="com.example.easelife.ui.tenants.TenantsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -90,14 +92,13 @@
                 tools:listitem="@layout/fragment_tenants_list_item" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton_add_tenant"
+                android:id="@+id/dual_filter_add_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/fab_margin"
                 android:layout_marginBottom="@dimen/fab_margin"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/ic_add_tenant"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

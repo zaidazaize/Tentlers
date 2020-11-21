@@ -48,4 +48,5 @@ public class BillItemForCard {
     @Ignore
     public boolean amtDescState;
 
+
 }

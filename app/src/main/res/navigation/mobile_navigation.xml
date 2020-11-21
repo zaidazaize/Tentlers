@@ -47,7 +47,7 @@
         android:id="@+id/nav_tenants"
         android:name="com.tentlers.mngapp.ui.tenants.TenantsFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_tenants_list">
+        tools:layout="@layout/dual_filter_list">
         <action
             android:id="@+id/action_nav_tenants_to_tenantEntryFragment"
             app:destination="@id/nav_tenantEntryFragment"

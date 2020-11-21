@@ -9,21 +9,16 @@ import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.FilterObj;
 import com.tentlers.mngapp.data.HouseViewModal;
-import com.tentlers.mngapp.data.tables.queryobjects.HouseAndRoomName;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseNameAndId;
 import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
-import com.tentlers.mngapp.databinding.FragmentTenantsListBinding;
-import com.tentlers.mngapp.databinding.ListEmptyViewBindingImpl;
+import com.tentlers.mngapp.databinding.DualFilterListBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -36,7 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
  */
 public class TenantsFragment extends Fragment implements MyTenantsRecyclerViewAdapter.OnTenantClickListener {
     /* Binding object for layout.*/
-    FragmentTenantsListBinding listBinding;
+    DualFilterListBinding listBinding;
     HouseViewModal viewModal;
     MyTenantsRecyclerViewAdapter adapter;
     FilterObj filterObj;
@@ -56,7 +51,7 @@ public class TenantsFragment extends Fragment implements MyTenantsRecyclerViewAd
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        listBinding = FragmentTenantsListBinding.inflate(getLayoutInflater(), container, false);
+        listBinding =DualFilterListBinding.inflate(getLayoutInflater(), container, false);
         viewModal = new ViewModelProvider(requireActivity()).get(HouseViewModal.class);
 
         /*filter object for handling the filters choosen by the user. */
@@ -70,7 +65,11 @@ public class TenantsFragment extends Fragment implements MyTenantsRecyclerViewAd
             }
         });
 
-        listBinding.floatingActionButtonAddTenant.setOnClickListener(new View.OnClickListener() {
+        /*add icon to the floating action button*/
+        listBinding.dualFilterAddFab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_add_tenant));
+
+        /*add click listener for adding new tenant it takes user to the add tenant fragment*/
+        listBinding.dualFilterAddFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(listBinding.getRoot()).navigate(R.id.action_nav_tenants_to_tenantEntryFragment);
@@ -79,18 +78,18 @@ public class TenantsFragment extends Fragment implements MyTenantsRecyclerViewAd
 
 
         adapter = new MyTenantsRecyclerViewAdapter(this, viewModal);
-        listBinding.recycleViewTenants.setLayoutManager(new LinearLayoutManager(getContext()));
-        listBinding.recycleViewTenants.setAdapter(adapter);
+        listBinding.dualFilterRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        listBinding.dualFilterRecycleView.setAdapter(adapter);
         viewModal.getTenantForTenantList()
                 .observe(getViewLifecycleOwner(), new Observer<List<TenantNameHouseRoom>>() {
                     @Override
                     public void onChanged(List<TenantNameHouseRoom> tenantNameHouseRooms) {
                         if (tenantNameHouseRooms != null && tenantNameHouseRooms.size() != 0) {
-                            listBinding.recycleViewTenants.setVisibility(View.VISIBLE);
+                            listBinding.dualFilterRecycleView.setVisibility(View.VISIBLE);
                             listBinding.tenantsListEmptyView.getRoot().setVisibility(View.GONE);
                             adapter.setTenantList(tenantNameHouseRooms);
                         } else {
-                            listBinding.recycleViewTenants.setVisibility(View.GONE);
+                            listBinding.dualFilterRecycleView.setVisibility(View.GONE);
                             listBinding.tenantsListEmptyView.getRoot().setVisibility(View.VISIBLE);
                             listBinding.tenantsListEmptyView.emptyViewImageNotAvailable.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_person_add_disabled_24px));
                             listBinding.tenantsListEmptyView.emptyViewDataNotAvailable.setText(getString(R.string.no_active_tenant_found));
@@ -120,9 +119,9 @@ public class TenantsFragment extends Fragment implements MyTenantsRecyclerViewAd
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {/*the checked id is the int position in the view hirachy starting from 1*/
                 /*make the chip group 2 invisible each time when new chip is clicked.*/
-                if (listBinding.tenantChipGroup2.getVisibility() != View.GONE) {
+                if (listBinding.chipGroup2.getVisibility() != View.GONE) {
                     /*TODO add animation for invisibility */
-                    listBinding.tenantChipGroup2.setVisibility(View.GONE);
+                    listBinding.chipGroup2.setVisibility(View.GONE);
                 }
                 Log.d("chipid", String.valueOf(checkedId));
                 switch (checkedId) {
@@ -154,7 +153,7 @@ public class TenantsFragment extends Fragment implements MyTenantsRecyclerViewAd
         });
 
         /*listener handling sorting order and the tenants specific to the  house*/
-        listBinding.tenantChipGroup2.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+        listBinding.chipGroup2.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
                 Log.d("chipid", String.valueOf(checkedId));
@@ -204,8 +203,8 @@ public class TenantsFragment extends Fragment implements MyTenantsRecyclerViewAd
 
     /*it handles the showing of the chipgroup 2  based on the user selection */
     private void showChipGroup2() {
-        listBinding.tenantChipGroup2.setVisibility(View.VISIBLE);
-        listBinding.tenantChipGroup2.removeAllViews();
+        listBinding.chipGroup2.setVisibility(View.VISIBLE);
+        listBinding.chipGroup2.removeAllViews();
         String[] choice;
         if (isHouseGrpChip) {/*TODO: request house names at runtime instead of making it preloaded available in the memory*/
             choice = getHouseNameArray();
@@ -228,7 +227,7 @@ public class TenantsFragment extends Fragment implements MyTenantsRecyclerViewAd
                 chip.setChecked(true);
             }
             chip.setTag(i);
-            listBinding.tenantChipGroup2.addView(chip);
+            listBinding.chipGroup2.addView(chip);
             y++;
         }
     }
