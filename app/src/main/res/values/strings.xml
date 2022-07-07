@@ -229,7 +229,6 @@
     <string name="mark_as_paid">Mark as Paid</string>
 
 
-
     <string-array name="tenant_filter">
         <item name="sortBy">Sort By</item>
         <item name="all">All</item>
@@ -240,7 +239,7 @@
         <item name="paymentCompleted">Payment Completed</item>
     </string-array>
 
-    <string-array name="filter_orders" >
+    <string-array name="filter_orders">
         <item name="earliest_first">Earliest First</item>
         <item name="earliest_last">Earliest Last</item>
         <item name="amt_lowest_first">Amount Lowest First</item>
