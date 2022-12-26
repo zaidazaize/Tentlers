@@ -27,7 +27,7 @@
     <color name="black_overlay">#66000000</color>
     <color name="recquired_fild">#FFC107</color>
     <color name="color_house_name">#FAF9FB</color>
-    <color name="coclor_list_item_background">#F7F5FD</color>
+    <color name="color_list_item_background">#F3E6DD</color>
     <color name="specific_house_adress_desc">#C1B0B0</color>
     <color name="specific_house_background_distintion">#ADEBF6F6</color>
     <color name="background_address">#A4E0E0E0</color>
@@ -37,5 +37,6 @@
     <color name="reading_state_BILLED">@android:color/white</color>
     <color name="reading_state_TENANT_ENTRY">@android:color/holo_green_light</color>
     <color name="reading_state_TENANT_EXIT">#FFEB3B</color>
+    <color name="logo_background_color">#F0E6DC</color>
 
 </resources>

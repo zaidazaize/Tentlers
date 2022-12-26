@@ -8,8 +8,30 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.127" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable-v24/splash_background.xml" value="0.1" />
         <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/backgroud.xml" value="0.1565" />
-        <entry key="..\:/project/android/tentlers/app/src/main/res/layout/activity_launch_screen.xml" value="0.19010416666666666" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/circle_house_number.xml" value="0.141" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/circle_house_room_num.xml" value="0.128" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_add_a_photo_24px.xml" value="0.128" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_add_tenant.xml" value="0.141" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_app_launcher_background.xml" value="0.127" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_baseline_check_circle_outline_24.xml" value="0.141" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_baseline_expand_less_24.xml" value="0.141" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.145" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_baseline_list_item_money.xml" value="0.128" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_domain_disabled_24px.xml" value="0.141" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_launch.xml" value="0.128" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_launcher_background.xml" value="0.127" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_menu_camera.xml" value="0.1" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_meter_reading_24px.xml" value="0.141" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_person_add_disabled_24px.xml" value="0.141" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_system_decide_24px.xml" value="0.141" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/ic_tenant_profile_24px.xml" value="0.141" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/drawable/splash_background.xml" value="0.141" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/layout/activity_launch_screen.xml" value="0.1" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/layout/activity_main.xml" value="0.1935185185185185" />
+        <entry key="..\:/project/android/tentlers/app/src/main/res/layout/content_main.xml" value="0.20416666666666666" />
         <entry key="..\:/project/android/tentlers/app/src/main/res/mipmap-anydpi-v26/ic_app_launcher.xml" value="0.1565" />
         <entry key="..\:/project/android/tentlers/app/src/main/res/mipmap-anydpi-v26/ic_app_launcher_round.xml" value="0.1565" />
         <entry key="..\:/project/android/tentlers/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1565" />
