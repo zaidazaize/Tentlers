@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
-import com.tentlers.mngapp.data.tables.TableHouse;
+import com.tentlers.mngapp.data.tables.house.TableHouse;
 import com.tentlers.mngapp.data.tables.meters.GetLastMeterReading;
 import com.tentlers.mngapp.data.tables.meters.LastReadingWithDate;
 import com.tentlers.mngapp.data.tables.meters.MeterEditType;

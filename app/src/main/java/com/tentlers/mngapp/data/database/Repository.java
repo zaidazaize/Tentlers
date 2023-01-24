@@ -5,8 +5,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.tentlers.mngapp.data.FilterObj;
-import com.tentlers.mngapp.data.tables.TableHouse;
-import com.tentlers.mngapp.data.tables.TableRooms;
+import com.tentlers.mngapp.data.tables.house.TableHouse;
+import com.tentlers.mngapp.data.tables.rooms.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMeters;
@@ -31,8 +31,6 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
-import androidx.sqlite.db.SimpleSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteQuery;
 
 public class Repository {
 

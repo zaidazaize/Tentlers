@@ -1,6 +1,6 @@
 package com.tentlers.mngapp.data.tables.meters;
 
-import com.tentlers.mngapp.data.tables.TableRooms;
+import com.tentlers.mngapp.data.tables.rooms.TableRooms;
 
 import androidx.annotation.NonNull;
 import androidx.room.Ignore;

@@ -15,7 +15,7 @@ import android.widget.CompoundButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
-import com.tentlers.mngapp.data.tables.TableRooms;
+import com.tentlers.mngapp.data.tables.rooms.TableRooms;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
 import com.tentlers.mngapp.data.tables.rooms.RoomNoName;
 import com.tentlers.mngapp.databinding.FragmentRoomEnteyBinding;

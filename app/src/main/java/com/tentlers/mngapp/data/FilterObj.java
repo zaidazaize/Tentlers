@@ -1,11 +1,8 @@
 package com.tentlers.mngapp.data;
 
-import android.util.Log;
-
-import com.tentlers.mngapp.data.tables.TableHouse;
-import com.tentlers.mngapp.data.tables.TableRooms;
+import com.tentlers.mngapp.data.tables.house.TableHouse;
+import com.tentlers.mngapp.data.tables.rooms.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.Bills;
-import com.tentlers.mngapp.data.tables.tenants.TenantNameHouseRoom;
 import com.tentlers.mngapp.data.tables.tenants.TenantsPersonal;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;

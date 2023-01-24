@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.tentlers.mngapp.R;
 import com.tentlers.mngapp.data.HouseViewModal;
-import com.tentlers.mngapp.data.tables.TableRooms;
+import com.tentlers.mngapp.data.tables.rooms.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.BillEntryTypeObject;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;

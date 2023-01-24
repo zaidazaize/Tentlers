@@ -3,8 +3,8 @@ package com.tentlers.mngapp.data;
 import android.app.Application;
 
 import com.tentlers.mngapp.data.database.Repository;
-import com.tentlers.mngapp.data.tables.TableHouse;
-import com.tentlers.mngapp.data.tables.TableRooms;
+import com.tentlers.mngapp.data.tables.house.TableHouse;
+import com.tentlers.mngapp.data.tables.rooms.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.BillEntryTypeObject;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;

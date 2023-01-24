@@ -1,7 +1,7 @@
 package com.tentlers.mngapp.data.database;
 
-import com.tentlers.mngapp.data.tables.TableHouse;
-import com.tentlers.mngapp.data.tables.TableRooms;
+import com.tentlers.mngapp.data.tables.house.TableHouse;
+import com.tentlers.mngapp.data.tables.rooms.TableRooms;
 import com.tentlers.mngapp.data.tables.bills.BillItemForCard;
 import com.tentlers.mngapp.data.tables.bills.Bills;
 import com.tentlers.mngapp.data.tables.meters.AllMeters;
@@ -31,7 +31,6 @@ import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Transaction;
 import androidx.room.Update;
-import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
 @Dao

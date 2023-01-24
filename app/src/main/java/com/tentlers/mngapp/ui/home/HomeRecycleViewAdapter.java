@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tentlers.mngapp.R;
-import com.tentlers.mngapp.data.tables.TableHouse;
+import com.tentlers.mngapp.data.tables.house.TableHouse;
 import com.tentlers.mngapp.data.tables.queryobjects.HouseForHomeFragment;
 
 import java.util.List;

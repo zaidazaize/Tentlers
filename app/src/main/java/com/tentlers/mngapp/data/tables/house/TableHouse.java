@@ -1,4 +1,4 @@
-package com.tentlers.mngapp.data.tables;
+package com.tentlers.mngapp.data.tables.house;
 
 import com.tentlers.mngapp.data.tables.meters.AllMeters;
 import com.tentlers.mngapp.data.tables.meters.AllMetersData;
