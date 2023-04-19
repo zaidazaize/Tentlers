@@ -49,7 +49,6 @@
                 android:src="@drawable/ic_baseline_house_24" />
 
 
-            <!--TODO: add empty list view-->
         </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
