@@ -560,13 +560,13 @@ public class Repository {
         @Override
         protected Void doInBackground(BillItemForCard... billItemForCards) {
             BillItemForCard item = billItemForCards[0];
-            billsdao.updateBillPaidStatus(item.billId,
+            billsdao.updateBillPaidStatus(item.getBillId(),
                     true);
 
             /*update the no of paid bills and unpaid amt in the table*/
             billsdao.updateNoOfPaidBillsAndUnpaidAmtInTenant(1,
-                    -item.totalAmt,
-                    item.tenantId);
+                    -item.getTotalAmt(),
+                    item.getTenantId());
 
             return null;
         }

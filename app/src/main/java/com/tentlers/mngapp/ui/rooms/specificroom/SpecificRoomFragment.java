@@ -252,25 +252,25 @@ public class SpecificRoomFragment extends Fragment implements View.OnLongClickLi
                             fragmentBillsListItemBinding.getRoot().setVisibility(View.VISIBLE);
 
                             /*set the date and time*/
-                            fragmentBillsListItemBinding.billTextviewTimeAndDate.setText(choosenbill.createDate.toString());/*TODO change the date format to long with time*/
+                            fragmentBillsListItemBinding.billTextviewTimeAndDate.setText(choosenbill.getCreateDate().toString());/*TODO change the date format to long with time*/
 
                             /*bill status : drawable status*/
                             fragmentBillsListItemBinding.billImageviewPaymentStatusIcon.setImageDrawable(
-                                    choosenbill.isBillPaid ?
+                                    choosenbill.isBillPaid() ?
                                             ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_check_circle_outline_24) :
                                             ContextCompat.getDrawable((requireContext()), R.drawable.ic_baseline_error_outline_24));
 
                             /*bill status : text status*/
                             fragmentBillsListItemBinding.billTextviewPaymentStatus.setText(
-                                    getString(choosenbill.isBillPaid ? R.string.paid : R.string.pending));
+                                    getString(choosenbill.isBillPaid() ? R.string.paid : R.string.pending));
 
                             /*set the total amount*/
-                            fragmentBillsListItemBinding.billTotalAmt.setText(String.valueOf(choosenbill.totalAmt));
+                            fragmentBillsListItemBinding.billTotalAmt.setText(String.valueOf(choosenbill.getTotalAmt()));
 
                             /*set the other amounts*/
-                            fragmentBillsListItemBinding.billCardMonthlyCharges.setText(String.valueOf(choosenbill.monthlyCharge));
-                            fragmentBillsListItemBinding.billCardAdditionalCharges.setText(String.valueOf(choosenbill.additionalCharge));
-                            fragmentBillsListItemBinding.billCardElectrictyCharges.setText(String.valueOf(choosenbill.electricCost));
+                            fragmentBillsListItemBinding.billCardMonthlyCharges.setText(String.valueOf(choosenbill.getMonthlyCharge()));
+                            fragmentBillsListItemBinding.billCardAdditionalCharges.setText(String.valueOf(choosenbill.getAdditionalCharge()));
+                            fragmentBillsListItemBinding.billCardElectrictyCharges.setText(String.valueOf(choosenbill.getElectricCost()));
 
                             /*set the bill expand click listener*/
                             fragmentBillsListItemBinding.billImageviewAmtDesc.setOnClickListener(new View.OnClickListener() {
@@ -289,9 +289,9 @@ public class SpecificRoomFragment extends Fragment implements View.OnLongClickLi
                             });
 
                             /*set tenant name and room and house names*/
-                            fragmentBillsListItemBinding.billCardShowTenantName.setText(choosenbill.tenantName);
-                            fragmentBillsListItemBinding.billCardRoomName.setText(choosenbill.roomName);
-                            fragmentBillsListItemBinding.billCardHouseName.setText(choosenbill.houseName);
+                            fragmentBillsListItemBinding.billCardShowTenantName.setText(choosenbill.getTenantName());
+                            fragmentBillsListItemBinding.billCardRoomName.setText(choosenbill.getRoomName());
+                            fragmentBillsListItemBinding.billCardHouseName.setText(choosenbill.getHouseName());
 
                         }
 

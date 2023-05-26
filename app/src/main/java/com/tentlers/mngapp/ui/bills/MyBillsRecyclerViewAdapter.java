@@ -52,10 +52,10 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
         holder.chosenBill = billsList.get(position);
 
         /*set Date*/
-        holder.textViewdatetime.setText(Bills.getBillDate(holder.chosenBill.createDate));
+        holder.textViewdatetime.setText(Bills.getBillDate(holder.chosenBill.getCreateDate()));
 
         /*Set payment status icon and text*/
-        if (holder.chosenBill.isBillPaid) {
+        if (holder.chosenBill.isBillPaid()) {
             holder.imageViewPaymentstatus.setImageDrawable(ContextCompat.getDrawable(holder.mCard.getContext(), paidDrawable));
             holder.paymentStatus.setText(R.string.paid);
         } else {
@@ -64,25 +64,25 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
         }
 
         /*Set total amount*/
-        holder.textViewTotalamt.setText(String.valueOf(holder.chosenBill.totalAmt));
+        holder.textViewTotalamt.setText(String.valueOf(holder.chosenBill.getTotalAmt()));
 
         /*Set amount dec. image view and listener*/
         holder.setAmtDescListener(ContextCompat.getDrawable(holder.mCard.getContext(), expandmore)
                 , ContextCompat.getDrawable(holder.mCard.getContext(), expandless));
 
         /*Set descriptive amount*/
-        holder.monthlyCharges.setText(String.valueOf(holder.chosenBill.monthlyCharge));
-        holder.aditionalCharges.setText(String.valueOf(holder.chosenBill.additionalCharge));
-        holder.electricitycharges.setText(String.valueOf(holder.chosenBill.electricCost));
+        holder.monthlyCharges.setText(String.valueOf(holder.chosenBill.getMonthlyCharge()));
+        holder.aditionalCharges.setText(String.valueOf(holder.chosenBill.getAdditionalCharge()));
+        holder.electricitycharges.setText(String.valueOf(holder.chosenBill.getElectricCost()));
 
         /*set tenant name */
-        holder.tenantName.setText(holder.chosenBill.tenantName);
+        holder.tenantName.setText(holder.chosenBill.getTenantName());
 
         /*set house Name*/
-        holder.housename.setText(holder.chosenBill.houseName);
+        holder.housename.setText(holder.chosenBill.getHouseName());
 
         /*set room name*/
-        holder.roomname.setText(holder.chosenBill.roomName);
+        holder.roomname.setText(holder.chosenBill.getRoomName());
 
     }
 
