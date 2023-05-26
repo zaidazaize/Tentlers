@@ -268,8 +268,8 @@ public class SpecificRoomFragment extends Fragment implements View.OnLongClickLi
                             fragmentBillsListItemBinding.billTotalAmt.setText(String.valueOf(choosenbill.totalAmt));
 
                             /*set the other amounts*/
-                            fragmentBillsListItemBinding.billCardMonthlyCharges.setText(String.valueOf(choosenbill.monthlycharge));
-                            fragmentBillsListItemBinding.billCardAdditionalCharges.setText(String.valueOf(choosenbill.additionalcharge));
+                            fragmentBillsListItemBinding.billCardMonthlyCharges.setText(String.valueOf(choosenbill.monthlyCharge));
+                            fragmentBillsListItemBinding.billCardAdditionalCharges.setText(String.valueOf(choosenbill.additionalCharge));
                             fragmentBillsListItemBinding.billCardElectrictyCharges.setText(String.valueOf(choosenbill.electricCost));
 
                             /*set the bill expand click listener*/

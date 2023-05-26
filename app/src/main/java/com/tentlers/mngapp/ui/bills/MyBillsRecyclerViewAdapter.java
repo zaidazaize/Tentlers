@@ -71,8 +71,8 @@ public class MyBillsRecyclerViewAdapter extends RecyclerView.Adapter<MyBillsRecy
                 , ContextCompat.getDrawable(holder.mCard.getContext(), expandless));
 
         /*Set descriptive amount*/
-        holder.monthlyCharges.setText(String.valueOf(holder.chosenBill.monthlycharge));
-        holder.aditionalCharges.setText(String.valueOf(holder.chosenBill.additionalcharge));
+        holder.monthlyCharges.setText(String.valueOf(holder.chosenBill.monthlyCharge));
+        holder.aditionalCharges.setText(String.valueOf(holder.chosenBill.additionalCharge));
         holder.electricitycharges.setText(String.valueOf(holder.chosenBill.electricCost));
 
         /*set tenant name */

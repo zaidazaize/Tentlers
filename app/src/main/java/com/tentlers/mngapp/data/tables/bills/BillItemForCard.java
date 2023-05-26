@@ -22,11 +22,11 @@ public class BillItemForCard {
     public float electricCost;
     /*TODO: change electric cost to electric charges.*/
 
-    @ColumnInfo(name = "monthlycharge")
-    public float monthlycharge;
+    @ColumnInfo(name = "monthlyCharge")
+    public float monthlyCharge;
 
-    @ColumnInfo(name = "additionalcharge")
-    public float additionalcharge;
+    @ColumnInfo(name = "additionalCharge")
+    public float additionalCharge;
 
     @ColumnInfo(name = "totalAmt")
     public float totalAmt;

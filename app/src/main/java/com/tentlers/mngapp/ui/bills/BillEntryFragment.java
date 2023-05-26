@@ -149,7 +149,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() != 0) {
-                    createdbill.monthlycharge = Float.parseFloat(s.toString());
+                    createdbill.setMonthlyCharge(Float.parseFloat(s.toString()));
                     setTotalAmount();
                 }
             }
@@ -170,7 +170,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() != 0) {
-                    createdbill.additionalcharge = Float.parseFloat(s.toString());
+                    createdbill.setAdditionalCharge(Float.parseFloat(s.toString()));
                     setTotalAmount();
                 }
             }
@@ -191,7 +191,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() != 0) {
-                    createdbill.manuallyEnteredElectricCost = Float.parseFloat(s.toString());
+                    createdbill.setManuallyEnteredElectricCost(Float.parseFloat(s.toString()));
                     setTotalAmount();
                 }
             }
@@ -212,7 +212,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() != 0) {
-                    createdbill.perUnitcoat = Float.parseFloat(s.toString());
+                    createdbill.setPerUnitCost(Float.parseFloat(s.toString()));
                     setTotalAmount();
                 }
             }
@@ -238,12 +238,12 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
                 if (s.toString().length() == 0) {
                     return;
                 }
-                if (Long.parseLong(s.toString()) < createdbill.initialMeterR) {
+                if (Long.parseLong(s.toString()) < createdbill.getInitialMeterR()) {
                     billEntryBinding.billEntryTextInputEditTextOutlinedFinalMeterReading
                             .setError(getString(R.string.invalid_entry_meter_reading_is_less_than_last_entered_reading));
                 } else {
                     billEntryBinding.billEntryTextInputEditTextOutlinedFinalMeterReading.setError("");
-                    createdbill.endMeterR = Long.parseLong(s.toString());
+                    createdbill.setEndMeterR(Long.parseLong(s.toString()));
                     setTotalAmount();
                 }
 
@@ -270,7 +270,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     private void setFieldsOfTenant(long tenantid) {
-        createdbill.tenantId = tenantid;
+        createdbill.setTenantId(tenantid);
         viewModal.getSelectedTenantForBill(tenantid).observe(getViewLifecycleOwner(),
                 new Observer<TenantBillEntry>() {
                     @Override
@@ -288,7 +288,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
                         /*Set the fixed charge.*/
                         billEntryBinding.textInputEditTextOutlinedMonthlyFixedCharge.setText(
                                 tenantBillEntry.mFixedCharges == 0 ? "" : String.valueOf(tenantBillEntry.mFixedCharges));
-                        createdbill.monthlycharge = tenantBillEntry.mFixedCharges;
+                        createdbill.setMonthlyCharge(tenantBillEntry.mFixedCharges);
 
                         /* *//*Electricity charge entry, heading visibility*//*
                         billEntryBinding.billEntryTextviewElectricityCharges.setVisibility(*//* if any one of the either auto or manual electricity is enabledn then the heading of the add electricity charge will be visible.*//*
@@ -328,7 +328,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
                         @Override
                         public void onChanged(LastReadingWithDate lastReadingWithDate) {
                             billEntryBinding.billEntryStartMeterReading.setText(String.valueOf(lastReadingWithDate.getLastMeterReading()));
-                            createdbill.initialMeterR = lastReadingWithDate.getLastMeterReading();
+                            createdbill.setInitialMeterR(lastReadingWithDate.getLastMeterReading());
                         }
                     });
         }
@@ -342,18 +342,18 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
         String monthlyCharge = Objects.requireNonNull(billEntryBinding.textInputEditTextOutlinedMonthlyFixedCharge.getText()).toString();
         String aditionalcharge = Objects.requireNonNull(billEntryBinding.textInputEditTextOutlinedAditionalCharge.getText()).toString();
         if (monthlyCharge.length() != 0) {
-            createdbill.monthlycharge = Float.parseFloat(monthlyCharge);
+            createdbill.setMonthlyCharge(Float.parseFloat(monthlyCharge));
         }
         if (aditionalcharge.length() != 0) {
-            createdbill.additionalcharge = Float.parseFloat(aditionalcharge);
-        } else createdbill.additionalcharge = 0;
+            createdbill.setAdditionalCharge(Float.parseFloat(aditionalcharge));
+        } else createdbill.setAdditionalCharge(0);
 
         if (createdbill.getTotalAmt() == 0) {
             return false;
         }
         if (choosenTenant != null) {
             if (choosenTenant.meterPay) {
-                createdbill.metersData.setRoomid(choosenTenant.roomId);
+                createdbill.getMetersData().setRoomid(choosenTenant.roomId);
                 return isMeterPayValid() && isperUnitvalid();
 
             } else return isNonMeterPayValid();
@@ -368,7 +368,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
         if (value.length() != 0) {
             /* Set the meter pay of bill here.*/
             createdbill.setEndMeterR(Long.parseLong(value));
-            if (createdbill.endMeterR < createdbill.initialMeterR) {
+            if (createdbill.getEndMeterR() < createdbill.getInitialMeterR()) {
                 billEntryBinding.billEntryTextInputEditTextOutlinedFinalMeterReading
                         .setError(getText(R.string.invalid_entry_meter_reading_is_less_than_last_entered_reading));
                 return false;
@@ -398,7 +398,7 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
             billEntryBinding.textInputLayoutOutlinedMonthlyElectricPerUnitCharge.setError(getText(R.string.error_field_recquired));
             return false;
         } else {
-            createdbill.perUnitcoat = Float.parseFloat(perunitcost);
+            createdbill.setPerUnitCost(Float.parseFloat(perunitcost));
             billEntryBinding.textInputLayoutOutlinedMonthlyElectricPerUnitCharge.setError("");
             return true;
         }
@@ -412,8 +412,8 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
 
     private void generateBill() {
         createdbill.setCreateDate();
-        if (createdbill.ismeterPay) {
-            createdbill.electricCost = createdbill.getMeteredElectricityCost();
+        if (createdbill.isMeterPay()) {
+            createdbill.setElectricCost(createdbill.getMeteredElectricityCost());
         }
         createdbill.setTotalAmt();
         viewModal.insertNewBill(createdbill);

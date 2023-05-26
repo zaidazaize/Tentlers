@@ -14,68 +14,67 @@ import androidx.room.PrimaryKey;
 public class Bills {
     public static final String CREATE_DATE = "createDate";
     public static final String TOTAL_AMT = "totalAmt";
-    @Ignore
-    public final AllMetersData metersData;
-
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo()
-    public long billId;
-
-    @ColumnInfo
-    public long tenantId;
-
-    @ColumnInfo
-    public long initialMeterR;
-    @ColumnInfo
-    public long endMeterR;
-    @ColumnInfo
-    public Date createDate;
-    @ColumnInfo
-    public Date billpaymentDate;
-    @ColumnInfo
-    public boolean isBillPaid;
-    @ColumnInfo
-    public float electricCost;
-    @ColumnInfo
-    public double monthlycharge;
-    @ColumnInfo
-    public float additionalcharge;
-    @ColumnInfo
-    public float perUnitcoat;
-    @ColumnInfo
-    public float manuallyEnteredElectricCost;
-    @ColumnInfo
-    public double totalAmt;
 
     public Bills() {
         metersData = new AllMetersData();
     }
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo()
+    private long billId;
+
+    @ColumnInfo
+    private long tenantId;
+
+    @ColumnInfo
+    private long initialMeterR;
+    @ColumnInfo
+    private long endMeterR;
+    @ColumnInfo
+    private Date createDate;
+    @ColumnInfo
+    private Date billPaymentDate;
+    @ColumnInfo
+    private boolean isBillPaid;
+    @ColumnInfo
+    private float electricCost;
+    @ColumnInfo
+    private double monthlyCharge;
+    @ColumnInfo
+    private float additionalCharge;
+    @ColumnInfo
+    private float perUnitCost;
+    @ColumnInfo
+    private float manuallyEnteredElectricCost;
+    @ColumnInfo
+    private double totalAmt;
+    @Ignore
+    private final AllMetersData metersData;
 
     @Ignore
-    public boolean ismeterPay;/* to enter data in meter table if it is true.*/
+    private boolean isMeterPay;/* to enter data in meter table if it is true.*/
 
     public void setEndMeterR(long endMeterR) {
         this.endMeterR = endMeterR;
-        metersData.setLastMeterReading(endMeterR);
-        ismeterPay = true;
+        getMetersData().setLastMeterReading(endMeterR);
+        setMeterPay(true);
     }
 
     public void setCreateDate() {
-        this.createDate = new Date(System.currentTimeMillis());
-        metersData.setDate(createDate);
+        this.setCreateDate(new Date(System.currentTimeMillis()));
+        getMetersData().setDate(getCreateDate());
     }
 
     public void setManuallyEnteredElectricCost(float manuallyEnteredElectricCost) {
         this.manuallyEnteredElectricCost = manuallyEnteredElectricCost;
-        ismeterPay = false;
+        setMeterPay(false);
     }
 
     public void setTotalAmt() {
-        this.totalAmt = getTotalAmt();
+        this.setTotalAmt(getTotalAmt());
     }
 
     public double getTotalAmt() {
-        return monthlycharge + additionalcharge + getMeteredElectricityCost() + manuallyEnteredElectricCost;
+        return getMonthlyCharge() + getAdditionalCharge() + getMeteredElectricityCost() + getManuallyEnteredElectricCost();
     }
 
     @Ignore
@@ -85,7 +84,7 @@ public class Bills {
 
     @Ignore
     public float getMeteredElectricityCost() {
-        return (endMeterR - initialMeterR) * perUnitcoat;
+        return (getEndMeterR() - getInitialMeterR()) * getPerUnitCost();
     }
 
     @Ignore
@@ -95,4 +94,103 @@ public class Bills {
     }
 
 
+    public long getBillId() {
+        return billId;
+    }
+
+    public void setBillId(long billId) {
+        this.billId = billId;
+    }
+
+    public long getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(long tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public long getInitialMeterR() {
+        return initialMeterR;
+    }
+
+    public void setInitialMeterR(long initialMeterR) {
+        this.initialMeterR = initialMeterR;
+    }
+
+    public long getEndMeterR() {
+        return endMeterR;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getBillPaymentDate() {
+        return billPaymentDate;
+    }
+
+    public void setBillPaymentDate(Date billPaymentDate) {
+        this.billPaymentDate = billPaymentDate;
+    }
+
+    public boolean isBillPaid() {
+        return isBillPaid;
+    }
+
+    public void setBillPaid(boolean billPaid) {
+        isBillPaid = billPaid;
+    }
+
+    public float getElectricCost() {
+        return electricCost;
+    }
+
+    public void setElectricCost(float electricCost) {
+        this.electricCost = electricCost;
+    }
+
+    public double getMonthlyCharge() {
+        return monthlyCharge;
+    }
+
+    public void setMonthlyCharge(double monthlyCharge) {
+        this.monthlyCharge = monthlyCharge;
+    }
+
+    public float getAdditionalCharge() {
+        return additionalCharge;
+    }
+
+    public void setAdditionalCharge(float additionalCharge) {
+        this.additionalCharge = additionalCharge;
+    }
+
+    public float getPerUnitCost() {
+        return perUnitCost;
+    }
+
+    public void setPerUnitCost(float perUnitCost) {
+        this.perUnitCost = perUnitCost;
+    }
+
+    public float getManuallyEnteredElectricCost() {
+        return manuallyEnteredElectricCost;
+    }
+
+    public void setTotalAmt(double totalAmt) {
+        this.totalAmt = totalAmt;
+    }
+
+    public boolean isMeterPay() {
+        return isMeterPay;
+    }
+
+    public void setMeterPay(boolean meterPay) {
+        isMeterPay = meterPay;
+    }
 }
