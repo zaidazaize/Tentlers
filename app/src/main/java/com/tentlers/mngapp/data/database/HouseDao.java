@@ -272,7 +272,7 @@ public interface HouseDao {
 
     /*Showing bills in recycle view of bills page*/
     @Transaction
-    @Query("SELECT billId, bills.createDate, bills.monthlycharge,bills.tenantId, bills.additionalcharge, bills.totalAmt, " +
+    @Query("SELECT billId, bills.createDate, bills.monthlyCharge,bills.tenantId, bills.additionalCharge, bills.totalAmt, " +
             "bills.electricCost, bills.isBillPaid, tenantspersonal.tenantName, tablehouse.houseName, tablerooms.roomName " +
             "FROM bills,tenantspersonal,tablehouse,tablerooms " +
             "WHERE bills.tenantId =  tenantspersonal.tenantId  " +
@@ -283,7 +283,7 @@ public interface HouseDao {
 
     /*get three bills for card.*/
     @Transaction
-    @Query("SELECT billId, bills.createDate, bills.monthlycharge,bills.tenantId, bills.additionalcharge, bills.totalAmt, " +
+    @Query("SELECT billId, bills.createDate, bills.monthlyCharge,bills.tenantId, bills.additionalCharge, bills.totalAmt, " +
             "bills.electricCost, bills.isBillPaid, tenantspersonal.tenantName, tablehouse.houseName, tablerooms.roomName " +
             "FROM bills,tenantspersonal,tablehouse,tablerooms " +
             "WHERE bills.tenantId =  tenantspersonal.tenantId  " +

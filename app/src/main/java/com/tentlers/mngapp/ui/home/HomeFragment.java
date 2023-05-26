@@ -34,12 +34,6 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
     private FragmentHomeBinding homeBinding;
     private int imageclicked;
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        homeBinding = null;
-    }
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -130,4 +124,11 @@ public class HomeFragment extends Fragment implements HomeRecycleViewAdapter.OnI
         return true;
 
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        homeBinding = null;
+    }
+
 }

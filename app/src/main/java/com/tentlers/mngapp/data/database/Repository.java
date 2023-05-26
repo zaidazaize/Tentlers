@@ -539,10 +539,10 @@ public class Repository {
             asyncinsertnewbilldao.insertNewBill(bill);
 
             /*update the unpaid amt and number of total bills in the tenant table in the tenants table table*/
-            asyncinsertnewbilldao.updateTotalBillsAndUnpaidAmtinTenant(+1, bill.getTotalAmt(), bill.tenantId);
-            if (bill.ismeterPay) {
+            asyncinsertnewbilldao.updateTotalBillsAndUnpaidAmtinTenant(+1, bill.getTotalAmt(), bill.getTenantId());
+            if (bill.isMeterPay()) {
                 /* fetch meter id using room id and set in the meters table sub-object bills table.*/
-                bill.metersData.setMeterId(asyncinsertnewbilldao.getMeterId(bill.metersData.getRoomid()));
+                bill.getMetersData().setMeterId(asyncinsertnewbilldao.getMeterId(bill.getMetersData().getRoomid()));
                 asyncinsertnewbilldao.insertMeterReading(bill.getMetersData());
             }
             return null;
@@ -560,13 +560,13 @@ public class Repository {
         @Override
         protected Void doInBackground(BillItemForCard... billItemForCards) {
             BillItemForCard item = billItemForCards[0];
-            billsdao.updateBillPaidStatus(item.billId,
+            billsdao.updateBillPaidStatus(item.getBillId(),
                     true);
 
             /*update the no of paid bills and unpaid amt in the table*/
             billsdao.updateNoOfPaidBillsAndUnpaidAmtInTenant(1,
-                    -item.totalAmt,
-                    item.tenantId);
+                    -item.getTotalAmt(),
+                    item.getTenantId());
 
             return null;
         }

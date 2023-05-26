@@ -129,7 +129,7 @@ public class BillsFragment extends Fragment implements View.OnClickListener, MyB
     public void onBillStatusClicked(View v, int position) {
         /*billClicked = position;*/
         selectedBill = adapter.getItemAtPosition(position);
-        if (selectedBill.isBillPaid) {/*if the bill status is paid then show the snackbar that bill is paid else show menu to mark it as paid.*/
+        if (selectedBill.isBillPaid()) {/*if the bill status is paid then show the snackbar that bill is paid else show menu to mark it as paid.*/
             Snackbar.make(billsListBinding.dualFilterCoordinatorLayout, R.string.fells_bill_is_already_paid, BaseTransientBottomBar.LENGTH_SHORT)
                     .show();
         } else {
