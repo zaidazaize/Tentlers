@@ -13,19 +13,14 @@ class BillEntryTypeObject {
         return this
     }
 
-    @JvmField
     var tenantId: Long = 0
-    @JvmField
     var roomId = 0
-    @JvmField
     var isBillSpecificTenant = false
-    @JvmField
     var isBillSpecificRoom = false
     fun setBillNormalPaid(billNormalPaid: Boolean): BillEntryTypeObject {
         isBillNormalPaid = billNormalPaid
         return this
     }
 
-    @JvmField
     var isBillNormalPaid = false
 }

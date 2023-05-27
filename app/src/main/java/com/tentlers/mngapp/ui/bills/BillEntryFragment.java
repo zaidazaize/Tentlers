@@ -95,10 +95,10 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
         billEntryTypeObject = viewModal.getBillEntryType();
 
         /*adjusts the view as per the bill entry type*/
-        if (billEntryTypeObject.isBillNormalPaid) {/*if the normal mode of the payment is selected then the user has to select the tenant. */
+        if (billEntryTypeObject.isBillNormalPaid()) {/*if the normal mode of the payment is selected then the user has to select the tenant. */
             billEntryBinding.spinnerBillsTenantsName.setAdapter(arrayAdapter);
             billEntryBinding.spinnerBillsTenantsName.setOnItemSelectedListener(this);
-            Log.d("isnormalpay", String.valueOf(billEntryTypeObject.isBillNormalPaid));
+            Log.d("isnormalpay", String.valueOf(billEntryTypeObject.isBillNormalPaid()));
 
             /* Get all the tenants and add all the tenants name to spinner.
              * In on click method handle when a item is clicked.*/
@@ -119,12 +119,12 @@ public class BillEntryFragment extends Fragment implements AdapterView.OnItemSel
                             return tenantNameArray;
                         }
                     });
-        } else if (billEntryTypeObject.isBillSpecificTenant) {/*set the filds if tenant id is supplied*/
+        } else if (billEntryTypeObject.isBillSpecificTenant()) {/*set the filds if tenant id is supplied*/
             changeToSpecifiTenant();
-            setFieldsOfTenant(billEntryTypeObject.tenantId);
-        } else if (billEntryTypeObject.isBillSpecificRoom) {/*sets the field if room id is supplied*/
+            setFieldsOfTenant(billEntryTypeObject.getTenantId());
+        } else if (billEntryTypeObject.isBillSpecificRoom()) {/*sets the field if room id is supplied*/
             changeToSpecifiTenant();
-            viewModal.getTenantIdFromRoomId(billEntryTypeObject.roomId).observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            viewModal.getTenantIdFromRoomId(billEntryTypeObject.getRoomId()).observe(getViewLifecycleOwner(), new Observer<Integer>() {
                 @Override
                 public void onChanged(Integer integer) {
                     setFieldsOfTenant(integer);
