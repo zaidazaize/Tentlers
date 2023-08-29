@@ -254,4 +254,5 @@
         <item name="lh_total_bills">Low to High Total Bills</item>
         <item name="hl_total_bills">High to Low Total Bills</item>
     </string-array>
+    <string name="title_activity_main2">MainActivity2</string>
 </resources>

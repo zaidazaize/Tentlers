@@ -267,12 +267,13 @@ public class HouseViewModal extends AndroidViewModel {
 
     public LiveData<List<TenantNameHouseRoom>> getTenantForTenantList() {
 
-        return Transformations.switchMap(tenantFilterObj, new Function<FilterObj, LiveData<List<TenantNameHouseRoom>>>() {
-            @Override
-            public LiveData<List<TenantNameHouseRoom>> apply(FilterObj input) {
-                return mRepository.getTenantForTenantList(input);
-            }
-        });
+//        return Transformations.switchMap(tenantFilterObj, new Function<FilterObj, LiveData<List<TenantNameHouseRoom>>>() {
+//            @Override
+//            public LiveData<List<TenantNameHouseRoom>> apply(FilterObj input) {
+//                return mRepository.getTenantForTenantList(input);
+//            }
+//        });
+        return mRepository.getTenantForTenantList(tenantFilterObj.getValue());
     }
 
     /*get all the house name and house id */
