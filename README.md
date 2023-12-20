@@ -2,10 +2,17 @@
 
 Tentlers is an offline Android app designed to help property owners efficiently manage their rental properties. With Tentlers, you can easily handle tenant records, room information, bill data, and much more. The app allows you to store electricity meter readings and collect monthly electricity charges based on tenant usage. 💼💻📊
 
+
+https://github.com/zaidazaize/Tentlers/assets/67843799/21f77c9e-8ab7-4cff-87c0-49a122794fc6
+
+
 ### Screen shorts
+
 <p>
+
   
 <img src="https://github.com/zaidazaize/Tentlers/blob/40b5f02bb6ac67dc77d157a50aaddf4c7f5712e1/screenshorts/Screenshot_1.jpeg" width=250>
+
 
 <img src="https://github.com/zaidazaize/Tentlers/blob/d8cc524ff46826a344e1c7d35e05a045d1afd057/screenshorts/Screenshot_1.1.jpeg" width=250>
 
@@ -19,6 +26,7 @@ Tentlers is an offline Android app designed to help property owners efficiently 
 </p>
 
 ## Features 📋
+
 
 - **Tenant Management**: Keep track of your tenants' information, including their names, contact details, lease agreements, and payment histories. 🧑‍💼📝💰
 
