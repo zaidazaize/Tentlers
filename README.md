@@ -96,9 +96,6 @@ In the ever-evolving landscape of property management, Tentlers stands out as a 
 
 **#Tentlers #PropertyManagement #AndroidApp #RealEstateTech #EfficiencyInManagement** 🚀✨🌐
 
-## License 📄
-
-Tentlers is licensed under the [MIT License](https://opensource.org/licenses/MIT). Feel free to modify and distribute the app according to the terms of this license. 📜🆓
 
 ## Contact ✉️
 
